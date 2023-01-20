@@ -1,6 +1,6 @@
 import { SvelteApplication }  from '@typhonjs-fvtt/runtime/svelte/application';
 
-import BasicAppShell          from './BasicAppShell.svelte';
+import BasicAppShell from './BasicAppShell.svelte';
 
 export default class BasicApplication extends SvelteApplication
 {
@@ -13,8 +13,8 @@ export default class BasicApplication extends SvelteApplication
    static get defaultOptions()
    {
       return foundry.utils.mergeObject(super.defaultOptions, {
-         title: 'TemplateESM.title',  // Automatically localized from `lang/en.json`.
-         width: 300,
+         title: 'knowledge-recalled.title',  // Automatically localized from `lang/en.json`.
+         width: 600,
 
          svelte: {
             class: BasicAppShell,

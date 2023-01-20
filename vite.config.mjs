@@ -21,7 +21,7 @@ const s_RESOLVE_CONFIG = {
 };
 
 // ATTENTION!
-// You must change `base` and the `proxy` strings replacing `/modules/template-svelte-esm/` with your
+// You must change `base` and the `proxy` strings replacing `/modules/fvtt-knowledge-recalled-pf2e/` with your
 // module or system ID.
 
 export default () =>
@@ -29,7 +29,7 @@ export default () =>
    /** @type {import('vite').UserConfig} */
    return {
       root: 'src/',                             // Source location / esbuild root.
-      base: '/modules/template-svelte-esm/',    // Base module path that 30001 / served dev directory.
+      base: '/modules/fvtt-knowledge-recalled-pf2e/',    // Base module path that 30001 / served dev directory.
       publicDir: false,                         // No public resources to copy.
       cacheDir: '../.vite-cache',               // Relative from root directory.
 
@@ -56,8 +56,8 @@ export default () =>
          port: 30001,
          open: '/game',
          proxy: {
-            '^(/modules/template-svelte-esm/lang)': 'http://localhost:30000',
-            '^(?!/modules/template-svelte-esm/)': 'http://localhost:30000',
+            '^(/modules/fvtt-knowledge-recalled-pf2e/lang)': 'http://localhost:30000',
+            '^(?!/modules/fvtt-knowledge-recalled-pf2e/)': 'http://localhost:30000',
             '/socket.io': { target: 'ws://localhost:30000', ws: true }
          }
       },
