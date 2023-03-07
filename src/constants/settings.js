@@ -1,3 +1,4 @@
+/*
 
 const SETTINGS = {
 
@@ -18,4 +19,4 @@ Game.settings.register("knowledge-recalled", SETTINGS.PRELOAD_FILES, {
    config: true,
    type: Boolean,
    default: true
-});
+});*/
