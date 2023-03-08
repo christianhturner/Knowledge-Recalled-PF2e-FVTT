@@ -1,5 +1,7 @@
 <script>
    import { ApplicationShell }   from '@typhonjs-fvtt/runtime/svelte/component/core';
+   import {backupData} from "./GMJournal.js";
+   import { createBackupFile, createInitBackupStore } from "../../control/dataManager.js";
 
    export let elementRoot;
 </script>
@@ -12,7 +14,9 @@
 <ApplicationShell bind:elementRoot>
    <main>
       <h1>This is a test</h1>
-
+      <!-- create backup file button -->
+      <button on:click={() => createBackupFile(backupData)}>Create Backup File</button>
+      <button on:click={() => createInitBackupStore()}>Initialize Stores</button>
    </main>
 </ApplicationShell>
 

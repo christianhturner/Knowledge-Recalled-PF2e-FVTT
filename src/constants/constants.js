@@ -1,12 +1,20 @@
-const CONSTANTS = {
-   moduleName: 'knowledge-recalled',
-   moduleLabel: `Knowledge Recalled`,
-   flabDB: 'json'
+export const CONSTANTS = {
+   moduleName: '',
+   moduleLabel: '',
+   flabDB: '',
 };
-export const worldName = game.world.id;
+
+export const getConstants = () =>
+{
+    CONSTANTS.moduleName = 'Knowledge Recalled';
+    CONSTANTS.moduleLabel = 'knowledge-recalled';
+    CONSTANTS.flabDB = 'knowledge-recalled';
+    return CONSTANTS;
+};
+
 
 // Defines the left-hand UI buttons. First button is the main button, which renders the sub buttons.
-const knowledgeRecalledIconLauncher = [
+export const knowledgeRecalledIconLauncher = [
    {
       name: CONSTANTS.moduleName,
       title: CONSTANTS.moduleLabel,
