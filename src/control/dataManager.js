@@ -6,6 +6,16 @@ import {settings} from "@typhonjs-config/eslint-config/shared/default.js";
 const moduleDataDirectory = "knowledge-recalled-data";
 export const ORIGIN_FOLDER = 'data';
 
+export const listFiles = async (targetDirectory, sourceDirectory, depositArray) =>
+{
+   return await FilePicker.browse(targetDirectory, sourceDirectory).then((picker) => {
+      for (const file of picker.files)
+      {
+         depositArray.push(file);
+      }
+   });
+};
+
 
 // create a backup file
 
@@ -30,8 +40,11 @@ export const createInitBackupStore = async () =>
    {
       const DATA_DIR = await FilePicker.browse(ORIGIN_FOLDER, `${moduleDataDirectory}/`);
       const worldName = "testing";
-      const backupManagementFileString = DATA_DIR.files.includes('backup-manager.json');
-      console.log(backupManagementFileString);
+      const findFiles = [];
+      await listFiles(ORIGIN_FOLDER, `${moduleDataDirectory}/`, findFiles);
+      console.log(findFiles);
+      const detectBackupManager = findFiles.includes("knowledge-recalled-data/backup-manager.json");
+      console.log(detectBackupManager);
       const emptyFile = {
          name: "this is a test to see if overwrite occurs"
       };
@@ -45,7 +58,7 @@ export const createInitBackupStore = async () =>
          ]
       };
       let index = 1;
-      if (!backupManagementFileString)
+      if (!detectBackupManager)
       {
          const backupManagementJSON = new File([JSON.stringify(backupManagementFile)], 'backup-manager.json');
          await FilePicker.upload(ORIGIN_FOLDER, `${moduleDataDirectory}/`, backupManagementJSON);
