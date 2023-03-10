@@ -119,7 +119,7 @@ export const createBackupFile = async (data) =>
          FilePicker.upload(ORIGIN_FOLDER, `${moduleDataDirectory}/`, backupFile);
          console.log(backupFile);
          const newStoreIndex = storeIndex + 1;
-if (newStoreIndex > 4)
+if (newStoreIndex > 5)
          {
             backupManager.data.storeIndex = 1;
          }
