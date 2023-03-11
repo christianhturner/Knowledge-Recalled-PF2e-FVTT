@@ -1,7 +1,6 @@
 /*import { CONSTANTS } from "../constants/constants.js";
 
 const worldName = CONSTANTS.worldName;*/
-import {settings} from "@typhonjs-config/eslint-config/shared/default.js";
 
 const moduleDataDirectory = "knowledge-recalled-data";
 export const ORIGIN_FOLDER = 'data';
@@ -30,6 +29,7 @@ export const listFiles = async (targetDirectory, sourceDirectory, depositArray) 
 
 export function fetchFile(targetDirectory, sourceDirectory, fileName)
 {
+
    return FilePicker.browse(targetDirectory, sourceDirectory).then((picker) =>
    {
       for (const file of picker.files)
@@ -129,14 +129,30 @@ if (newStoreIndex > 5)
          }
       });
    }
+   else
+   {
+     await createInitBackupStore();
+   }
 };
 
-export const getBackupFiles = async () =>
+export const fetchIndexedBackupFiles = async () =>
 {
-   const worldName = 'testing';
-   const folderLocation = await FilePicker.browse(ORIGIN_FOLDER, moduleDataDirectory);
-   const worldBackupFiles = folderLocation.files.filter((file) => file.includes(worldName));
-   return worldBackupFiles.files.sort((a, b) => b - a)[0];
+   const worldName = game.world.id;
+   const BackupFilesArray = [];
+   await listFiles(ORIGIN_FOLDER, `${moduleDataDirectory}/`, BackupFilesArray);
+   const backupManager = BackupFilesArray.includes("knowledge-recalled-data/backup-manager.json");
+   if (backupManager)
+   {
+      const backupManagerFile = await fetchFile(ORIGIN_FOLDER, `${moduleDataDirectory}/`, "backup-manager.json");
+      const backupManagerData = JSON.parse(backupManagerFile);
+      const storeIndex = backupManagerData.data.storeIndex;
+      const backupFileString = `${worldName}-${storeIndex}.json`;
+      const backupFile = await fetchFile(ORIGIN_FOLDER, `${moduleDataDirectory}/`, backupFileString);
+      return JSON.parse(backupFile);
+   }
+
 };
 
 // create the file Processor here
+
+
