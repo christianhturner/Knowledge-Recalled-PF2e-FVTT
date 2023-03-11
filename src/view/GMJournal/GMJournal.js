@@ -16,6 +16,7 @@ export default class GMJournalApplication extends SvelteApplication
       return foundry.utils.mergeObject(super.defaultOptions, {
          title: 'knowledge-recalled.title',  // Automatically localized from `lang/en.json`.
          width: 600,
+         height: 400,
 
          svelte: {
             class: GMJournal,

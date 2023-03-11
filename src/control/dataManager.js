@@ -112,7 +112,7 @@ export const createBackupFile = async (data) =>
    {
       fetchFile(ORIGIN_FOLDER, `${moduleDataDirectory}/`, "backup-manager.json").then((contents) =>
       {
-         const backupManager = JSON.parse(contents);
+         const backupManager = contents;
          const storeIndex = backupManager.data.storeIndex;
          const backupFileString = `${worldName}-${storeIndex}.json`;
          const backupFile = new File([JSON.stringify(data)], backupFileString, { type: 'application/json' });
