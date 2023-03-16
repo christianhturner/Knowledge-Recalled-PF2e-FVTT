@@ -1,7 +1,7 @@
 import { SvelteApplication }  from '@typhonjs-fvtt/runtime/svelte/application';
 
 import GMJournal from "./GMJournal.svelte";
-import { createBackupFile } from "../../control/dataManager.js";
+import { moduleDataDirectory } from "../../API/dataManager.js";
 export default class GMJournalApplication extends SvelteApplication
 {
    /**
@@ -25,11 +25,27 @@ export default class GMJournalApplication extends SvelteApplication
       });
    }
 }
-export let backupData;
-// eslint-disable-next-line prefer-const
-backupData =
- {
-   name: "Christian",
-   type: "person"
+export const grabFile = async (path) =>
+{
+   const response = await fetch(path);
+   const data = await response.json();
+   console.log(data);
 };
-createBackupFile(backupData).then((r) => console.log(r));
+
+// export let backupData;
+// // eslint-disable-next-line prefer-const
+// backupData =
+//  {
+//    name: "Christian",
+//    type: "person"
+// };
+//
+// export function TestParser()
+// {
+//    fetchFile(ORIGIN_FOLDER, `${moduleDataDirectory}/`, `${moduleDataDirectory}/backup-manager.json`).then((r) => console.log(r));
+//    }
+//
+// export function backupCreator()
+// {
+//    createBackupFile(backupData).then((r) => console.log(r));
+// }
