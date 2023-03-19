@@ -25,6 +25,11 @@ export let getNPCActorFromEncounters;
 //    });
 // };
 
+export async function getActorFromID(actorID) {
+   return await game.actors.get(actorID);
+}
+
+
  async function getNPCActorFromEncounters() {
     const encounters = await ui.combat.combats;
     const activeEncounter = encounters.find((encounter) => encounter.active === true);
