@@ -1,4 +1,4 @@
-import {FILES} from "../constants/constants.js";
+import { FILES } from "../constants/constants.js";
 
 
 export const listFiles = async (targetDirectory, sourceDirectory, depositArray) =>
