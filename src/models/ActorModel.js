@@ -6,6 +6,12 @@ export default class NPCGlobalActor
          playerID: ""
       }
    ];
+   level = {
+      value: "",
+      isVisibleForPlayers: false
+    };
+
+
    name = {
       value: "",
       isVisibleForPlayers: false
