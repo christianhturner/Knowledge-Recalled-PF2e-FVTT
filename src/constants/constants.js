@@ -89,4 +89,8 @@ export const simpleDCs = new Map();
  simpleDCs.set("legendary", 30);
 
 
-// Stores property visibility for completed and uncompleted checks.
+export const FILES = {
+    ORIGIN_FOLDER: 'data',
+    moduleDataDirectory: "knowledge-recalled-data",
+    backupManagerJSON: "backup-manager.json"
+};

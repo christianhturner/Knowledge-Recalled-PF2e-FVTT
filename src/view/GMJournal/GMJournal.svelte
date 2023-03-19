@@ -1,10 +1,16 @@
 <script>
    import { ApplicationShell }   from '@typhonjs-fvtt/runtime/svelte/component/core';
-   import {backupData} from "./GMJournal.js";
-   import { createBackupFile, createInitBackupStore } from "../../control/dataManager.js";
+   import {
+      POSTBackup,
+      createInitBackupStore,
+      fetchBackupFile
+   } from "../../API/dataManager.js";
 
    export let elementRoot;
-   export let cutomBackupData = backupData;
+   const dataForTesting = {
+      "test": "test",
+      "test2": "test2"
+   };
 
 </script>
 
@@ -20,7 +26,8 @@
       <button on:click={() => createInitBackupStore()}>Initialize Stores</button>
       <!-- text field for creating a data value to pass into back -->
       <!-- <input id="textBox" type="text" bind:value={cutomBackupData} /> -->
-      <button on:click={() => createBackupFile()}>Create Backup File</button>
+      <button on:click={() => fetchBackupFile()}>Fetch Backup</button>
+      <button on:click={() => POSTBackup(dataForTesting)}>CreateBackup</button>
 
    </main>
 </ApplicationShell>
