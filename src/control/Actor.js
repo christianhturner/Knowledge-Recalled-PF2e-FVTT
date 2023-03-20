@@ -2,31 +2,28 @@ export let getEncounters;
 import NPCGlobalActor from "../models/ActorModel.js";
 export let Encounters;
 export let ActiveEncounters;
+export let getActiveEncounters;
 export let getNPCActorFromEncounters;
 
-const controlledToken = canvas?.tokens?.controlled;
-const selectedEncounter = game?.combat?.combatants;
 
-// function returns all encounters
-function getEncounters() {
-   Encounters = ui.combat.combats;
-   return Encounters;
-}
-
-function getActiveEncounters() {
-   getEncounters.forEach((encounter) => {
-      if (encounter.isActive) {
-         ActiveEncounters.push(encounter);
-         console.log(ActiveEncounters);
-         return ActiveEncounters;
-      }
-   })
-}
-
-
-
-
-
+// getEncounters = async () =>
+// {
+//    Encounters = await ui.combat.combats;
+//    console.log(Encounters);
+// };
+//
+// getActiveEncounters = async () =>
+// {
+//    getEncounters.forEach((encounter) =>
+//    {
+//       if (encounter.isActive)
+//       {
+//          ActiveEncounters.push(encounter);
+//          console.log(ActiveEncounters);
+//          return ActiveEncounters;
+//       }
+//    });
+// };
 
  async function getNPCActorFromEncounters() {
     const encounters = await ui.combat.combats;
