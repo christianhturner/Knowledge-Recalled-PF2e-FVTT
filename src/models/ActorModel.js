@@ -15,6 +15,7 @@ export default class NPCActor extends Actor
       getBaseCharacterInfo();
       getSaves();
       getActions();
+      getAttacks();
       getItems();
       getTraits();
    }
@@ -60,15 +61,14 @@ export default class NPCActor extends Actor
          }
       ]
    }
-   attacks = {
-      attack: [
+   attacks = [
          {
             name: "",
             description: "",
+            type: "",
             visibility: false
          }
-      ]
-   }
+   ]
    passiveAbilities = {
       passiveAbility: [
          {
@@ -102,9 +102,42 @@ export default class NPCActor extends Actor
       this.reflexSave.value = this.data.saves.reflex;
       this.willSave.value = this.data.saves.will;
    }
-   getActions()
+   getAttacks()
    {
-      
+      let actionsLength = this.data.system.actions.length;
+      for (let i = 0; i < actionsLength; i++)
+      {
+         let action = this.data.system.actions[i];
+         if (action.attackRollType === "PF2E.NPCAttackMelee")
+         {
+            this.attacks.push({
+               name: action.label,
+               description: action.description,
+               type: "range",
+               visibility: false
+            })
+         }
+         else if (action.attackRolltype === "PF2E.NPCAttackRanged")
+         {
+            this.attacks.push({
+               name: action.label,
+               description: action.description,
+               type: "range",
+               visibility: false
+            })
+         }
+         else
+         {
+            this.attacks.push({
+               name: action.label,
+               description: action.description,
+               type: "no-match; debug",
+               visibility: true
+            })
+            console.log("DEBUG FLAG, DETERMINE attack type and create a rule")
+         }
+
+      }
    }
 }
 
