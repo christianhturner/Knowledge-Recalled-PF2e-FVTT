@@ -12,12 +12,12 @@ export default class NPCActor extends Actor
       super();
       verifyExistingActor();
       this.data = data;
-      getBaseCharacterInfo();
-      getSaves();
-      getActions();
-      getAttacks();
-      getItems();
-      getTraits();
+      this.getBaseCharacterInfo();
+      this.getSaves();
+      this.getActions();
+      this.getAttacks();
+      this.getDiDvDw();
+      this.getTraits();
    }
 
    actorID = "";
@@ -31,7 +31,12 @@ export default class NPCActor extends Actor
       value: "",
       visibility: false
    }
-   traits = new Map(String, Boolean)
+   traits = [
+         {
+            trait: "",
+            visibility: false
+         }
+   ]
 
    armorClass = {
       value: 0,
@@ -49,18 +54,31 @@ export default class NPCActor extends Actor
       value: 0,
       visibility: false
    }
-   immunities = new Map(String, Boolean)
-   resistances = new Map(String, Boolean)
-   weaknesses = new Map(String, Boolean)
-   abilities = {
-      ability: [
+   immunities = [
+         {
+            immunity: "",
+            visibility: false
+         }
+   ]
+   resistances = [
+      {
+         immunity: "",
+         visibility: false
+      }
+   ]
+   weaknesses = [
+      {
+         immunity: "",
+         visibility: false
+      }
+   ]
+   abilities = [
          {
             name: "",
             description: "",
             visibility: false
          }
       ]
-   }
    attacks = [
          {
             name: "",
@@ -69,24 +87,20 @@ export default class NPCActor extends Actor
             visibility: false
          }
    ]
-   passiveAbilities = {
-      passiveAbility: [
+   passiveAbilities = [
          {
             name: "",
             description: "",
             visibility: false
          }
       ]
-   }
-   spells = {
-      spell: [
+   spells =  [
          {
             name: "",
             description: "",
             visibility: false
          }
       ]
-   }
 
    getBaseCharacterInfo()
    {
@@ -102,26 +116,53 @@ export default class NPCActor extends Actor
       this.reflexSave.value = this.data.saves.reflex;
       this.willSave.value = this.data.saves.will;
    }
+   getActions()
+   {
+       let actionLength = this.data.action.length;
+       for (let i = 0; i < actionLength; i++)
+       {
+          let action = this.data.action[i];
+          if (action.system.actionType === "action")
+          {
+             this.abilities.push({
+                name: action.name,
+                description: action.system.description,
+                visibility: false
+             })
+          }
+          else if (action.system.actionType === "passive")
+          {
+               this.passiveAbilities.push({
+                  name: action.name,
+                  description: action.system.description,
+                  visibility: false
+               })
+          }
+          else {
+               console.log("DEBUG FLAG, DETERMINE action type and create a rule")
+          }
+       }
+   }
    getAttacks()
    {
-      let actionsLength = this.data.system.actions.length;
-      for (let i = 0; i < actionsLength; i++)
+      let attackLength = this.data._itemTypes.melee.length  //.system.actions.length;
+      for (let i = 0; i < attackLength; i++)
       {
-         let action = this.data.system.actions[i];
-         if (action.attackRollType === "PF2E.NPCAttackMelee")
+         let attack = this.data._itemTypes.melee[i];
+         if (attack.system.weaponType.value === "melee")
          {
             this.attacks.push({
-               name: action.label,
-               description: action.description,
-               type: "range",
+               name: attack.label,
+               description: attack.description,
+               type: "melee",
                visibility: false
             })
          }
-         else if (action.attackRolltype === "PF2E.NPCAttackRanged")
+         else if (attack.system.weaponType.value === "ranged")
          {
             this.attacks.push({
-               name: action.label,
-               description: action.description,
+               name: attack.name,
+               description: attack.description,
                type: "range",
                visibility: false
             })
@@ -129,8 +170,8 @@ export default class NPCActor extends Actor
          else
          {
             this.attacks.push({
-               name: action.label,
-               description: action.description,
+               name: attack.label,
+               description: attack.description,
                type: "no-match; debug",
                visibility: true
             })

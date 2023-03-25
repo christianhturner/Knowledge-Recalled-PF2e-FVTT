@@ -82,6 +82,10 @@ function createNPCActor(foundryNPC) {
    return npcActor;
 }
 
+function KnowledgeRecalledActorFactory(foundryNPC) {
+   return new KnowledgeRecalledActor(foundryNPC);
+}
+
 /*
    export function getNPCGlobalActor() {
 
