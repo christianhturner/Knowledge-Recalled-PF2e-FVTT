@@ -1,9 +1,10 @@
+
+
 export let getEncounters;
 import NPCGlobalActor from "../models/ActorModel.js";
 export let Encounters;
 export let ActiveEncounters;
 export let getActiveEncounters;
-export let getNPCActorFromEncounters;
 
 
 // getEncounters = async () =>
@@ -30,7 +31,7 @@ export async function getActorFromID(actorID) {
 }
 
 
- async function getNPCActorFromEncounters() {
+ export async function getNPCActorFromEncounters() {
     const encounters = await ui.combat.combats;
     const activeEncounter = encounters.find((encounter) => encounter.active === true);
 

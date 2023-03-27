@@ -1,6 +1,6 @@
 
 
-export default class NPCActor extends Actor
+export default class NPCActor
 {
    // constructor should get the values and be able to rebuild the actor at any time from foundry, but the first function
    // should be to check that this actor hasn't already been created as knowledgeRecalledActor.
@@ -9,146 +9,176 @@ export default class NPCActor extends Actor
    {
       // There are a few good places to query data. The first is on the main actor and then under system.
       // under items there are a lot of things as well. Spells, melee, weapons, etc.
-      super();
-      verifyExistingActor();
-      this.data = data;
-      this.getBaseCharacterInfo();
-      this.getSaves();
-      this.getActions();
-      this.getAttacks();
-      this.getDiDvDw();
-      this.getTraits();
+      // verifyExistingActor();
+      this.getBaseCharacterInfo(data);
+      this.getSaves(data);
+      this.getActions(data);
+      this.getAttacks(data);
+      this.getDiDvDw(data);
+      this.getTraits(data);
    }
 
    actorID = "";
+   isNPCHostile = Boolean;
 
    baseCharacterInfo = {
-      name: "",
-      actorImg: "",
+      name: String,
+      actorImg: String,
       visibility: false
-   }
+   };
    rarity = {
-      value: "",
+      value: String,
       visibility: false
-   }
+   };
    traits = [
          {
-            trait: "",
+            trait: String,
             visibility: false
          }
-   ]
+   ];
 
    armorClass = {
-      value: 0,
+      value: Number,
       visibility: false
-   }
+   };
    fortitudeSave = {
-      value: 0,
+      value: Number,
       visibility: false
-   }
+   };
    reflexSave = {
-      value: 0,
+      value: Number,
       visibility: false
-   }
+   };
    willSave = {
-      value: 0,
+      value: Number,
       visibility: false
-   }
+   };
    immunities = [
          {
-            immunity: "",
+            immunity: String,
             visibility: false
          }
-   ]
+   ];
    resistances = [
       {
-         immunity: "",
+         immunity: String,
          visibility: false
       }
-   ]
+   ];
    weaknesses = [
       {
-         immunity: "",
+         immunity: String,
          visibility: false
       }
-   ]
+   ];
    abilities = [
          {
-            name: "",
-            description: "",
+            name: String,
+            description: String,
             visibility: false
          }
-      ]
+      ];
    attacks = [
          {
-            name: "",
-            description: "",
-            type: "",
+            name: String,
+            description: String,
+            type: String,
             visibility: false
          }
-   ]
+   ];
    passiveAbilities = [
          {
-            name: "",
-            description: "",
+            name: String,
+            description: String,
             visibility: false
          }
-      ]
+      ];
    spells =  [
          {
-            name: "",
-            description: "",
+            name: String,
+            description: String,
             visibility: false
          }
-      ]
+      ];
 
-   getBaseCharacterInfo()
+   getBaseCharacterInfo(data)
    {
       // designed to read the characters queried from game.actors.get(actorID)
-      this.name = this.data.name;
-      this.baseCharacterInfo.actorImg = this.data.img;
-      this.rarity.value = this.data.system.traits.rarity;
-      this.armorClass.value = this.data.system.attributes.ac;
+      this.baseCharacterInfo.name = data.name;
+      this.baseCharacterInfo.actorImg = data.img;
+      this.rarity.value = data.system.traits.rarity;
+      this.armorClass.value = data.system.attributes.ac;
    }
-   getSaves()
+   getSaves(data)
    {
-      this.fortitudeSave.value = this.data.saves.fortitude;
-      this.reflexSave.value = this.data.saves.reflex;
-      this.willSave.value = this.data.saves.will;
+      this.fortitudeSave.value = data.saves.fortitude;
+      this.reflexSave.value = data.saves.reflex;
+      this.willSave.value = data.saves.will;
    }
-   getActions()
+   getActions(data)
    {
-       let actionLength = this.data.action.length;
+       const actionLength = data.system.actions.length;
        for (let i = 0; i < actionLength; i++)
        {
-          let action = this.data.action[i];
-          if (action.system.actionType === "action")
+          const action = data.system.actions[i];
+          if (action.actionType === "action")
           {
              this.abilities.push({
                 name: action.name,
                 description: action.system.description,
                 visibility: false
-             })
+             });
           }
-          else if (action.system.actionType === "passive")
+          else if (action.actionType === "passive")
           {
                this.passiveAbilities.push({
                   name: action.name,
                   description: action.system.description,
                   visibility: false
-               })
+               });
           }
-          else {
-               console.log("DEBUG FLAG, DETERMINE action type and create a rule")
+          else 
+          {
+               console.log("DEBUG FLAG, DETERMINE action type and create a rule");
           }
        }
    }
-   getAttacks()
+   getDiDvDw(data)
    {
-      let attackLength = this.data._itemTypes.melee.length  //.system.actions.length;
+      const diLength = data.system.traits.di.length;
+      for (let i = 0; i < diLength; i++)
+      {
+         const di = data.system.traits.di[i];
+         this.immunities.push({
+            immunity: di,
+            visibility: false
+         });
+      }
+      const dvLength = data.system.traits.dv.length;
+      for (let i = 0; i < dvLength; i++)
+      {
+         const dv = data.system.traits.dv[i];
+         this.weaknesses.push({
+            immunity: dv,
+            visibility: false
+         });
+      }
+      const dwLength = data.system.traits.dr.length;
+      for (let i = 0; i < dwLength; i++)
+      {
+         const dr = data.system.traits.dr[i];
+         this.resistances.push({
+            immunity: dr,
+            visibility: false
+         });
+      }
+   }
+   getAttacks(data)
+   {
+      const attackLength = data._itemTypes.melee.length;
       for (let i = 0; i < attackLength; i++)
       {
-         let attack = this.data._itemTypes.melee[i];
+         const attack = data._itemTypes.melee[i];
          if (attack.system.weaponType.value === "melee")
          {
             this.attacks.push({
@@ -156,7 +186,7 @@ export default class NPCActor extends Actor
                description: attack.description,
                type: "melee",
                visibility: false
-            })
+            });
          }
          else if (attack.system.weaponType.value === "ranged")
          {
@@ -165,7 +195,7 @@ export default class NPCActor extends Actor
                description: attack.description,
                type: "range",
                visibility: false
-            })
+            });
          }
          else
          {
@@ -174,36 +204,24 @@ export default class NPCActor extends Actor
                description: attack.description,
                type: "no-match; debug",
                visibility: true
-            })
-            console.log("DEBUG FLAG, DETERMINE attack type and create a rule")
+            });
+            console.log("DEBUG FLAG, DETERMINE attack type and create a rule");
          }
 
       }
    }
-}
-
-export default class KnowledgeRecalledActor extends NPCActor {
-   // to eliminate unnecessary data, we can provide an override function that will override DC when the GM chooses to do so,
-   // and if defaults are requested, we can simply recalculate or recall from foundry.
-   description = "";
-   difficultyAdjustment = [
+   getTraits(data)
+   {
+      this.isNPCHostile = data.system.traits.attitude.value;
+      const traitLength = data.system.traits.value.length;
+      for (let i = 0; i < traitLength; i++)
       {
-         adjustment: "normal",
-         playerID: ""
+         const trait = data.system.traits.value[i];
+         this.traits.push({
+            trait,
+            visibility: false
+         });
       }
-   ];
-   notes = {
-      GMNotes: {
-         notes: "",
-         visibility: false
-      },
-      playerNotes: [
-         {
-            playerID: "",
-            description: ""
-         },
-      ]
-   };
+   }
+
 }
-
-

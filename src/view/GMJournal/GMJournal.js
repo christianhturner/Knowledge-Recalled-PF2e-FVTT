@@ -1,6 +1,10 @@
 import { SvelteApplication }  from '@typhonjs-fvtt/runtime/svelte/application';
 
 import GMJournal from "./GMJournal.svelte";
+import NPCActor from "../../models/ActorModel.js";
+import { getActorFromID } from "../../control/Actor.js";
+
+
 export default class GMJournalApplication extends SvelteApplication
 {
    /**
@@ -24,6 +28,15 @@ export default class GMJournalApplication extends SvelteApplication
       });
    }
 }
+export function createCustomActorObject()
+{
+   getActorFromID("3d3NAcPfvn07mcGN").then((actor) =>
+   {
+      const customActor = new NPCActor(actor);
+      console.log(customActor);
+   });
+}
+
 export const grabFile = async (path) =>
 {
    const response = await fetch(path);

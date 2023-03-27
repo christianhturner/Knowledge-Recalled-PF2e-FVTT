@@ -5,6 +5,7 @@
       createInitBackupStore,
       fetchBackupFile
    } from "../../API/dataManager.js";
+   import {createCustomActorObject} from "./GMJournal.js";
 
    export let elementRoot;
    const dataForTesting = {
@@ -28,7 +29,7 @@
       <!-- <input id="textBox" type="text" bind:value={cutomBackupData} /> -->
       <button on:click={() => fetchBackupFile()}>Fetch Backup</button>
       <button on:click={() => POSTBackup(dataForTesting)}>CreateBackup</button>
-
+      <button on:click={() => createCustomActorObject()}>Test Actor</button>
    </main>
 </ApplicationShell>
 
