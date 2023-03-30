@@ -5,7 +5,7 @@ import {getNPCActorFromEncounters} from "./control/Actor.js";
 
 Hooks.once('ready', getConstants());
 Hooks.once('ready', () => new GMJournalApplication().render(true, { focus: true }));
-Hooks.once('ready', () => knowledgeRecalledIconLauncher());
+
 
 Hooks.once('ready', () => createUploadFolder());
 
@@ -13,3 +13,4 @@ Hooks.once('ready', () => getNPCActorFromEncounters());
 
 Hooks.once('ready', () => createUploadFolder());
 
+indexedDB.open("knowledge-recalled", 1).onsuccess = function (event) {
