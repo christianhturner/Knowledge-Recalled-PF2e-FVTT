@@ -4,8 +4,7 @@ export default class NPCActor
 {
    // constructor should get the values and be able to rebuild the actor at any time from foundry, but the first function
    // should be to check that this actor hasn't already been created as knowledgeRecalledActor.
-   constructor(data
-   )
+   constructor(data)
    {
       // There are a few good places to query data. The first is on the main actor and then under system.
       // under items there are a lot of things as well. Spells, melee, weapons, etc.
@@ -137,13 +136,48 @@ export default class NPCActor
                   visibility: false
                });
           }
-          else 
+          else
           {
                console.log("DEBUG FLAG, DETERMINE action type and create a rule");
           }
        }
    }
    getDiDvDw(data)
+   {
+      this.getImmunities(data);
+      this.getWeaknesses(data);
+      this.getResistances(data);
+
+
+   }
+   getResistances(data)
+   {
+      const dwLength = data.system.traits.dr.length;
+      for (let i = 0; i < dwLength; i++)
+      {
+         const dr = data.system.traits.dr[i];
+         this.resistances.push({
+            immunity: dr,
+            visibility: false
+         });
+      }
+      return this.resistances;
+   }
+   getWeaknesses(data)
+   {
+      const dvLength = data.system.traits.dv.length;
+
+      for (let i = 0; i < dvLength; i++)
+      {
+         const dv = data.system.traits.dv[i];
+         this.weaknesses.push({
+            immunity: dv,
+            visibility: false
+         });
+      }
+      return this.weaknesses;
+   }
+   getImmunities(data)
    {
       const diLength = data.system.traits.di.length;
       for (let i = 0; i < diLength; i++)
@@ -154,24 +188,7 @@ export default class NPCActor
             visibility: false
          });
       }
-      const dvLength = data.system.traits.dv.length;
-      for (let i = 0; i < dvLength; i++)
-      {
-         const dv = data.system.traits.dv[i];
-         this.weaknesses.push({
-            immunity: dv,
-            visibility: false
-         });
-      }
-      const dwLength = data.system.traits.dr.length;
-      for (let i = 0; i < dwLength; i++)
-      {
-         const dr = data.system.traits.dr[i];
-         this.resistances.push({
-            immunity: dr,
-            visibility: false
-         });
-      }
+      return this.immunities;
    }
    getAttacks(data)
    {

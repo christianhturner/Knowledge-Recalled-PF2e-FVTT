@@ -13,4 +13,4 @@ Hooks.once('ready', () => getNPCActorFromEncounters());
 
 Hooks.once('ready', () => createUploadFolder());
 
-indexedDB.open("knowledge-recalled", 1).onsuccess = function (event) {
+//indexedDB.open("knowledge-recalled", 1).onsuccess = function (event) {
