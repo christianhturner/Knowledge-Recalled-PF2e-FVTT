@@ -142,13 +142,16 @@ export default class NPCActor
           }
        }
    }
-   getDiDvDw(data)
-   {
+   getDiDvDw(data) {
       this.getImmunities(data);
       this.getWeaknesses(data);
       this.getResistances(data);
 
-
+      return {
+         immunities: this.immunities,
+         weaknesses: this.weaknesses,
+         resistances: this.resistances
+      };
    }
    getResistances(data)
    {
