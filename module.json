@@ -33,6 +33,70 @@
       "path": "lang/en.json"
     }
   ],
+  "documentTypes": {
+    "Actor" : {
+      "types" : [
+        "npc"
+      ],
+      "templates" : {
+        "baseNPCInfo" : {
+          "name" : "",
+          "description" : "",
+          "actorImg" : "",
+          "visibility" : false
+        },
+        "rarity" : {
+          "value" : "common",
+          "visibility" : false
+        },
+        "traits" : [
+          {
+            "trait" : "",
+            "visibility" : false
+          }
+        ],
+        "armorClass" : {
+          "value" : 0,
+          "visibility" : false
+        },
+        "saves" : {
+          "fortitude" : {
+            value : 0,
+            visibility : false
+          },
+          "reflex" : {
+            value : 0,
+            visibility : false
+          },
+          "will" : {
+            value : 0,
+            visibility : false
+          },
+          lowestSave : "",
+          //needs to equate to the above values with the lowest value
+        },
+        "immunities" : [
+          {
+            "immunity" : "",
+            "visibility" : false
+          }
+        ],
+        "resistances" : [
+          {
+            "resistance" : "",
+            "visibility" : false
+          }
+        ],
+        "weaknesses" : [
+          {
+            "weakness" : "",
+            "visibility" : false
+          }
+        ],
+      },
+      "abilities":
+    },
+  },
   "persistentStorage": true,
   "socket": true,
   "manifest": "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e/releases/latest/download/module.json",
