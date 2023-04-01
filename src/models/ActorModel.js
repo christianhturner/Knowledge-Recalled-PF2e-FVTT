@@ -4,17 +4,33 @@ export default class NPCActor
 {
    // constructor should get the values and be able to rebuild the actor at any time from foundry, but the first function
    // should be to check that this actor hasn't already been created as knowledgeRecalledActor.
-   constructor(data)
+   constructor(foundryNPC)
    {
       // There are a few good places to query data. The first is on the main actor and then under system.
       // under items there are a lot of things as well. Spells, melee, weapons, etc.
       // verifyExistingActor();
-      this.getBaseCharacterInfo(data);
-      this.getSaves(data);
-      this.getActions(data);
-      this.getAttacks(data);
-      this.getDiDvDw(data);
-      this.getTraits(data);
+      self.name = foundryNPC.name;
+      self.level = foundryNPC.details.level.value;
+      self.description.value = foundryNPC.details.biography.value;
+      self.actorImg = foundryNPC.img;
+      self.traits = foundryNPC.system.traits;
+      //self.race = foundryNPC.system.traits.race.value;
+      self.armorClass.value = foundryNPC.attributes.ac.value;
+      self.armorClass.beforeDC = foundryNPC.attributes.dex.mod;
+      self.fortitudeSave.value = foundryNPC.saves.fort.value;
+      self.fortitudeSave.beforeDC = foundryNPC.attributes.con.mod;
+      self.reflexSave.value = foundryNPC.saves.ref.value;
+      self.reflexSave.beforeDC = foundryNPC.attributes.dex.mod;
+      self.willSave.value = foundryNPC.saves.will.value;
+      self.willSave.beforeDC = foundryNPC.attributes.wis.mod;
+      self.immunities.value = foundryNPC.traits.di.value;
+      self.resistances.value = foundryNPC.traits.dr.value;
+      self.weaknesses.value = foundryNPC.traits.dv.value;
+      self.rarity.value = foundryNPC.traits.rarity;
+      self.actions = foundryNPC.system.actions;
+      self.dr = foundryNPC.system.traits.dr;
+      self.di = foundryNPC.system.traits.di;
+      self.dv = foundryNPC.system.traits.dv;
    }
 
    actorID = "";
@@ -38,19 +54,27 @@ export default class NPCActor
 
    armorClass = {
       value: Number,
-      visibility: false
+      visibility: false,
+      beforeDC: Number,
+      afterDC: Number
    };
    fortitudeSave = {
       value: Number,
-      visibility: false
+      visibility: false,
+      beforeDC: Number,
+      afterDC: Number
    };
    reflexSave = {
       value: Number,
-      visibility: false
+      visibility: false,
+      beforeDC: Number,
+      afterDC: Number
    };
    willSave = {
       value: Number,
-      visibility: false
+      visibility: false,
+      beforeDC: Number,
+      afterDC: Number
    };
    immunities = [
          {
@@ -100,26 +124,31 @@ export default class NPCActor
          }
       ];
 
-   getBaseCharacterInfo(data)
+   getBaseCharacterInfo()
    {
       // designed to read the characters queried from game.actors.get(actorID)
-      this.baseCharacterInfo.name = data.name;
-      this.baseCharacterInfo.actorImg = data.img;
-      this.rarity.value = data.system.traits.rarity;
-      this.armorClass.value = data.system.attributes.ac;
+      return {
+         name: self.name,
+         actorImg: self.actorImg,
+         rarity: self.rarity,
+         armorValue: self.armorClass.value
+      }
    }
-   getSaves(data)
+   getSaves()
    {
-      this.fortitudeSave.value = data.saves.fortitude;
-      this.reflexSave.value = data.saves.reflex;
-      this.willSave.value = data.saves.will;
+      return {
+         fortitudeValue: self.fortitudeSave.value,
+         reflexValue: self.reflexSave.value,
+         willValue: self.willSave.value
+      }
    }
-   getActions(data)
+
+   getActions()
    {
-       const actionLength = data.system.actions.length;
+       const actionLength = self.actions.length;
        for (let i = 0; i < actionLength; i++)
        {
-          const action = data.system.actions[i];
+          const action = self.actions[i];
           if (action.actionType === "action")
           {
              this.abilities.push({
@@ -142,10 +171,12 @@ export default class NPCActor
           }
        }
    }
-   getDiDvDw(data) {
-      this.getImmunities(data);
-      this.getWeaknesses(data);
-      this.getResistances(data);
+
+   getDiDvDw()
+   {
+      this.getImmunities();
+      this.getWeaknesses();
+      this.getResistances();
 
       return {
          immunities: this.immunities,
@@ -153,95 +184,102 @@ export default class NPCActor
          resistances: this.resistances
       };
    }
-   getResistances(data)
+
+   getResistances()
    {
-      const dwLength = data.system.traits.dr.length;
+      const dwLength = self.dr.length;
       for (let i = 0; i < dwLength; i++)
       {
-         const dr = data.system.traits.dr[i];
+         const resistance = self.dr[i];
          this.resistances.push({
-            immunity: dr,
+            immunity: resistance,
             visibility: false
          });
       }
       return this.resistances;
    }
-   getWeaknesses(data)
+
+   getWeaknesses()
    {
-      const dvLength = data.system.traits.dv.length;
+      const dvLength = self.dv.length;
 
       for (let i = 0; i < dvLength; i++)
       {
-         const dv = data.system.traits.dv[i];
+         const weakness = self.dv[i];
          this.weaknesses.push({
-            immunity: dv,
+            immunity: weakness,
             visibility: false
          });
       }
       return this.weaknesses;
    }
-   getImmunities(data)
+   getImmunities()
    {
-      const diLength = data.system.traits.di.length;
+      const diLength = self.di.length;
       for (let i = 0; i < diLength; i++)
       {
-         const di = data.system.traits.di[i];
+         const immunity = self.di[i];
          this.immunities.push({
-            immunity: di,
+            immunity: immunity,
             visibility: false
          });
       }
       return this.immunities;
    }
-   getAttacks(data)
-   {
-      const attackLength = data._itemTypes.melee.length;
-      for (let i = 0; i < attackLength; i++)
-      {
-         const attack = data._itemTypes.melee[i];
-         if (attack.system.weaponType.value === "melee")
-         {
-            this.attacks.push({
-               name: attack.label,
-               description: attack.description,
-               type: "melee",
-               visibility: false
-            });
-         }
-         else if (attack.system.weaponType.value === "ranged")
-         {
-            this.attacks.push({
-               name: attack.name,
-               description: attack.description,
-               type: "range",
-               visibility: false
-            });
-         }
-         else
-         {
-            this.attacks.push({
-               name: attack.label,
-               description: attack.description,
-               type: "no-match; debug",
-               visibility: true
-            });
-            console.log("DEBUG FLAG, DETERMINE attack type and create a rule");
-         }
 
-      }
-   }
-   getTraits(data)
+
+   getAttacks()  //still working on
    {
-      this.isNPCHostile = data.system.traits.attitude.value;
-      const traitLength = data.system.traits.value.length;
+      let actionsLength = this.actions.length;
+      for (let i = 0; i < actionsLength; i++)
+      {
+         let action = this.actions[i];
+         switch (action.attackRollType)
+         {
+            case "PF2E.NPCAttackMelee":
+               this.attacks.push({
+                  name: action.label,
+                  description: action.description,
+                  type: "range",
+                  visibility: false
+               })
+               break;
+            case "PF2E.NPCAttackRanged":
+               this.attacks.push({
+                  name: action.label,
+                  description: action.description,
+                  type: "range",
+                  visibility: false
+               })
+               break;
+            default:
+               this.attacks.push({
+                  name: action.label,
+                  description: action.description,
+                  type: "no-match; debug",
+                  visibility: true
+               })
+               console.log("DEBUG FLAG, DETERMINE attack type and create a rule")
+         }
+      }
+      return this.attacks;
+   }
+
+   getTraits()
+   {
+      //this.isNPCHostile = data.system.traits.attitude.value;
+      const traitLength = self.traits.value.length;
       for (let i = 0; i < traitLength; i++)
       {
-         const trait = data.system.traits.value[i];
+         const trait = self.traits.value[i];
          this.traits.push({
             trait,
             visibility: false
          });
       }
+      return this.traits;
    }
 
+
+  // getSpells(data)
 }
