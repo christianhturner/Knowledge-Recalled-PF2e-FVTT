@@ -49,24 +49,16 @@ export async function getActorFromID(actorID) {
 
     for (const npcCombatant of npcCombatants) {
        const foundryNPC = npcCombatant.actor;
-       const npcActor = createNPCActor(foundryNPC);
+       const npcActor = createNPCActorFactory(foundryNPC);
        npcActors.push(npcActor);
     }
 
     return npcActors;
  }
 
-function createNPCActor(foundryNPC) {
-   const npcActor = new NPCActor();
 
-
-
-
-   return npcActor;
-}
-
-function KnowledgeRecalledActorFactory(foundryNPC) {
-   return new KnowledgeRecalledActor(foundryNPC);
+function createNPCActorFactory(foundryNPC) {
+   return new NPCActor(foundryNPC);
 }
 
 /*
