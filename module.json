@@ -1,102 +1,194 @@
 {
-  "id": "fvtt-knowledge-recalled-pf2e",
-  "name": "fvtt-knowledge-recalled-pf2e",
-  "title": "Knowledge Recalled | PF2E",
-  "description": "",
-  "author": "Christian Turner, Alec Holloway, & Will Prince",
-  "authors": [
+  "id" : "fvtt-knowledge-recalled-pf2e",
+  "name" : "fvtt-knowledge-recalled-pf2e",
+  "title" : "Knowledge Recalled | PF2E",
+  "description" : "",
+  "author" : "Christian Turner, Alec Holloway, & Will Prince",
+  "authors" : [
     {
-      "name": "Christian Turner & Alec Holloway",
-      "url": "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e"
+      "name" : "Christian Turner & Alec Holloway",
+      "url" : "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e"
     }
   ],
-  "url": "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e",
-  "readme": "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e/blob/master/README.md",
-  "bugs": "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e/issues",
-  "changelog": "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e/releases/latest/",
-  "compatibleCoreVersion": "11",
-  "compatibility": {
-    "minimum": "11.293",
-    "verified": "11.293",
-    "maximum": "11"
+  "url" : "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e",
+  "readme" : "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e/blob/master/README.md",
+  "bugs" : "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e/issues",
+  "changelog" : "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e/releases/latest/",
+  "compatibleCoreVersion" : "11",
+  "compatibility" : {
+    "minimum" : "11.293",
+    "verified" : "11.293",
+    "maximum" : "11"
   },
-  "esmodules": [
+  "esmodules" : [
     "index.js"
   ],
-  "styles": [
+  "styles" : [
     "style.css"
   ],
-  "languages": [
+  "languages" : [
     {
-      "lang": "en",
-      "name": "English",
-      "path": "lang/en.json"
+      "lang" : "en",
+      "name" : "English",
+      "path" : "lang/en.json"
     }
   ],
-  "documentTypes": {
+  "documentTypes" : {
     "Actor" : {
-      "types" : [
-        "npc"
-      ],
-      "templates" : {
+      "KnowledgeRecalledNPC" : {
+        "htmlFields": [
+          "basicInfo.customDC",
+          "armorClass.customDC",
+          "traits.customDC",
+          "saves.customDC",
+          "lowestSave.customDC",
+          "immunities.customDC",
+          "resistances.customDC",
+          "weaknesses.customDC",
+          "abilities.customDC",
+          "attacks.customDC",
+          "passiveAbilities.customDC",
+          "spells.customDC",
+          "GMNotes.notes",
+          "playerNotes.notes" // not sure how this will work given that it's an array
+        ],
+        "filePathFields": {
+          "actorImg": "",
+        },
+        "pcIDAndAttempts" : [
+          {
+            "PCActorID" : "",
+            "attempts" : 0
+          }
+        ],
         "baseNPCInfo" : {
           "name" : "",
           "description" : "",
-          "actorImg" : "",
-          "visibility" : false
+          "visibility" : false,
+          "customDC": 0,
+          "defaultDC": 0
         },
         "rarity" : {
           "value" : "common",
-          "visibility" : false
+          "visibility" : false,
+          "customDC": 0,
+          "defaultDC": 0
         },
         "traits" : [
           {
             "trait" : "",
-            "visibility" : false
+            "visibility" : false,
+            "customDC": 0,
+            "defaultDC": 0
           }
         ],
         "armorClass" : {
           "value" : 0,
-          "visibility" : false
+          "visibility" : false,
+          "customDC": 0,
+          "defaultDC": 0
         },
         "saves" : {
           "fortitude" : {
             value : 0,
-            visibility : false
+            visibility : false,
+            "customDC": 0,
+            "defaultDC": 0
           },
           "reflex" : {
             value : 0,
-            visibility : false
+            visibility : false,
+            "customDC": 0,
+            "defaultDC": 0
           },
           "will" : {
             value : 0,
-            visibility : false
+            visibility : false,
+            "customDC": 0,
+            "defaultDC": 0
           },
-          lowestSave : "",
+          lowestSave : {
+            saveName: "",
+            visibility: false,
+            "customDC": 0,
+            "defaultDC": 0
+
+          },
           //needs to equate to the above values with the lowest value
         },
         "immunities" : [
           {
             "immunity" : "",
-            "visibility" : false
+            "visibility" : false,
+            "customDC": 0,
+            "defaultDC": 0
           }
         ],
         "resistances" : [
           {
             "resistance" : "",
-            "visibility" : false
+            "visibility" : false,
+            "customDC": 0,
+            "defaultDC": 0
           }
         ],
         "weaknesses" : [
           {
             "weakness" : "",
-            "visibility" : false
+            "visibility" : false,
+            "customDC": 0,
+            "defaultDC": 0
           }
         ],
+        "abilities" : [
+          {
+            name : "",
+            description : "",
+            visibility : false,
+            "customDC": 0,
+            "defaultDC": 0
+          }
+        ],
+        "attacks" : [
+          {
+            name : "",
+            description : "",
+            visibility : false,
+            "customDC": 0,
+            "defaultDC": 0
+          }
+        ],
+        "passiveAbilities" : [
+          {
+            name : "",
+            description : "",
+            visibility : false,
+            "customDC": 0,
+            "defaultDC": 0
+          }
+        ],
+        "spells" : [
+          {
+            name : "",
+            description : "",
+            visibility : false,
+            "customDC": 0,
+            "defaultDC": 0
+          }
+        ],
+        GMNotes: {
+          "notes": "",
+          "visibility": false,
+        },
+        playerNotes: [
+          {
+            "notes": "",
+            "visibility": false,
+          }
+        ]
       },
-      "abilities":
+      }
     },
-  },
   "persistentStorage": true,
   "socket": true,
   "manifest": "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e/releases/latest/download/module.json",
