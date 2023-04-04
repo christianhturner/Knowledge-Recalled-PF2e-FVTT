@@ -35,6 +35,13 @@
   ],
   "documentTypes" : {
     "Actor" : {
+      "templates": {
+        "pNotes": {
+          "playerID": "",
+          "notes": "",
+          "visibility": true,
+        }
+      },
       "KnowledgeRecalledNPC" : {
         "htmlFields": [
           "basicInfo.customDC",
@@ -50,11 +57,8 @@
           "passiveAbilities.customDC",
           "spells.customDC",
           "GMNotes.notes",
-          "playerNotes.notes" // not sure how this will work given that it's an array
+          "pNotes.notes" // not sure how this will work given that it's an array
         ],
-        "filePathFields": {
-          "actorImg": "",
-        },
         "pcIDAndAttempts" : [
           {
             "PCActorID" : "",
@@ -64,6 +68,9 @@
         "baseNPCInfo" : {
           "name" : "",
           "description" : "",
+          "filePathFields": {
+            "actorImg": "",
+          },
           "visibility" : false,
           "customDC": 0,
           "defaultDC": 0
@@ -180,12 +187,11 @@
           "notes": "",
           "visibility": false,
         },
-        playerNotes: [
-          {
-            "notes": "",
-            "visibility": false,
-          }
-        ]
+        playerNotes: {
+          "templates": [
+            "pNotes"
+          ]
+        }
       },
       }
     },
