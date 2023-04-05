@@ -39,7 +39,7 @@
         "pNotes": {
           "playerID": "",
           "notes": "",
-          "visibility": true,
+          "visibility": true
         }
       },
       "KnowledgeRecalledNPC" : {
@@ -69,7 +69,7 @@
           "name" : "",
           "description" : "",
           "filePathFields": {
-            "actorImg": "",
+            "actorImg": ""
           },
           "visibility" : false,
           "customDC": 0,
@@ -120,7 +120,7 @@
             "customDC": 0,
             "defaultDC": 0
 
-          },
+          }
           //needs to equate to the above values with the lowest value
         },
         "immunities" : [
@@ -185,14 +185,14 @@
         ],
         "GMNotes": {
           "notes": "",
-          "visibility": false,
+          "visibility": false
         },
         "playerNotes": {
           "templates": [
             "pNotes"
           ]
         }
-      },
+      }
       }
     },
   "persistentStorage": true,
