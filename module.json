@@ -97,26 +97,26 @@
         },
         "saves" : {
           "fortitude" : {
-            value : 0,
-            visibility : false,
+            "value" : 0,
+            "visibility" : false,
             "customDC": 0,
             "defaultDC": 0
           },
           "reflex" : {
-            value : 0,
-            visibility : false,
+            "value" : 0,
+            "visibility" : false,
             "customDC": 0,
             "defaultDC": 0
           },
           "will" : {
-            value : 0,
-            visibility : false,
+            "value" : 0,
+            "visibility" : false,
             "customDC": 0,
             "defaultDC": 0
           },
-          lowestSave : {
-            saveName: "",
-            visibility: false,
+          "lowestSave" : {
+            "saveName": "",
+            "visibility": false,
             "customDC": 0,
             "defaultDC": 0
 
@@ -149,27 +149,27 @@
         ],
         "abilities" : [
           {
-            name : "",
-            description : "",
-            visibility : false,
+            "name" : "",
+            "description" : "",
+            "visibility" : false,
             "customDC": 0,
             "defaultDC": 0
           }
         ],
         "attacks" : [
           {
-            name : "",
-            description : "",
-            visibility : false,
+            "name" : "",
+            "description" : "",
+            "visibility" : false,
             "customDC": 0,
             "defaultDC": 0
           }
         ],
         "passiveAbilities" : [
           {
-            name : "",
-            description : "",
-            visibility : false,
+            "name" : "",
+            "description" : "",
+            "visibility" : false,
             "customDC": 0,
             "defaultDC": 0
           }
@@ -183,11 +183,11 @@
             "defaultDC": 0
           }
         ],
-        GMNotes: {
+        "GMNotes": {
           "notes": "",
           "visibility": false,
         },
-        playerNotes: {
+        "playerNotes": {
           "templates": [
             "pNotes"
           ]
