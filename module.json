@@ -176,9 +176,9 @@
         ],
         "spells" : [
           {
-            name : "",
-            description : "",
-            visibility : false,
+            "name" : "",
+            "description" : "",
+            "visibility" : false,
             "customDC": 0,
             "defaultDC": 0
           }
