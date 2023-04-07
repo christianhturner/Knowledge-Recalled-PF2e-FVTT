@@ -33,7 +33,7 @@ export async function getActorFromID(actorID) {
 
 
  export async function getNPCActorFromEncounters() {
-    const encounters = await ui.combat.combats;
+    const encounters = await game.combats;
     const activeEncounter = encounters.find((encounter) => encounter.active === true);
 
     if (!activeEncounter) {
@@ -47,7 +47,8 @@ export async function getActorFromID(actorID) {
 
     const npcActors = [];
 
-    for (const npcCombatant of npcCombatants) {
+    for (const npcCombatant of npcCombatants)
+    {
        const foundryNPC = npcCombatant.actor;
        const npcActor = createNPCActorFactory(foundryNPC);
        npcActors.push(npcActor);
