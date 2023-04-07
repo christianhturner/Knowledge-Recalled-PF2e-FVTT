@@ -3,6 +3,7 @@ import { SvelteApplication }  from '@typhonjs-fvtt/runtime/svelte/application';
 import GMJournal from "./GMJournal.svelte";
 import NPCActor from "../../models/ActorModel.js";
 import { getActorFromID } from "../../control/Actor.js";
+import PouchDB from "pouchdb";
 
 
 export default class GMJournalApplication extends SvelteApplication
