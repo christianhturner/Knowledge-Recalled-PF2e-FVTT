@@ -30,7 +30,7 @@ export default class GMJournalApplication extends SvelteApplication
 }
 export function createCustomActorObject()
 {
-   getActorFromID("3d3NAcPfvn07mcGN").then((actor) =>
+   getActorFromID("slR0yGTXWHU7jpec").then((actor) =>
    {
       const customActor = new NPCActor(actor);
       console.log(customActor);
