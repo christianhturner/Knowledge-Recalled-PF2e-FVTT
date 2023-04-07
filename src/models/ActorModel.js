@@ -281,5 +281,7 @@ export default class NPCActor
    }
 
 
-  // getSpells(data)
+  // getSpells()
+   // getSkills()
+   //getCreatureTraits()
 }
