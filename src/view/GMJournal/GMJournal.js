@@ -1,9 +1,10 @@
 import { SvelteApplication }  from '@typhonjs-fvtt/runtime/svelte/application';
 
 import GMJournal from "./GMJournal.svelte";
+/*
 import NPCActor from "../../models/ActorModel.js";
 import { getActorFromID } from "../../control/Actor.js";
-import PouchDB from "pouchdb";
+*/
 
 
 export default class GMJournalApplication extends SvelteApplication
@@ -29,6 +30,8 @@ export default class GMJournalApplication extends SvelteApplication
       });
    }
 }
+/*
+
 export function createCustomActorObject()
 {
    getActorFromID("slR0yGTXWHU7jpec").then((actor) =>
@@ -38,9 +41,4 @@ export function createCustomActorObject()
    });
 }
 
-export const grabFile = async (path) =>
-{
-   const response = await fetch(path);
-   const data = await response.json();
-   console.log(data);
-};
+*/

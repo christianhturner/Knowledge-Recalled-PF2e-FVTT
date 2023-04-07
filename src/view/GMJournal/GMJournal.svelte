@@ -1,11 +1,5 @@
 <script>
    import { ApplicationShell }   from '@typhonjs-fvtt/runtime/svelte/component/core';
-   import {
-      POSTBackup,
-      createInitBackupStore,
-      fetchBackupFile
-   } from "../../API/dataManager.js";
-   import {createCustomActorObject} from "./GMJournal.js";
 
    export let elementRoot;
    const dataForTesting = {
@@ -23,13 +17,6 @@
 <ApplicationShell bind:elementRoot>
    <main>
       <h1>This is a test</h1>
-      <!-- create backup file button -->
-      <button on:click={() => createInitBackupStore()}>Initialize Stores</button>
-      <!-- text field for creating a data value to pass into back -->
-      <!-- <input id="textBox" type="text" bind:value={cutomBackupData} /> -->
-      <button on:click={() => fetchBackupFile()}>Fetch Backup</button>
-      <button on:click={() => POSTBackup(dataForTesting)}>CreateBackup</button>
-      <button on:click={() => createCustomActorObject()}>Test Actor</button>
    </main>
 </ApplicationShell>
 
