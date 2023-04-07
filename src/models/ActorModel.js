@@ -14,7 +14,7 @@ export default class NPCActor
       self.description.value = foundryNPC.details.biography.value;
       self.actorImg = foundryNPC.img;
       self.traits = foundryNPC.system.traits;
-      //self.race = foundryNPC.system.traits.race.value;
+      // self.race = foundryNPC.system.traits.race.value;
       self.armorClass.value = foundryNPC.attributes.ac.value;
       self.armorClass.beforeDC = foundryNPC.attributes.dex.mod;
       self.fortitudeSave.value = foundryNPC.saves.fort.value;
@@ -192,7 +192,7 @@ export default class NPCActor
       {
          const resistance = self.dr[i];
          this.resistances.push({
-            immunity: resistance,
+            resistanceType: resistance,
             visibility: false
          });
       }
@@ -207,7 +207,7 @@ export default class NPCActor
       {
          const weakness = self.dv[i];
          this.weaknesses.push({
-            immunity: weakness,
+            weaknessType: weakness,
             visibility: false
          });
       }
@@ -220,7 +220,7 @@ export default class NPCActor
       {
          const immunity = self.di[i];
          this.immunities.push({
-            immunity: immunity,
+            immunityType: immunity,
             visibility: false
          });
       }
@@ -230,19 +230,19 @@ export default class NPCActor
 
    getAttacks()  //still working on
    {
-      let actionsLength = this.actions.length;
+      const actionsLength = this.actions.length;
       for (let i = 0; i < actionsLength; i++)
       {
-         let action = this.actions[i];
+         const action = this.actions[i];
          switch (action.attackRollType)
          {
             case "PF2E.NPCAttackMelee":
                this.attacks.push({
                   name: action.label,
                   description: action.description,
-                  type: "range",
+                  type: "melee",
                   visibility: false
-               })
+               });
                break;
             case "PF2E.NPCAttackRanged":
                this.attacks.push({
@@ -250,7 +250,7 @@ export default class NPCActor
                   description: action.description,
                   type: "range",
                   visibility: false
-               })
+               });
                break;
             default:
                this.attacks.push({
@@ -258,7 +258,7 @@ export default class NPCActor
                   description: action.description,
                   type: "no-match; debug",
                   visibility: true
-               })
+               });
                console.log("DEBUG FLAG, DETERMINE attack type and create a rule")
          }
       }
@@ -267,7 +267,8 @@ export default class NPCActor
 
    getTraits()
    {
-      //this.isNPCHostile = data.system.traits.attitude.value;
+      // this.isNPCHostile = data.system.traits.attitude.value;
+
       const traitLength = self.traits.value.length;
       for (let i = 0; i < traitLength; i++)
       {
