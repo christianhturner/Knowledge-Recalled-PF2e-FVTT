@@ -9,36 +9,31 @@ export default class NPCActor
       // There are a few good places to query data. The first is on the main actor and then under system.
       // under items there are a lot of things as well. Spells, melee, weapons, etc.
       // verifyExistingActor();
-      self.name = foundryNPC.name;
-      self.level = foundryNPC.details.level.value;
-      self.description.value = foundryNPC.details.biography.value;
-      self.actorImg = foundryNPC.img;
-      self.traits = foundryNPC.system.traits;
-      // self.race = foundryNPC.system.traits.race.value;
-      self.armorClass.value = foundryNPC.attributes.ac.value;
-      self.armorClass.beforeDC = foundryNPC.attributes.dex.mod;
-      self.fortitudeSave.value = foundryNPC.saves.fort.value;
-      self.fortitudeSave.beforeDC = foundryNPC.attributes.con.mod;
-      self.reflexSave.value = foundryNPC.saves.ref.value;
-      self.reflexSave.beforeDC = foundryNPC.attributes.dex.mod;
-      self.willSave.value = foundryNPC.saves.will.value;
-      self.willSave.beforeDC = foundryNPC.attributes.wis.mod;
-      self.immunities.value = foundryNPC.traits.di.value;
-      self.resistances.value = foundryNPC.traits.dr.value;
-      self.weaknesses.value = foundryNPC.traits.dv.value;
-      self.rarity.value = foundryNPC.traits.rarity;
-      self.actions = foundryNPC.system.actions;
-      self.dr = foundryNPC.system.traits.dr;
-      self.di = foundryNPC.system.traits.di;
-      self.dv = foundryNPC.system.traits.dv;
+      this.actorID = foundryNPC._id;
+      this.baseCharacterInfo.name = foundryNPC.name;
+      this.privateInfo.CR = foundryNPC.system.details.level.value;
+      this.privateInfo.privateDescription = foundryNPC.system.details.privateNotes;
+      this.baseCharacterInfo.description = foundryNPC.system.details.publicNotes;
+      this.baseCharacterInfo.actorImg = foundryNPC.img;
+      this.armorClass.value = foundryNPC.system.attributes.ac.value;
+      this.rarity.value = foundryNPC.system.traits.rarity;
+      this.fortitudeSave.value = foundryNPC.system.saves.fortitude.value;
+      this.reflexSave.value = foundryNPC.system.saves.reflex.value;
+      this.willSave.value = foundryNPC.system.saves.will.value;
+
    }
 
    actorID = "";
    isNPCHostile = Boolean;
-
+   privateInfo = {
+      privateDescription: String,
+      CR: Number,
+      visibility: false
+    };
    baseCharacterInfo = {
       name: String,
       actorImg: String,
+      description: String,
       visibility: false
    };
    rarity = {
@@ -76,24 +71,9 @@ export default class NPCActor
       beforeDC: Number,
       afterDC: Number
    };
-   immunities = [
-         {
-            immunity: String,
-            visibility: false
-         }
-   ];
-   resistances = [
-      {
-         immunity: String,
-         visibility: false
-      }
-   ];
-   weaknesses = [
-      {
-         immunity: String,
-         visibility: false
-      }
-   ];
+   immunities = [];
+   resistances = [];
+   weaknesses = [];
    abilities = [
          {
             name: String,
@@ -187,44 +167,61 @@ export default class NPCActor
 
    getResistances()
    {
-      const dwLength = self.dr.length;
-      for (let i = 0; i < dwLength; i++)
+      const dwLength = this.system.attributes.resistances?.length;
+      if (dwLength !== undefined)
       {
-         const resistance = self.dr[i];
-         this.resistances.push({
-            resistanceType: resistance,
-            visibility: false
-         });
+         for (let i = 0; i < dwLength; i++)
+         {
+            const resistance = this.system.attributes.weaknesses[i];
+            this.resistances.push({
+               resistanceType: resistance,
+            });
+         }
+         return this.resistances;
       }
-      return this.resistances;
+      else
+      {
+         return [];
+      }
    }
 
    getWeaknesses()
    {
-      const dvLength = self.dv.length;
-
-      for (let i = 0; i < dvLength; i++)
+      const dvLength = this.system.attributes.weaknesses?.length;
+      if (dvLength !== undefined)
       {
-         const weakness = self.dv[i];
-         this.weaknesses.push({
-            weaknessType: weakness,
-            visibility: false
-         });
+         for (let i = 0; i < dvLength; i++)
+         {
+            const weakness = this.system.attributes.weaknesses[i];
+            this.weaknesses.push({
+               weaknessType: weakness,
+            });
+         }
+         return this.weaknesses;
       }
-      return this.weaknesses;
+      else
+      {
+         return [];
+      }
    }
    getImmunities()
    {
-      const diLength = self.di.length;
-      for (let i = 0; i < diLength; i++)
+      const diLength = this.attributes.immunities?.length;
+      if (diLength !== undefined)
       {
-         const immunity = self.di[i];
-         this.immunities.push({
-            immunityType: immunity,
-            visibility: false
-         });
+         for (let i = 0; i < diLength; i++)
+         {
+            const immunity = this.system.attributes.immunities[i];
+            this.immunities.push({
+               immunityType: immunity,
+            });
+         }
+         return this.immunities;
       }
-      return this.immunities;
+      else
+      {
+         return [];
+      }
    }
 
 
