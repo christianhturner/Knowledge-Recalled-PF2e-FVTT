@@ -1,3 +1,5 @@
+import KnowledgeRecalled from "./KnowledgeRecalled.js";
+
 export default class NPCActor extends Actor
 {
    // constructor should get the values and be able to rebuild the actor at any time from foundry, but the first function
@@ -172,7 +174,8 @@ export default class NPCActor extends Actor
 
    static _onReady()
    {
-      ui.NPCActor = new NPCActor();
+      //ui.NPCActor = new NPCActor();
+     // KnowledgeRecalled.NPCActor = new NPCActor();
    }
 
    /**
@@ -182,7 +185,11 @@ export default class NPCActor extends Actor
    {
       const name = this.name;
       const saves = this.saves;
-      const fortitude = saves.fortitude;
+      const fortitude = {
+         value: saves.fortitude,
+         beforeDC: Number,
+         afterDC: Number,
+      };
       const reflex = saves.reflex;
       const will = saves.will;
       const img = this.img;
@@ -230,6 +237,11 @@ export default class NPCActor extends Actor
          ac,
          view,
          system
-      }
+      };
+   }
+
+   changeVisibility(property)
+   {
+      return property.visibility ? false: true
    }
 }
