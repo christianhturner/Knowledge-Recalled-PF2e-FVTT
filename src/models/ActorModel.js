@@ -1,4 +1,4 @@
-import KnowledgeRecalled from "./KnowledgeRecalled.js";
+
 
 export default class NPCActor extends Actor
 {
@@ -195,9 +195,18 @@ export default class NPCActor extends Actor
       const img = this.img;
       const view = canvas.scene;
       const system = this.system;
-      const abilities = system.abilities;
-      const attributes = system.attributes;
-      const strength = abilities.str;
+      const abilities = {
+         value: system.abilities,
+         visibility: false,
+      };
+      const attributes = {
+         value: system.attributes,
+         visibility: false,
+      };
+      const strength = {
+         value: abilities.str,
+         visibility: false,
+      };
       const intelligence = abilities.int;
       const cha = abilities.cha;
       const con = abilities.con;
@@ -210,7 +219,7 @@ export default class NPCActor extends Actor
       const perception = attributes.perception;
       const resistances = attributes.resistances;
       const weaknesses = attributes.weaknesses;
-      const skills = system.skills
+      const skills = system.skills;
 
       return {
          name,
@@ -242,6 +251,6 @@ export default class NPCActor extends Actor
 
    changeVisibility(property)
    {
-      return property.visibility ? false: true
+      property.visibility = !property.visibility;
    }
 }
