@@ -56,8 +56,8 @@ export default () =>
          port: 30001,
          open: '/game',
          proxy: {
-            '^(/modules/fvtt-knowledge-recalled-pf2e/lang)': 'http://localhost:30000',
-            '^(?!/modules/fvtt-knowledge-recalled-pf2e/)': 'http://localhost:30000',
+            '^/(/modules/fvtt-knowledge-recalled-pf2e/lang)': 'http://localhost:30000',
+            '^/(?!/modules/fvtt-knowledge-recalled-pf2e/)': 'http://localhost:30000',
             '/socket.io': { target: 'ws://localhost:30000', ws: true }
          }
       },

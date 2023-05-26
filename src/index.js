@@ -2,6 +2,7 @@ import GMJournalApplication from "./view/GMJournal/GMJournal.js";
 import KRActor from "./models/knowledgeRecalledDataModel.js";
 import KnowledgeRecalled from "./models/knowledgeRecalled.js";
 
+console.log("loading knowledge recalled");
 Hooks.on("init", () =>
 {
    Object.assign(CONFIG.Actors.dataModels, {
@@ -12,13 +13,12 @@ Hooks.on("init", () =>
 
 Hooks.once('ready', () => new GMJournalApplication().render(true, { focus: true }));
 Hooks.once('ready', () => console.log("test!!!!!"));
+
 Hooks.on("ready", () =>
 {
    const listOfFoundryActors = getNPCActorsFromEncounters();
    KnowledgeRecalled._onReady(listOfFoundryActors);
 });
-
-
 
 /**
  *
@@ -28,7 +28,8 @@ async function getNPCActorsFromEncounters()
    const encounters = await game.combats.turns;
    const activeEncounter = encounters.find((encounter) => encounter.active === true);
 
-   if (!activeEncounter) {
+   if (!activeEncounter)
+   {
       console.log("No active encounter found.");
       return [];
    }
