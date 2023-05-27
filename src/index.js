@@ -3,6 +3,7 @@ import KRActor from "./models/knowledgeRecalledDataModel.js";
 import KnowledgeRecalled from "./models/knowledgeRecalled.js";
 
 console.log("loading knowledge recalled");
+const npcActors = [];
 Hooks.on("init", () =>
 {
    Object.assign(CONFIG.Actors.dataModels, {
@@ -12,12 +13,19 @@ Hooks.on("init", () =>
 });
 
 Hooks.once('ready', () => new GMJournalApplication().render(true, { focus: true }));
-Hooks.once('ready', () => console.log("test!!!!!"));
 
 Hooks.on("ready", () =>
 {
-   const listOfFoundryActors = getNPCActorsFromEncounters();
-   KnowledgeRecalled._onReady(listOfFoundryActors);
+   console.log("test");
+   const activeEncounters = getActiveEncounters();
+   console.log("activeEncounters: ", activeEncounters);
+   console.log("npcActors: ", npcActors);
+   for (let npcIndex = 0; npcIndex < activeEncounters.length; npcIndex++)
+   {
+      addNPCtoGlobalArray(activeEncounters[npcIndex]);
+   }
+   console.log("npcActors: ", npcActors);
+   KnowledgeRecalled._onReady(npcActors);
 });
 
 /**

@@ -4,9 +4,9 @@ export default class NPCActor extends Actor
 {
    // constructor should get the values and be able to rebuild the actor at any time from foundry, but the first function
    // should be to check that this actor hasn't already been created as knowledgeRecalledActor.
-   constructor(options = {})
+   constructor(data = {})
    {
-      super(options);
+      super(data);
 
 
    }
@@ -172,11 +172,11 @@ export default class NPCActor extends Actor
   //
   //  //getCreatureTraits()
 
-   static _onReady()
-   {
-      //ui.NPCActor = new NPCActor();
-     // KnowledgeRecalled.NPCActor = new NPCActor();
-   }
+   // static _onReady()
+   // {
+   //
+   //   KnowledgeRecalled.NPCActor = new NPCActor();
+   // }
 
    /**
     * Get data required for template

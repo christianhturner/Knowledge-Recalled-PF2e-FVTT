@@ -7,11 +7,12 @@ export default class KnowledgeRecalled extends Application
 {
       super();
       console.log("Creating NPC Actors");
-      const npcActorObjects = [];
+      const NPCActors = [];
       for (let i = 0 ; i < FoundryActors.len(); i++)
       {
-         npcActorObjects.append(new NPCActor(FoundryActors[i]));
+         NPCActors.append(new NPCActor(FoundryActors[i]));
       }
+      console.log(NPCActors);
    }
 
 
