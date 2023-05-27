@@ -4,13 +4,7 @@ import KnowledgeRecalled from "./models/knowledgeRecalled.js";
 
 console.log("loading knowledge recalled");
 const npcActors = [];
-Hooks.on("init", () =>
-{
-   Object.assign(CONFIG.Actors.dataModels, {
-      KRNPC: KRActor
-   });
-   console.log("appending to CONFIG.Actor.dataModels");
-});
+
 
 Hooks.once('ready', () => new GMJournalApplication().render(true, { focus: true }));
 
