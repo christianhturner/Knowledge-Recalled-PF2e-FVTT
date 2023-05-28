@@ -4,6 +4,13 @@ import KnowledgeRecalled from "./models/knowledgeRecalled.js";
 console.log("loading knowledge recalled");
 const npcActors = [];
 
+// Remove for production
+const isDev = true;
+Hooks.once("init", () =>
+{
+   CONFIG.debug.hooks = isDev;
+});
+
 
 Hooks.once('ready', () => new GMJournalApplication().render(true, { focus: true }));
 
