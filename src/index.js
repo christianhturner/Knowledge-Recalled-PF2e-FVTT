@@ -1,5 +1,4 @@
 import GMJournalApplication from "./view/GMJournal/GMJournal.js";
-import KRActor from "./models/knowledgeRecalledDataModel.js";
 import KnowledgeRecalled from "./models/knowledgeRecalled.js";
 
 console.log("loading knowledge recalled");
@@ -22,13 +21,50 @@ Hooks.on("ready", () =>
    KnowledgeRecalled._onReady(npcActors);
 });
 
-/**
- *
- */
+
+function getActiveEncounters()
+{
+   const encounters = game.combats.combats;
+   let activeEncounters = [];
+   activeEncounters = encounters.filter((encounter) => encounter.active === true);
+   if (!activeEncounters)
+   {
+      console.log("No active encounter found.");
+      return [];
+   }
+   return activeEncounters;
+}
+
+async function addNPCtoGlobalArray(encounter)
+{
+   const npcCombatants = encounter.turns;
+   npcCombatants.forEach((actor) =>
+   {
+      if (
+       !npcActors.find((npcActor) =>
+       {
+          return npcActor.actorId === actor.actorId;
+       }) &&
+       actor.isNPC === true
+      ) 
+      {
+         const newActor = game.actors.get(actor.actorId);
+         npcActors.push(newActor);
+      }
+   });
+
+}
+
+
+
+
+
 async function getNPCActorsFromEncounters()
 {
-   const encounters = await game.combats.turns;
-   const activeEncounter = encounters.find((encounter) => encounter.active === true);
+   const encounters = await game.combats;
+   console.log(encounters);
+   let activeEncounter = [];
+   activeEncounter = encounters.find((encounter) => encounter.active === true);
 
    if (!activeEncounter)
    {
