@@ -1,5 +1,6 @@
 import GMJournalApplication from "./view/GMJournal/GMJournal.js";
 import KnowledgeRecalled from "./models/knowledgeRecalled.js";
+import NPCFlagsManager from "./models/NPCFlagsManager.js";
 
 console.log("loading knowledge recalled");
 const npcActors = [];
@@ -16,7 +17,7 @@ Hooks.once('ready', () => new GMJournalApplication().render(true, { focus: true 
 
 Hooks.on("ready", () =>
 {
-   console.log("test");
+   console.log("KnowledgeRecalled Activity ");
    const activeEncounters = getActiveEncounters();
    console.log("activeEncounters: ", activeEncounters);
    console.log("npcActors: ", npcActors);
@@ -26,6 +27,26 @@ Hooks.on("ready", () =>
    }
    console.log("npcActors: ", npcActors);
    KnowledgeRecalled._onReady(npcActors);
+});
+
+Hooks.on('createActor', (actor, options, userId) =>
+{
+   // Check if the actor is an NPC
+   if (actor.type === 'npc')
+   {
+      const flagsManager = new NPCFlagsManager();
+      flagsManager.initializeFlags(actor);
+   }
+});
+
+Hooks.on('updateActor', (actor, options, userId) =>
+{
+   // Check if the actor is an NPC
+   if (actor.type === 'npc')
+   {
+      const flagsManager = new NPCFlagsManager();
+      flagsManager.initializeFlags(actor);
+   }
 });
 
 
@@ -53,7 +74,7 @@ async function addNPCtoGlobalArray(encounter)
           return npcActor.actorId === actor.actorId;
        }) &&
        actor.isNPC === true
-      ) 
+      )
       {
          const newActor = game.actors.get(actor.actorId);
          npcActors.push(newActor);
@@ -61,9 +82,6 @@ async function addNPCtoGlobalArray(encounter)
    });
 
 }
-
-
-
 
 
 async function getNPCActorsFromEncounters()
