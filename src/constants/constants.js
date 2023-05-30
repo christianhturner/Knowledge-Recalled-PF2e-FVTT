@@ -4,6 +4,7 @@ export const CONSTANTS = {
    flabDB: '',
 };
 
+
 export const getConstants = () =>
 {
     CONSTANTS.moduleName = 'Knowledge Recalled';

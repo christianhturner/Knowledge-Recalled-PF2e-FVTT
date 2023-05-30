@@ -1,6 +1,7 @@
 import GMJournalApplication from "./view/GMJournal/GMJournal.js";
 import KnowledgeRecalled from "./models/knowledgeRecalled.js";
-import NPCFlagsManager from "./models/NPCFlagsManager.js";
+import NPCFlagsManager from "./models/NPCValueProcessor.js";
+import {initializeFlags, updateFlags} from "./control/data.js";
 
 console.log("loading knowledge recalled");
 const npcActors = [];
@@ -34,20 +35,22 @@ Hooks.on('createActor', (actor, options, userId) =>
    // Check if the actor is an NPC
    if (actor.type === 'npc')
    {
-      const flagsManager = new NPCFlagsManager();
-      flagsManager.initializeFlags(actor);
+       initializeFlags(actor);
    }
 });
 
+
+/*
 Hooks.on('updateActor', (actor, options, userId) =>
 {
    // Check if the actor is an NPC
    if (actor.type === 'npc')
    {
-      const flagsManager = new NPCFlagsManager();
-      flagsManager.initializeFlags(actor);
+      updateFlags(actor);
    }
 });
+*/
+
 
 
 function getActiveEncounters()
