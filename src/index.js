@@ -7,7 +7,7 @@ console.log("loading knowledge recalled");
 const npcActors = [];
 
 // Remove for production
-const isDev = true;
+const isDev = false;
 Hooks.once("init", () =>
 {
    CONFIG.debug.hooks = isDev;
@@ -22,9 +22,9 @@ Hooks.on("ready", () =>
    const activeEncounters = getActiveEncounters();
    console.log("activeEncounters: ", activeEncounters);
    console.log("npcActors: ", npcActors);
-   for (let npcIndex = 0; npcIndex < activeEncounters.length; npcIndex++)
+   for (const element of activeEncounters)
    {
-      addNPCtoGlobalArray(activeEncounters[npcIndex]);
+      addNPCtoGlobalArray(element);
    }
    console.log("npcActors: ", npcActors);
    KnowledgeRecalled._onReady(npcActors);
@@ -50,6 +50,7 @@ Hooks.on('updateActor', (actor, options, userId) =>
    }
 });
 */
+
 
 
 
