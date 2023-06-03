@@ -26,8 +26,10 @@ Hooks.on("ready", () =>
    {
       addNPCtoGlobalArray(element);
    }
-   console.log("npcActors: ", npcActors);
+   //console.log("npcActors: ", npcActors);
    KnowledgeRecalled._onReady(npcActors);
+   const KnowledgeRecalledActors = KnowledgeRecalled.getActors();
+   console.log("KnowledgeRecalledActors: ", KnowledgeRecalledActors);
 });
 
 Hooks.on('createActor', (actor, options, userId) =>
@@ -88,30 +90,30 @@ async function addNPCtoGlobalArray(encounter)
 }
 
 
-async function getNPCActorsFromEncounters()
-{
-   const encounters = await game.combats;
-   console.log(encounters);
-   let activeEncounter = [];
-   activeEncounter = encounters.find((encounter) => encounter.active === true);
-
-   if (!activeEncounter)
-   {
-      console.log("No active encounter found.");
-      return [];
-   }
-
-   const npcCombatants = activeEncounter.filter(
-    (combatant) => combatant.actor.data.type === "npc"
-   );
-
-   const npcActors = [];
-
-   for (const npcCombatant of npcCombatants)
-   {
-      const foundryNPC = npcCombatant.actor;
-      npcActors.push(foundryNPC);
-   }
-
-   return npcActors;
-}
+// async function getNPCActorsFromEncounters()
+// {
+//    const encounters = await game.combats;
+//    console.log(encounters);
+//    let activeEncounter = [];
+//    activeEncounter = encounters.find((encounter) => encounter.active === true);
+//
+//    if (!activeEncounter)
+//    {
+//       console.log("No active encounter found.");
+//       return [];
+//    }
+//
+//    const npcCombatants = activeEncounter.filter(
+//     (combatant) => combatant.actor.data.type === "npc"
+//    );
+//
+//    const npcActors = [];
+//
+//    for (const npcCombatant of npcCombatants)
+//    {
+//       const foundryNPC = npcCombatant.actor;
+//       npcActors.push(foundryNPC);
+//    }
+//
+//    return npcActors;
+// }
