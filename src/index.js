@@ -1,7 +1,9 @@
 import GMJournalApplication from "./view/GMJournal/GMJournal.js";
 import KnowledgeRecalled from "./models/knowledgeRecalled.js";
 import NPCFlagsManager from "./models/NPCValueProcessor.js";
-import {initializeFlags, updateFlags} from "./control/data.js";
+import { initializeFlags, updateFlags } from "./control/data.js";
+import NPCValueProcessor from "./models/NPCValueProcessor.js";
+import NPCModel from "./models/NPCModel.js";
 
 console.log("loading knowledge recalled");
 const npcActors = [];
@@ -35,21 +37,43 @@ Hooks.on('createActor', (actor, options, userId) =>
    // Check if the actor is an NPC
    if (actor.type === 'npc')
    {
-       initializeFlags(actor);
+
+      initNPCModel(actor).then((r) => console.log("NPCModel initialized"));
+
+
    }
 });
 
+async function initNPCModel(actor)
+{
+   try
+   {
+      const KRNPC = await new NPCModel(actor);
+      KRNPC.processValues();
+      console.log("Knowledge Recalled NPC: ", KRNPC);
+   }
+   catch (error)
+   {
+      console.error("Error initializing NPCModel: ", error);
+   }
+}
 
-/*
-Hooks.on('updateActor', (actor, options, userId) =>
+async function CheckForNPCFlagChanges(actor)
+{
+
+}
+
+
+/*Hooks.on('updateActor', (actor, options, userId) =>
 {
    // Check if the actor is an NPC
    if (actor.type === 'npc')
    {
+
       updateFlags(actor);
    }
-});
-*/
+});*/
+
 
 
 

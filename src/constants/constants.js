@@ -52,6 +52,12 @@ adjustmentScaleMap.set("hard", 2);
 adjustmentScaleMap.set("very hard", 5);
 adjustmentScaleMap.set("incredibly hard", 10);
 
+export const rarityMap = new Map();
+rarityMap.set("common", 0);
+rarityMap.set("uncommon", 2);
+rarityMap.set("rare", 5);
+rarityMap.set("unique", 10);
+
 
 export const dcByLevel = new Map();
 dcByLevel.set(-1, 13);
@@ -88,6 +94,26 @@ export const simpleDCs = new Map();
  simpleDCs.set("expert", 20);
  simpleDCs.set("master", 25);
  simpleDCs.set("legendary", 30);
+
+ export const recallKnowledgeAssociatedSkills = new Map();
+   recallKnowledgeAssociatedSkills.set("aberration", ["Occultism"]);
+   recallKnowledgeAssociatedSkills.set("animal", ["Nature"]);
+   recallKnowledgeAssociatedSkills.set("astral", ["Occultism"]);
+   recallKnowledgeAssociatedSkills.set("beast", ["Arcana", "Nature"]);
+   recallKnowledgeAssociatedSkills.set("celestial", ["Religion"]);
+   recallKnowledgeAssociatedSkills.set("construct", ["Arcana", "Crafting"]);
+   recallKnowledgeAssociatedSkills.set("dragon", ["Arcana"]);
+   recallKnowledgeAssociatedSkills.set("elemental", ["Arcana", "Nature"]);
+   recallKnowledgeAssociatedSkills.set("ethereal", ["Occultism"]);
+   recallKnowledgeAssociatedSkills.set("fey", ["Nature"]);
+   recallKnowledgeAssociatedSkills.set("fiend", ["Religion"]);
+   recallKnowledgeAssociatedSkills.set("fungus", ["Nature"]);
+   recallKnowledgeAssociatedSkills.set("humanoid", ["Society"]);
+   recallKnowledgeAssociatedSkills.set("monitor", ["Religion"]);
+   recallKnowledgeAssociatedSkills.set("ooze", ["Occultism"]);
+   recallKnowledgeAssociatedSkills.set("plant", ["Nature"]);
+   recallKnowledgeAssociatedSkills.set("spirit", ["Occultism"]);
+   recallKnowledgeAssociatedSkills.set("undead", ["Religion"]);
 
 
 export const FILES = {
