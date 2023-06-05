@@ -3,16 +3,18 @@ import NPCActor from "./ActorModel.js";
 // eslint-disable-next-line no-unused-vars
 export default class KnowledgeRecalled extends Application
 {
+   static NPCActors = [];
    constructor(FoundryActors) 
-{
+   {
       super();
-      console.log("Creating NPC Actors");
-      const NPCActors = [];
-      for (let i = 0 ; i < FoundryActors.len(); i++)
+      console.log("Storing NPC Actors");
+
+      for (const element of FoundryActors)
       {
-         NPCActors.append(new NPCActor(FoundryActors[i]));
+         KnowledgeRecalled.NPCActors.push(new NPCActor(element).getData());
       }
-      console.log(NPCActors);
+      //console.log("Displaying NPCActors: ", KnowledgeRecalled.NPCActors);
+     // console.log("Displaying first actor: ", NPCActors[0].getData());
    }
 
 
@@ -21,5 +23,8 @@ export default class KnowledgeRecalled extends Application
       ui.KnowledgeRecalled = new KnowledgeRecalled(listOfFoundryActors);
    }
 
-
+   static getActors()
+   {
+      return this.NPCActors;
+   }
 }
