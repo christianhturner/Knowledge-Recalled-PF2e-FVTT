@@ -38,7 +38,7 @@ Hooks.on('createActor', (actor, options, userId) =>
    if (actor.type === 'npc')
    {
 
-      initNPCModel(actor).then((r) => console.log("NPCModel initialized"));
+      initNPCModel(actor).then((r) => console.log(r));
 
 
    }
@@ -58,24 +58,29 @@ async function initNPCModel(actor)
    }
 }
 
-async function CheckForNPCFlagChanges(actor)
+async function updateNPCModelFlags(actor)
 {
-
+   try
+   {
+      const KRNPC = await new NPCModel(actor);
+      await KRNPC.checkForChangesOnUpdate(actor);
+      KRNPC.processValues();
+      console.log("Knowledge Recalled NPC: ", KRNPC);
+   }
+   catch (error)
+   {
+      console.error("Error initializing NPCModel: ", error);
+   }
 }
 
-
-/*Hooks.on('updateActor', (actor, options, userId) =>
+Hooks.on('updateActor', (actor, options, userId) =>
 {
    // Check if the actor is an NPC
    if (actor.type === 'npc')
    {
-
-      updateFlags(actor);
+      updateNPCModelFlags(actor).then((r) => console.log(r));
    }
-});*/
-
-
-
+});
 
 function getActiveEncounters()
 {

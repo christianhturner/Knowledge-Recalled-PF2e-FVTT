@@ -1,4 +1,5 @@
 import { dcByLevel, rarityMap } from "../constants/constants.js";
+import {removeFlag} from "../control/data.js";
 
 /**
  * Class to represent the NPCModel
@@ -129,8 +130,10 @@ export default class NPCModel
       const willSaveValue = flags.willSave.value;
       const reflexSaveValue = flags.refSave.value;
       const lowestSave = Math.min(fortitudeSaveValue, willSaveValue, reflexSaveValue);
-
       const lowestSavesArray = [];
+
+      removeFlag(this.actor, lowestSave.lowestSaveValue);
+
       if (fortitudeSaveValue === lowestSave)
       {
          lowestSavesArray.push("fortitude");
@@ -290,19 +293,33 @@ export default class NPCModel
       }, {});
 
       // Repopulate the values that have path declarations
-      updatedFlags.baseCharacterInfo.alliance = this.actor.alliance;
-      updatedFlags.privateInfo.CR = this.actor.level;
+      updatedFlags.baseCharacterInfo.name = actor.name;
+      updatedFlags.baseCharacterInfo.creatureType = actor.system.details.creatureType;
+      updatedFlags.baseCharacterInfo.alliance = actor.alliance;
+      updatedFlags.baseCharacterInfo.actorImg = actor.img;
+      updatedFlags.baseCharacterInfo.description = actor.description;
+      updatedFlags.rarity.value = actor.rarity;
+      updatedFlags.privateInfo.privateDescription = actor.system.details.privateNotes;
+      updatedFlags.privateInfo.CR = actor.level;
+      // need to do traits once this works
+
+      updatedFlags.armorClass.value = actor.attributes.ac.base;
+      updatedFlags.fortSave.value = actor.saves.fortitude.dc.value;
+      updatedFlags.refSave.value = actor.saves.reflex.dc.value;
+      updatedFlags.willSave.value = actor.saves.will.dc.value;
       // Repopulate other values as needed...
 
       this.flags = updatedFlags;
       if (this.actor.type === "npc")
       {
          this.actor.setFlag("fvtt-knowledge-recalled-pf2e", "npcFlags", this.flags)
-         .then((r) => console.log(r))
+         .then(() => this.processValues())
          .catch((error) => console.error("Failed to set flags:", error));
       }
-   } else {
-   this.initializeFlags();
-}
-}
+   }
+      else
+      {
+         this.initializeFlags();
+      }
+   }
 }
