@@ -114,9 +114,9 @@ export default class NPCModel
       }
    }
 
-   getTraits()
+   ConvertArrayToVisibilityMap(pathToConvert)
    {
-      const traits = this.actor.traits;
+      const traits = pathToConvert;
       const traitArray = [];
       for (const trait of traits)
       {
@@ -182,7 +182,7 @@ export default class NPCModel
    {
       const lowestSave = this.getLowestSave();
       const baseDC = this.getBaseDC();
-      const traits = this.getTraits();
+      const traits = this.ConvertArrayToVisibilityMap(this.actor.traits);
       const newFlags = {
          initialized: true,
          lowestSave: {
