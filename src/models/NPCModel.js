@@ -66,13 +66,7 @@ export default class NPCModel
             CR: this.actor.level,
             visibility: false,
          },
-         traits: {
-            trait: actor.traits.reduce((map, trait) =>
-            {
-               map.set(trait, false);
-               return map;
-            }, new Map()),
-         },
+         traits: [],
          armorClass: {
             value: actor.attributes.ac.base,
             visibility: false,
@@ -109,13 +103,26 @@ export default class NPCModel
             adjustment: new Map(),
          },
       };
+      console.log(`flaged actor ${JSON.stringify(actor.traits)}`);
 
       if (this.actor.type === "npc")
       {
+         console.log(`flaged actor ${JSON.stringify(actor.traits)}`);
          const existingFlags = this.actor.getFlag("fvtt-knowledge-recalled-pf2e", "npcFlags");
          const mergedFlags = { ...existingFlags, ...this.flags };
-         this.actor.setFlag("fvtt-knowledge-recalled-pf2e", "npcFlags", mergedFlags).then((r) => console.log(r));
+         this.actor.setFlag("fvtt-knowledge-recalled-pf2e", "npcFlags", mergedFlags).then(() => console.log(`flaged actor ${JSON.stringify(actor.traits)}`));
       }
+   }
+
+   getTraits()
+   {
+      const traits = this.actor.traits;
+      const traitArray = [];
+      for (const trait of traits)
+      {
+         traitArray.push({ value: trait, visibility: false });
+      }
+      return traitArray;
    }
 
    /**
@@ -175,12 +182,16 @@ export default class NPCModel
    {
       const lowestSave = this.getLowestSave();
       const baseDC = this.getBaseDC();
+      const traits = this.getTraits();
       const newFlags = {
          initialized: true,
          lowestSave: {
             lowestSaveValue: lowestSave,
          },
          defaultDC: baseDC,
+         traits: [
+            traits,
+         ],
       };
 
       if (!this.flags.initialized)
@@ -218,13 +229,13 @@ export default class NPCModel
     *   or
     *   await this.updateFlags(newFlags);.then() => {).catch((error) => console.log(error);});
     */
-   async updateFlags(newFlags)
+   updateFlags(newFlags)
    {
-      this.flags = { ...this.flags, ...newFlags };
-      return await this.actor.setFlag(
+      const mergedFlags = { ...this.flags, ...newFlags };
+      return this.actor.setFlag(
        'fvtt-knowledge-recalled-pf2e',
        'npcFlags',
-       this.flags
+       mergedFlags
       );
    }
 

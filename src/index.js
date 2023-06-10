@@ -9,7 +9,7 @@ console.log("loading knowledge recalled");
 const npcActors = [];
 
 // Remove for production
-const isDev = false;
+const isDev = true;
 Hooks.once("init", () =>
 {
    CONFIG.debug.hooks = isDev;
@@ -51,6 +51,7 @@ async function initNPCModel(actor)
    try
    {
       const KRNPC = await new NPCModel(actor);
+      console.log("Knowledge Recalled NPC: ", KRNPC);
       KRNPC.processValues();
       console.log("Knowledge Recalled NPC: ", KRNPC);
    }
@@ -73,49 +74,49 @@ async function updateNPCModelFlags(actor)
    {
       console.error("Error initializing NPCModel: ", error);
    }
-}
 
-Hooks.on('updateActor', (actor, options, userId) =>
-{
-   // Check if the actor is an NPC
-   if (actor.type === 'npc')
+
+   /*Hooks.on('updateActor', (actor, options, userId) =>
    {
-      updateNPCModelFlags(actor).then((r) => console.log(r));
-   }
-});
-
-
-function getActiveEncounters()
-{
-   const encounters = game.combats.combats;
-   let activeEncounters = [];
-   activeEncounters = encounters.filter((encounter) => encounter.active === true);
-   if (!activeEncounters)
-   {
-      console.log("No active encounter found.");
-      return [];
-   }
-   return activeEncounters;
-}
-
-async function addNPCtoGlobalArray(encounter)
-{
-   const npcCombatants = encounter.turns;
-   npcCombatants.forEach((actor) =>
-   {
-      if (
-       !npcActors.find((npcActor) =>
-       {
-          return npcActor.actorId === actor.actorId;
-       }) &&
-       actor.isNPC === true
-      )
+      // Check if the actor is an NPC
+      if (actor.type === 'npc')
       {
-         const newActor = game.actors.get(actor.actorId);
-         npcActors.push(newActor);
+         updateNPCModelFlags(actor).then((r) => console.log(r));
       }
-   });
+   });*/
 
+
+   function getActiveEncounters()
+   {
+      const encounters = game.combats.combats;
+      let activeEncounters = [];
+      activeEncounters = encounters.filter((encounter) => encounter.active === true);
+      if (!activeEncounters)
+      {
+         console.log("No active encounter found.");
+         return [];
+      }
+      return activeEncounters;
+   }
+
+   async function addNPCtoGlobalArray(encounter)
+   {
+      const npcCombatants = encounter.turns;
+      npcCombatants.forEach((actor) =>
+      {
+         if (
+          !npcActors.find((npcActor) =>
+          {
+             return npcActor.actorId === actor.actorId;
+          }) &&
+          actor.isNPC === true
+         )
+         {
+            const newActor = game.actors.get(actor.actorId);
+            npcActors.push(newActor);
+         }
+      });
+   }
 }
 
 
