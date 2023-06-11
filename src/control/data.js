@@ -12,5 +12,3 @@ export function removeFlag(object, flagPath)
 }
 
 
-
-

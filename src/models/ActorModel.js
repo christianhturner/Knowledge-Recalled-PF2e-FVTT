@@ -12,112 +12,101 @@ export default class NPCActor extends Actor
       this._data = data;
    }
 
-   /**
-    * Get data required for template
-    */
-   getData()
+   static get defaultOptions()
    {
-      const { name, saves, alliance, rarity, description,
-               traits, level, system, img } = this._data;
-      const { abilities, attributes } = system;
-      const { privateNotes } = system.details;
+      return mergeObject(super.defaultOptions, {
+         visibility: false
+      });
+   }
+
+
+   getData() 
+{
+      const { name, saves, alliance, rarity, description, traits, level, img, system } = this._data;
+      const { attributes } = system;
+      const { fortitude, reflex, will } = saves?.dc || {};
+
       const savesDS = {
          value: saves,
          beforeDC: Number,
          afterDC: Number,
          isVisible: false,
       };
-      const fortitudeSaveDS = {
-         value: saves.fortitude.dc.value,
-         beforeDC: Number,
-         afterDC: Number,
-         isVisible: false,
-      };
-      const reflexSaveDS = {
-         value: saves.reflex.dc.value,
-         beforeDC: Number,
-         afterDC: Number,
-         isVisible: false,
-      };
-      const willSaveDS = {
-         value: saves.will.dc.value,
-         beforeDC: Number,
-         afterDC: Number,
-         isVisible: false,
-      };
-      const attributesDS = {
-         value: system.attributes,
-         beforeDC: Number,
-         afterDC: Number,
-         isVisible: false,
-      };
-      const armorClassDS = {
-         base: attributes.ac.base,
-         value: attributes.ac.value,
-         modifier: attributes.ac.totalModifier,
-         beforeDC: Number,
-         afterDC: Number,
-         isVisible: false,
-      };
-      const hpDS = {
-         base: attributes.hp.base,
-         max: attributes.hp.max,
-         negativeHealing: attributes.hp.negativeHealing,
-         temp: attributes.hp.temp,
-         value: attributes.hp.value,
-         modifier: attributes.hp.totalModifier,
-         beforeDC: Number,
-         afterDC: Number,
-         isVisible: false,
 
-      };
-      const immunitiesDS = {
-         type: attributes.immunities,
-         value: attributes.immunities.value,
-         modifier: attributes.immunities.totalModifier,
+      const armorClass = {
+         base: attributes?.ac?.base,
+         value: attributes?.ac?.value,
+         modifier: attributes?.ac?.totalModifier,
          beforeDC: Number,
          afterDC: Number,
          isVisible: false,
       };
-      const resistancesDS = {
-         type: attributes.resistances,
-         value: attributes.resistances.value,
-         modifier: attributes.resistances.totalModifier,
+
+      const hp = {
+         base: attributes?.hp?.base,
+         max: attributes?.hp?.max,
+         negativeHealing: attributes?.hp?.negativeHealing,
+         temp: attributes?.hp?.temp,
+         value: attributes?.hp?.value,
+         modifier: attributes?.hp?.totalModifier,
          beforeDC: Number,
          afterDC: Number,
          isVisible: false,
       };
-      const weaknessesDS = {
-         type: attributes.weaknesses,
-         value: attributes.weaknesses.value,
-         modifier: attributes.weaknesses.totalModifier,
+
+      const immunities = {
+         type: attributes?.immunities,
+         value: attributes?.immunities?.value,
+         modifier: attributes?.immunities?.totalModifier,
          beforeDC: Number,
          afterDC: Number,
-         isVisible: false
+         isVisible: false,
       };
+
+      const resistances = attributes?.resistances || [];
+      const weaknesses = attributes?.weaknesses || [];
 
       return {
          name,
          savesDS,
-         fortitudeSaveDS,
-         reflexSaveDS,
-         willSaveDS,
+         fortitude: {
+            value: fortitude?.value,
+            beforeDC: Number,
+            afterDC: Number,
+            isVisible: false,
+         },
+         reflex: {
+            value: reflex?.value,
+            beforeDC: Number,
+            afterDC: Number,
+            isVisible: false,
+         },
+         will: {
+            value: will?.value,
+            beforeDC: Number,
+            afterDC: Number,
+            isVisible: false,
+         },
          img,
          attributes,
-         hpDS,
-         immunitiesDS,
+         hp,
+         immunities,
          description,
-         abilities,
+         abilities: system.abilities,
          level,
-         privateNotes,
-         armorClassDS,
-         attributesDS,
-         resistancesDS,
-         weaknessesDS,
+         traits,
+         privateDescription: system.details?.privateNotes,
+         armorClass,
+         attributesDS: {
+            value: system.attributes,
+            beforeDC: Number,
+            afterDC: Number,
+            isVisible: false,
+         },
+         resistances,
+         weaknesses,
          alliance,
          rarity,
-         traits,
-
       };
    }
 
