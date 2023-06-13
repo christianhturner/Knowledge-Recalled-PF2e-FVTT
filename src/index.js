@@ -31,6 +31,7 @@ Hooks.on("ready", () =>
    KnowledgeRecalled._onReady(npcActors);
    const KnowledgeRecalledActors = KnowledgeRecalled.getActors();
    console.log("KnowledgeRecalledActors: ", KnowledgeRecalledActors);
+
 });
 
 Hooks.on('createActor', (actor, options, userId) =>

@@ -332,4 +332,19 @@ export default class NPCModel
 //          this.initializeFlags();
 //       }
 //    }
+
+   getData()
+   {
+      return {
+         baseCharacterInfo: {
+            name: this.actor.name,
+            creatureType: this.actor.system.details.creatureType,
+            alliance: this.actor.alliance,
+            actorImg: this.actor.img,
+            description: this.actor.description,
+            visibility: false,
+         },
+      }
+
+   }
 }

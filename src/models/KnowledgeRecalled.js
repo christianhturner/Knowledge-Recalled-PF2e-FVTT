@@ -1,4 +1,5 @@
 import NPCActor from "./ActorModel.js";
+import NPCModel from "./NPCModel.js";
 
 // eslint-disable-next-line no-unused-vars
 export default class KnowledgeRecalled extends Application
@@ -11,7 +12,7 @@ export default class KnowledgeRecalled extends Application
 
       for (const element of FoundryActors)
       {
-         KnowledgeRecalled.NPCActors.push(new NPCActor(element).getData());
+         KnowledgeRecalled.NPCActors.push(new NPCModel(element));
       }
    }
 
