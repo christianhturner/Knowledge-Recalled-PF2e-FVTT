@@ -1,9 +1,9 @@
 import { dcByLevel, rarityMap } from "../constants/constants.js";
-import {removeFlag} from "../control/data.js";
+import { removeFlag } from "../control/data.js";
 
 /**
  * Class to represent the NPCModel
- * 
+ *
  * @class
  */
 export default class NPCModel
@@ -12,7 +12,7 @@ export default class NPCModel
     * Create an instance of NPCModel
     *
     * @constructor
-    * 
+    *
     * @param {Actor} actor - the actor object to be processed
     */
    constructor(actor)
@@ -51,6 +51,7 @@ export default class NPCModel
          modifiedDC: 0,
          baseCharacterInfo: {
             name: actor.name,
+            size: actor.size,
             creatureType: actor.system.details.creatureType,
             alliance: actor.alliance,
             actorImg: actor.img,
@@ -66,9 +67,9 @@ export default class NPCModel
             CR: this.actor.level,
             visibility: false,
          },
-         traits: [],
+         traits: this.ConvertArrayToVisibilityMap(this.actor.traits),
          armorClass: {
-            value: actor.attributes.ac.base,
+            value: actor.attributes.ac.value,
             visibility: false,
          },
          fortSave: {
@@ -87,42 +88,156 @@ export default class NPCModel
             lowestSaveValue: [],
             visibility: false,
          },
-         immunities: {
-            value: new Map(),
-         },
-         resistance: {
-            value: new Map(),
-         },
-         weaknesses: {
-            value: new Map(),
-         },
-         passiveAbilities: {
-            value: new Map(),
-         },
+         immunities: this.ConvertNestedPropertiesOfArraysToVisibilityObject(actor.attributes.immunities, "type"),
+         resistance: this.ConvertNestedPropertiesOfArraysToVisibilityObject(actor.attributes.resistances, "type"),
+         weaknesses: this.ConvertNestedPropertiesOfArraysToVisibilityObject(actor.attributes.weaknesses, "type"),
+         passiveAbilities: [],
+         actionAbilities: [],
+         attackAbilities: [],
+         spellAbilities: [],
          difficultyAdjustmentByPlayerID: {
             adjustment: new Map(),
          },
       };
-      console.log(`flaged actor ${JSON.stringify(actor.traits)}`);
+      this.prepareAbilities(actor);
 
       if (this.actor.type === "npc")
       {
-         console.log(`flaged actor ${JSON.stringify(actor.traits)}`);
          const existingFlags = this.actor.getFlag("fvtt-knowledge-recalled-pf2e", "npcFlags");
          const mergedFlags = { ...existingFlags, ...this.flags };
-         this.actor.setFlag("fvtt-knowledge-recalled-pf2e", "npcFlags", mergedFlags).then(() => console.log(`flaged actor ${JSON.stringify(actor.traits)}`));
+         this.actor.setFlag("fvtt-knowledge-recalled-pf2e", "npcFlags", mergedFlags).then(() => console.log(`Knowledge Recalled: NPC finished Initializing`));
       }
    }
 
+   /**
+    * Converts an array of objects to an array of objects with a visibility property.
+    * @param pathToConvert
+    * @returns {[]}
+    * @private
+    * @constructor
+    */
    ConvertArrayToVisibilityMap(pathToConvert)
    {
-      const traits = pathToConvert;
-      const traitArray = [];
-      for (const trait of traits)
+      const actorArrayObjectsPath = pathToConvert;
+      // if (!actorArrayObjectsPath)
+      // {
+      //    return [];
+      // }
+      const arrayOfActorObjects = [];
+      for (const actorObjects of actorArrayObjectsPath)
       {
-         traitArray.push({ value: trait, visibility: false });
+         arrayOfActorObjects.push({ value: actorObjects, visibility: false });
       }
-      return traitArray;
+      return arrayOfActorObjects;
+   }
+   ConvertNestedPropertiesOfArraysToVisibilityObject(pathToConvert, property)
+   {
+      if (!pathToConvert)
+      {
+         return [];
+      }
+      const actorArrayObjectsPath = pathToConvert;
+      const arrayOfActorObjects = [];
+      for (const actorObjects of actorArrayObjectsPath)
+      {
+         arrayOfActorObjects.push({ value: actorObjects?.[property], visibility: false });
+      }
+      return arrayOfActorObjects;
+   }
+
+   /**
+    * Initializes passive abilities, action abilities, attack abilities, and spell abilities.
+    * @returns {void} - Sets the values inside the object flag.
+    * @private
+    */
+   prepareAbilities(actor)
+   {
+      const { flags } = this;
+      const actionAbilities = flags.actionAbilities || [];
+      const passiveAbilities = flags.passiveAbilities || [];
+      const attackAbilities = flags.attackAbilities || [];
+      const spellAbilities = flags.spellAbilities || [];
+
+      const actions = actor.items.filter((item) => item.type === "action");
+      const attacks = actor.items.filter((item) => item.type === "melee");
+      const spells = actor.items.filter((item) => item.type === "spell" || item.type === "ritual");
+
+      for (const action of actions)
+      {
+         if (action.system.actionType.value === "passive")
+         {
+            let existingAbility = passiveAbilities.find((ability) => ability.value === action.name);
+            if (existingAbility)
+            {
+               existingAbility = { ...existingAbility, gmDescription: action.gmDescription };
+            }
+            else
+            {
+               existingAbility = { value: action.name, gmDescription: action.gmDescription, visibility: false };
+               passiveAbilities.push(existingAbility);
+            }
+            existingAbility.visibility = false; // Set visibility to false for newly added abilities
+         }
+         else
+         {
+            let existingAbility = actionAbilities.find((ability) => ability.value === action.name);
+            if (existingAbility)
+            {
+               existingAbility = { ...existingAbility, gmDescription: action.gmDescription };
+            }
+            else
+            {
+               existingAbility = { value: action.name, gmDescription: action.gmDescription, visibility: false };
+               actionAbilities.push(existingAbility);
+            }
+            existingAbility.visibility = false; // Set visibility to false for newly added abilities
+         }
+      }
+
+      for (const attack of attacks)
+      {
+         let attackType = "other";
+         if (attack.isMelee)
+         {
+            attackType = "melee";
+         }
+         else if (attack.isRanged || attack.isThrown)
+         {
+            attackType = "ranged";
+         }
+
+         let existingAbility = attackAbilities.find((ability) => ability.value === attack.name);
+         if (existingAbility)
+         {
+            existingAbility = { ...existingAbility, attackType, gmDescription: attack.gmDescription };
+         }
+         else
+         {
+            existingAbility = { value: attack.name, attackType, gmDescription: attack.gmDescription, visibility: false };
+            attackAbilities.push(existingAbility);
+         }
+         existingAbility.visibility = false; // Set visibility to false for newly added abilities
+      }
+
+      for (const spell of spells)
+      {
+         let existingAbility = spellAbilities.find((ability) => ability.value === spell.system.slug);
+         if (existingAbility)
+         {
+            existingAbility = { ...existingAbility, tradition: spell.system.tradition, gmDescription: spell.gmDescription };
+         }
+         else
+         {
+            existingAbility = { value: spell.system.slug, tradition: spell.system.tradition, gmDescription: spell.gmDescription, visibility: false };
+            spellAbilities.push(existingAbility);
+         }
+         existingAbility.visibility = false; // Set visibility to false for newly added abilities
+      }
+
+      flags.actionAbilities = actionAbilities;
+      flags.passiveAbilities = passiveAbilities;
+      flags.attackAbilities = attackAbilities;
+      flags.spellAbilities = spellAbilities;
    }
 
    /**
@@ -182,27 +297,26 @@ export default class NPCModel
    {
       const lowestSave = this.getLowestSave();
       const baseDC = this.getBaseDC();
-      const traits = this.ConvertArrayToVisibilityMap(this.actor.traits);
       const newFlags = {
          initialized: true,
          lowestSave: {
             lowestSaveValue: lowestSave,
          },
          defaultDC: baseDC,
-         traits: [
-            traits,
-         ],
+         // traits: [
+         //    traits,
+         // ],
       };
 
       if (!this.flags.initialized)
       {
          try
          {
-            this.updateFlags(newFlags).then((r) => console.log(r));
+            this.updateFlags(newFlags).then((r) => console.log(`Knowledge Recalled: flags updated${r}`));
          }
          catch (error)
          {
-            console.log(error);
+            console.log(`Knowledge Recalled: ${error}`);
          }
       }
    }
@@ -261,7 +375,7 @@ export default class NPCModel
          }
          else
          {
-            console.error(`Invalid property path: ${propertyPath}`);
+            console.error(`Knowledge Recalled: Invalid property path: ${propertyPath}`);
             // noinspection JSValidateTypes
             return;
          }
@@ -276,58 +390,58 @@ export default class NPCModel
          )
          .then(() =>
          {
-            console.log(`Visibility toggled successfully for property: ${propertyPath}`);
+            console.log(`Knowledge Recalled: Visibility toggled successfully for property: ${propertyPath}`);
          })
          .catch((error) =>
          {
-            console.error(`Failed to toggle visibility for property: ${propertyPath}`, error);
+            console.error(`Knowledge Recalled: Failed to toggle visibility for property: ${propertyPath}`, error);
          });
       }
       else
       {
-         console.error(`Invalid visibility property: ${propertyPath}`);
+         console.error(`Knowledge Recalled: Invalid visibility property: ${propertyPath}`);
       }
    }
    checkForChangesOnUpdate(actor)
    {
-   const existingFlags = this.actor.getFlag("fvtt-knowledge-recalled-pf2e", "npcFlags");
-   if (existingFlags)
-   {
-      // Exclude visibility properties from the existingFlags object
-      const updatedFlags = Object.entries(existingFlags).reduce((flags, [key, value]) =>
+      const existingFlags = this.actor.getFlag("fvtt-knowledge-recalled-pf2e", "npcFlags");
+      if (existingFlags)
       {
-         if (!key.endsWith(".visibility"))
+         // Exclude visibility properties from the existingFlags object
+         const updatedFlags = Object.entries(existingFlags).reduce((flags, [key, value]) =>
          {
-            flags[key] = value;
+            if (!key.endsWith(".visibility"))
+            {
+               flags[key] = value;
+            }
+            return flags;
+         }, {});
+
+         // Repopulate the values that have path declarations
+         updatedFlags.baseCharacterInfo.name = actor.name;
+         updatedFlags.baseCharacterInfo.creatureType = actor.system.details.creatureType;
+         updatedFlags.baseCharacterInfo.alliance = actor.alliance;
+         updatedFlags.baseCharacterInfo.actorImg = actor.img;
+         updatedFlags.baseCharacterInfo.description = actor.description;
+         updatedFlags.rarity.value = actor.rarity;
+         updatedFlags.privateInfo.privateDescription = actor.system.details.privateNotes;
+         updatedFlags.privateInfo.CR = actor.level;
+         // need to do traits once this works
+
+         updatedFlags.armorClass.value = actor.attributes.ac.base;
+         updatedFlags.fortSave.value = actor.saves.fortitude.dc.value;
+         updatedFlags.refSave.value = actor.saves.reflex.dc.value;
+         updatedFlags.willSave.value = actor.saves.will.dc.value;
+         // Repopulate other values as needed...
+
+         this.flags = updatedFlags;
+         if (this.actor.type === "npc")
+         {
+            this.actor.setFlag("fvtt-knowledge-recalled-pf2e", "npcFlags", this.flags)
+            .then(() => this.processValues())
+            .catch((error) => console.error("Knowledge Recalled: Failed to set flags:", error));
          }
-         return flags;
-      }, {});
-
-      // Repopulate the values that have path declarations
-      updatedFlags.baseCharacterInfo.name = actor.name;
-      updatedFlags.baseCharacterInfo.creatureType = actor.system.details.creatureType;
-      updatedFlags.baseCharacterInfo.alliance = actor.alliance;
-      updatedFlags.baseCharacterInfo.actorImg = actor.img;
-      updatedFlags.baseCharacterInfo.description = actor.description;
-      updatedFlags.rarity.value = actor.rarity;
-      updatedFlags.privateInfo.privateDescription = actor.system.details.privateNotes;
-      updatedFlags.privateInfo.CR = actor.level;
-      // need to do traits once this works
-
-      updatedFlags.armorClass.value = actor.attributes.ac.base;
-      updatedFlags.fortSave.value = actor.saves.fortitude.dc.value;
-      updatedFlags.refSave.value = actor.saves.reflex.dc.value;
-      updatedFlags.willSave.value = actor.saves.will.dc.value;
-      // Repopulate other values as needed...
-
-      this.flags = updatedFlags;
-      if (this.actor.type === "npc")
-      {
-         this.actor.setFlag("fvtt-knowledge-recalled-pf2e", "npcFlags", this.flags)
-         .then(() => this.processValues())
-         .catch((error) => console.error("Failed to set flags:", error));
       }
-   }
       else
       {
          this.initializeFlags();
