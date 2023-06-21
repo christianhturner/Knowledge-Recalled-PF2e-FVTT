@@ -1,11 +1,8 @@
 <script>
    import { ApplicationShell }   from '@typhonjs-fvtt/runtime/svelte/component/core';
+   import {arrayOfNPCs} from "../../index.js";
 
    export let elementRoot;
-   const dataForTesting = {
-      "test": "test",
-      "test2": "test2"
-   };
 
 </script>
 
@@ -14,11 +11,16 @@
 
 <!-- ApplicationShell provides the popOut / application shell frame, header bar, content areas -->
 <!-- ApplicationShell exports `elementRoot` which is the outer application shell element -->
-<ApplicationShell bind:elementRoot>
-   <main>
-      <h1>This is a test</h1>
-   </main>
-</ApplicationShell>
+
+<!--
+Create a new ApplicationShell that will render the contents of NPCArray located in the GMJournal.js file
+This should provide the ability to list all of the NPC data which can be located inside of the NPCModel.js file
+-->
+<ApplicationShell elementRoot={elementRoot} NPCToRender={arrayOfNPCs[0]} />
+<!-- Data to render here -->
+<main>
+   <textarea id="textBox" bind:value={JSON.stringify(arrayOfNPCs, null, 2)}></textarea>
+</main>
 
 <style lang="scss">
    main {

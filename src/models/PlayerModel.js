@@ -16,10 +16,12 @@ export default class PlayerModel
       if (playerCharacterFlags)
       {
          this.flags = playerCharacterFlags;
+         this.getSkills();
       }
       else
       {
          this.initializeFlags();
+         this.getSkills();
       }
    }
    initializeFlags()

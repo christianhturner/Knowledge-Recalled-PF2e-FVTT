@@ -5,6 +5,8 @@ import { initializeFlags, updateFlags } from "./control/data.js";
 import NPCValueProcessor from "./models/NPCValueProcessor.js";
 import NPCModel from "./models/NPCModel.js";
 
+export const arrayOfNPCs = [];
+
 console.log("loading knowledge recalled");
 const npcActors = [];
 
@@ -36,12 +38,14 @@ Hooks.on("ready", () =>
 
 Hooks.on('createActor', (actor, options, userId) =>
 {
+
    // Check if the actor is an NPC
    if (actor.type === 'npc')
    {
       console.log('begin initNPCModel');
 
-      initNPCModel(actor).then((r) => console.log(r));
+      const flaggedNPC = initNPCModel(actor).then((r) => console.log(r));
+      arrayOfNPCs.push(flaggedNPC);
 
       console.log('end initNPCModel');
    }
