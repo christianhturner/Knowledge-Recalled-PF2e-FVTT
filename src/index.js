@@ -4,6 +4,9 @@ import NPCFlagsManager from "./models/NPCValueProcessor.js";
 import { initializeFlags, updateFlags } from "./control/data.js";
 import NPCValueProcessor from "./models/NPCValueProcessor.js";
 import NPCModel from "./models/NPCModel.js";
+import { isEqual } from 'lodash';
+
+
 
 console.log("loading knowledge recalled");
 const npcActors = [];
@@ -14,6 +17,7 @@ Hooks.once("init", () =>
 {
    CONFIG.debug.hooks = isDev;
 });
+
 
 
 Hooks.once('ready', () => new GMJournalApplication().render(true, { focus: true }));
@@ -47,41 +51,28 @@ Hooks.on('createActor', (actor, options, userId) =>
 });
 Hooks.on("updateActor", async (actor, updateData) => {
    // Check if the update is relevant to the NPC flags
-   console.log("Updating Actor");
-   if (updateData?.flags?.["fvtt-knowledge-recalled-pf2e"]?.npcFlags) {
+   console.log("updateData", updateData);
+   console.log("actor", actor);
+
+   if (updateData)
+   {
       // Call the function to update the NPC model flags
-      await updateNPCModelFlags(actor);
+      await updateNPCModelFlags(actor, updateData);
    }
 });
 
-
-async function initNPCModel(actor)
-{
-   try
-   {
-      const KRNPC = await new NPCModel(actor);
-      console.log("Knowledge Recalled NPC: ", KRNPC);
-      KRNPC.processValues();
-      console.log("Knowledge Recalled NPC: ", KRNPC);
-   }
-   catch (error)
-   {
-      console.error("Error initializing NPCModel: ", error);
-   }
-}
 // Function to update the NPC model flags
-async function updateNPCModelFlags(actor)
-{
-   try
-   {
+async function updateNPCModelFlags(actor, updateData) {
+   // Access the updated flags from the updateData object
+   console.log("updateData", updateData);
+
+   try {
       const existingFlags = actor.getFlag("fvtt-knowledge-recalled-pf2e", "npcFlags");
-      if (existingFlags)
-      {
+      if (existingFlags) {
          // Exclude visibility properties from the existingFlags object
-         const updatedFlags = Object.entries(existingFlags).reduce((flags, [key, value]) =>
-         {
-            if (!key.endsWith(".visibility"))
-            {
+
+         const updatedFlags = Object.entries(existingFlags).reduce((flags, [key, value]) => {
+            if (!key.endsWith(".visibility")) {
                flags[key] = value;
             }
             return flags;
@@ -103,22 +94,41 @@ async function updateNPCModelFlags(actor)
          updatedFlags.willSave.value = actor.saves.will.dc.value;
          // Repopulate other values as needed...
 
-         await actor.setFlag("fvtt-knowledge-recalled-pf2e", "npcFlags", updatedFlags);
-         console.log("Flags updated:", updatedFlags);
-      }
-      else
-      {
+         // TODO: setFlag is changing the internal data of the actor so it is triggering the updateActor.
+         // TODO: Come up with some logic that will detect if the update has happened and skip that line.
+
+         if (!isEqual(existingFlags, updatedFlags)) {
+            await actor.setFlag("fvtt-knowledge-recalled-pf2e", "npcFlags", updatedFlags);
+            console.log("Flags updated:", updatedFlags);
+         } else {
+            console.log("Flags have not changed. Skipping update.");
+         }
+      } else {
          console.log("No existing flags found. Initializing flags...");
          // Initialize flags if necessary
          // ...
       }
-   }
-   catch (error)
-   {
+   } catch (error) {
       console.error("Error updating NPC flags:", error);
    }
 }
 
+
+
+async function initNPCModel(actor)
+{
+   try
+   {
+      const KRNPC = new NPCModel(actor);
+      console.log("Knowledge Recalled NPC: ", KRNPC);
+      KRNPC.processValues();
+      console.log("Knowledge Recalled NPC: ", KRNPC);
+   }
+   catch (error)
+   {
+      console.error("Error initializing NPCModel: ", error);
+   }
+}
 
 function getActiveEncounters()
 {

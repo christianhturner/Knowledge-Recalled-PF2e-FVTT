@@ -273,12 +273,10 @@ export default class NPCModel
          this.actor.setFlag('fvtt-knowledge-recalled-pf2e',
           'npcFlags',
           this.flags
-         )
-         .then(() =>
+         ).then(() =>
          {
             console.log(`Visibility toggled successfully for property: ${propertyPath}`);
-         })
-         .catch((error) =>
+         }).catch((error) =>
          {
             console.error(`Failed to toggle visibility for property: ${propertyPath}`, error);
          });
@@ -288,6 +286,7 @@ export default class NPCModel
          console.error(`Invalid visibility property: ${propertyPath}`);
       }
    }
+
 //    checkForChangesOnUpdate(actor) {
 //       const existingFlags = this.actor.getFlag("fvtt-knowledge-recalled-pf2e", "npcFlags");
 //       const updatedFlags = existingFlags ? { ...existingFlags } : {};
@@ -344,7 +343,7 @@ export default class NPCModel
             description: this.actor.description,
             visibility: false,
          },
-      }
+      };
 
    }
 }
