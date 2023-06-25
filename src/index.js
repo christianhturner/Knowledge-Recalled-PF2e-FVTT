@@ -1,9 +1,6 @@
-import GMJournalApplication from "./view/GMJournal/GMJournal.js";
 import KnowledgeRecalled from "./models/knowledgeRecalled.js";
-import NPCFlagsManager from "./models/NPCValueProcessor.js";
-import { initializeFlags, updateFlags } from "./control/data.js";
-import NPCValueProcessor from "./models/NPCValueProcessor.js";
 import NPCModel from "./models/NPCModel.js";
+import GMJournal from "./view/GMJournal/GMJournalApplication.js";
 
 export const arrayOfNPCs = [];
 
@@ -18,23 +15,23 @@ Hooks.once("init", () =>
 });
 
 
-Hooks.once('ready', () => new GMJournalApplication().render(true, { focus: true }));
+// Hooks.once('createActor', () => new GMJournal().render(true, { focus: true }));
 
-Hooks.on("ready", () =>
-{
-   console.log("KnowledgeRecalled Activity ");
-   const activeEncounters = getActiveEncounters();
-   console.log("activeEncounters: ", activeEncounters);
-   console.log("npcActors: ", npcActors);
-   for (const element of activeEncounters)
-   {
-      addNPCtoGlobalArray(element);
-   }
-   //console.log("npcActors: ", npcActors);
-   KnowledgeRecalled._onReady(npcActors);
-   const KnowledgeRecalledActors = KnowledgeRecalled.getActors();
-   console.log("KnowledgeRecalledActors: ", KnowledgeRecalledActors);
-});
+// Hooks.on("ready", () =>
+// {
+//    console.log("KnowledgeRecalled Activity ");
+//    const activeEncounters = getActiveEncounters();
+//    console.log("activeEncounters: ", activeEncounters);
+//    console.log("npcActors: ", npcActors);
+//    for (const element of activeEncounters)
+//    {
+//       addNPCtoGlobalArray(element);
+//    }
+//    //console.log("npcActors: ", npcActors);
+//    KnowledgeRecalled._onReady(npcActors);
+//    const KnowledgeRecalledActors = KnowledgeRecalled.getActors();
+//    console.log("KnowledgeRecalledActors: ", KnowledgeRecalledActors);
+// });
 
 Hooks.on('createActor', (actor, options, userId) =>
 {
@@ -48,6 +45,7 @@ Hooks.on('createActor', (actor, options, userId) =>
       arrayOfNPCs.push(flaggedNPC);
 
       console.log('end initNPCModel');
+      new GMJournal().render(true, { focus: true });
    }
 });
 
