@@ -35,13 +35,20 @@ export const adjustmentScale = [
  "incredibly hard"
 ];
 
-export const profeciencyRanks = [
+export const proficiencyLabels = [
  "untrained",
  "trained",
  "expert",
  "master",
  "legendary"
 ];
+
+export const proficiencyRankLabelsMap = new Map();
+proficiencyRankLabelsMap.set("untrained", 0);
+proficiencyRankLabelsMap.set("trained", 1);
+proficiencyRankLabelsMap.set("expert", 2);
+proficiencyRankLabelsMap.set("master", 3);
+proficiencyRankLabelsMap.set("legendary", 4);
 
 export const adjustmentScaleMap = new Map();
 adjustmentScaleMap.set("incredibly easy", -10);
@@ -94,6 +101,30 @@ export const simpleDCs = new Map();
  simpleDCs.set("expert", 20);
  simpleDCs.set("master", 25);
  simpleDCs.set("legendary", 30);
+
+ export const coreKnowledgeSkills =
+  [
+   "Arcana",
+   "Crafting",
+   "Nature",
+   "Occultism",
+   "Religion",
+   "Society"
+  ];
+
+ export const nonKnowledgeSkills =
+  [
+   "Acrobatics",
+   "Athletics",
+   "Deception",
+   "Diplomacy",
+   "Intimidation",
+   "Medicine",
+   "Performance",
+   "Stealth",
+   "Survival",
+   "Thievery"
+  ];
 
  export const recallKnowledgeAssociatedSkills = new Map();
    recallKnowledgeAssociatedSkills.set("aberration", ["Occultism"]);
