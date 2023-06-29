@@ -1,84 +1,116 @@
 <script>
-   import {SvelteApplication, TJSDialog as TSJDialog} from "@typhonjs-fvtt/runtime/svelte/application";
-   import {getContext} from "svelte";
-   import {ApplicationShell} from "@typhonjs-fvtt/runtime/svelte/component/core";
-   import {scale} from "svelte/transition";
-   import {arrayOfNPCs} from "../../index.js";
+   import { flip }               from 'svelte/animate';
 
-   export let elementRoot = void 0;
-   export let message = void 0;
+   import { ApplicationShell }   from '@typhonjs-fvtt/runtime/svelte/component/core';
+   import { TJSDocument }        from '@typhonjs-fvtt/runtime/svelte/store';
 
-   const npc = arrayOfNPCs[0];
+   import { rippleFocus }        from '@typhonjs-fvtt/svelte-standard/action';
+   import { TJSInput }           from '@typhonjs-fvtt/svelte-standard/component';
+   import { createFilterQuery }  from '@typhonjs-fvtt/svelte-standard/store';
 
-   const application = getContext('#external').application;
+   export let elementRoot;
 
-   let draggable = application.reactive.draggable;
+   const filterSearch = createFilterQuery('type');
 
-   $: application.reactive.draggable = draggable;
-
-   const storeMinimizable = application.reactive.storeAppOptions.minimizable;
-   const storeResizable = application.reactive.storeAppOptions.resizable;
-   const storeTitle = application.reactive.storeAppOptions.title;
-
-   async function onClick()
-   {
-      /**
-       * TJSDialog.prompt returns true when the button is selected or null if the dialog is closed without user selection.
-       *
-       * @type {boolean|null}
-       */
-      const result = await TSJDialog.prompt({
-         title: 'Test Dialog',
-         draggable: false,
-         modal: true,
-         content: 'A cool modal dialog',
-         label: 'OK',
-      }, { classes: ["tjs-essential-svelte-esm"] });
+   const input = {
+      store: filterSearch,
+      efx: rippleFocus(),
+      placeholder: 'wildcard',
+      type: 'search'
    }
 
-</script>
-<svelte:options accessors={true} />
-<ApplicationShell bind:elementRoot transition={scale} transitionOptions={{duration: 1000}}>
-<h1>{npc.flags.name}</h1>
-   <div class="container">
-   <h2>Stats</h2>
-      {#each Object.entries(npc.flags.lowestSave.lowestSaveValue) as [key, value]}
-         <label>
-            <span>{key}</span>
-            <input type="number" value={value} />
-         </label>
-      {/each}
-   </div>
-</ApplicationShell>
+   const doc = new TJSDocument();
 
+   /** @type {import('@typhonjs-fvtt/runtime/svelte/store').DynMapReducer<string, Item>} */
+   const wildcard = doc.embedded.create('flags.fvtt-knowledge-recalled-pf2e.npcFlags', {
+      name: 'wildcard',
+      filters: [filterSearch],
+      sort: (a, b) => a.name.localeCompare(b.name)
+   });
+
+   /**
+    * Handles parsing the drop event and sets new document source.
+    *
+    * @param {DragEvent}   event -
+    */
+   function onDrop(event)
+   {
+      try
+      {
+         doc.setFromDataTransfer(JSON.parse(event.dataTransfer.getData('text/plain')));
+      }
+      catch (err) { console.log("Knowledge Recalled: GUI Error")/**/ }
+   }
+</script>
+
+<svelte:options accessors={true}/>
+
+<ApplicationShell bind:elementRoot>
+   <main>
+      <h1>Reactive Embedded Collections</h1>
+      <div class=drop
+           on:drop={onDrop}>
+         Drop Actor Document Here<br>
+         {#if $doc}
+            Name: {$doc?.name}
+         {/if}
+      </div>
+      <div class=container>
+         <div class=column>
+            <div style="display: flex; align-items: center;">Items by type ->&nbsp;<TJSInput {input}/>&nbsp;: {$wildcard.index.length}</div>
+            <br>
+            <ol>
+               {#each [...$wildcard] as item (item.value)}
+                  <li animate:flip={{duration: 200}}>{item.value}</li>
+               {/each}
+            </ol>
+         </div>
+      </div>
+   </main>
+</ApplicationShell>
 
 <style lang="scss">
    main {
       text-align: center;
       display: flex;
       flex-direction: column;
-      button, div.bottom {
-         margin-top: auto;
-      }
+
+      --tjs-input-text-width: 100px;
+
       div.container {
          display: flex;
-         align-items: center;
-         justify-content: center;
+         justify-content: flex-start;
+      }
+
+      div.column {
+         display: flex;
+         flex-direction: column;
+         align-items: flex-start;
+         justify-content: flex-start;
+         width: 100%;
          border-radius: 10px;
          border: 2px solid rgba(0, 0, 0, 0.2);
          padding: 10px;
-         margin-top: auto;
+         //margin-bottom: 10px;
       }
+
+      div.drop {
+         background: rgba(0, 0, 0, 0.2);
+         border-radius: 10px;
+         border: 2px solid rgba(0, 0, 0, 0.2);
+         padding: 0.25em;
+         margin-bottom: 0.25em;
+      }
+
       h1 {
          color: #ff3e00;
          text-transform: uppercase;
-         font-size: 4em;
+         font-size: 1.5em;
          font-weight: 100;
       }
-      label {
-         display: flex;
-         align-items: center;
-         justify-content: center;
+
+      li {
+         text-align: start
       }
    }
 </style>

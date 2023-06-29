@@ -57,10 +57,12 @@ export default class NPCModel
             actorImg: actor.img,
             description: actor.description,
             visibility: false,
+            discoveredByPC: "",
          },
          rarity: {
             value: actor.rarity,
             visibility: false,
+            discoveredByPC: "",
          },
          privateInfo: {
             privateDescription: actor.system.details.privateNotes,
@@ -71,22 +73,27 @@ export default class NPCModel
          armorClass: {
             value: actor.attributes.ac.value,
             visibility: false,
+            discoveredByPC: "",
          },
          fortSave: {
             value: actor.saves.fortitude.dc.value,
             visibility: false,
+            discoveredByPC: "",
          },
          refSave: {
             value: actor.saves.reflex.dc.value,
             visibility: false,
+            discoveredByPC: "",
          },
          willSave: {
             value: actor.saves.will.dc.value,
             visibility: false,
+            discoveredByPC: "",
          },
          lowestSave: {
             lowestSaveValue: [],
             visibility: false,
+            discoveredByPC: "",
          },
          immunities: this.ConvertNestedPropertiesOfArraysToVisibilityObject(actor.attributes.immunities, "type"),
          resistance: this.ConvertNestedPropertiesOfArraysToVisibilityObject(actor.attributes.resistances, "type"),
@@ -126,7 +133,7 @@ export default class NPCModel
       const arrayOfActorObjects = [];
       for (const actorObjects of actorArrayObjectsPath)
       {
-         arrayOfActorObjects.push({ value: actorObjects, visibility: false });
+         arrayOfActorObjects.push({ value: actorObjects, visibility: false, discoveredByPC: "" });
       }
       return arrayOfActorObjects;
    }
@@ -140,7 +147,7 @@ export default class NPCModel
       const arrayOfActorObjects = [];
       for (const actorObjects of actorArrayObjectsPath)
       {
-         arrayOfActorObjects.push({ value: actorObjects?.[property], visibility: false });
+         arrayOfActorObjects.push({ value: actorObjects?.[property], visibility: false, discoveredByPC: "" });
       }
       return arrayOfActorObjects;
    }
@@ -173,7 +180,7 @@ export default class NPCModel
             }
             else
             {
-               existingAbility = { value: action.name, gmDescription: action.gmDescription, visibility: false };
+               existingAbility = { value: action.name, gmDescription: action.gmDescription, visibility: false, discoveredByPC: "" };
                passiveAbilities.push(existingAbility);
             }
             existingAbility.visibility = false; // Set visibility to false for newly added abilities
@@ -187,7 +194,7 @@ export default class NPCModel
             }
             else
             {
-               existingAbility = { value: action.name, gmDescription: action.gmDescription, visibility: false };
+               existingAbility = { value: action.name, gmDescription: action.gmDescription, visibility: false, discoveredByPC: "" };
                actionAbilities.push(existingAbility);
             }
             existingAbility.visibility = false; // Set visibility to false for newly added abilities
@@ -213,7 +220,7 @@ export default class NPCModel
          }
          else
          {
-            existingAbility = { value: attack.name, attackType, gmDescription: attack.gmDescription, visibility: false };
+            existingAbility = { value: attack.name, attackType, gmDescription: attack.gmDescription, visibility: false, discoveredByPC: "" };
             attackAbilities.push(existingAbility);
          }
          existingAbility.visibility = false; // Set visibility to false for newly added abilities
@@ -228,7 +235,7 @@ export default class NPCModel
          }
          else
          {
-            existingAbility = { value: spell.system.slug, tradition: spell.system.tradition, gmDescription: spell.gmDescription, visibility: false };
+            existingAbility = { value: spell.system.slug, tradition: spell.system.tradition, gmDescription: spell.gmDescription, visibility: false, discoveredByPC: "" };
             spellAbilities.push(existingAbility);
          }
          existingAbility.visibility = false; // Set visibility to false for newly added abilities

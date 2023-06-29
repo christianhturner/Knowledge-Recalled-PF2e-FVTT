@@ -17,7 +17,7 @@ Hooks.once("init", () =>
 
 // Hooks.once('createActor', () => new GMJournal().render(true, { focus: true }));
 
-// Hooks.on("ready", () =>
+ Hooks.on("ready", () => new GMJournal().render(true, { focus: true }));
 // {
 //    console.log("KnowledgeRecalled Activity ");
 //    const activeEncounters = getActiveEncounters();
