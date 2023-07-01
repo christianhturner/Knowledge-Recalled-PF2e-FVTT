@@ -29,7 +29,7 @@ function updateActiveEncounters()
    activeEncounters = encounters.filter((encounter) => encounter.active === true);
    if (!activeEncounters)
    {
-      console.log("No active encounter found.");
+      console.log("Knowledge Recalled: No active encounter found.");
       return [];
    }
 
@@ -58,12 +58,7 @@ Hooks.on('createActor', (actor) =>
    // Check if the actor is an NPC
    if (actor.type === 'npc')
    {
-UpdatedKnowledgeRecalledModule
-      (actor).then((r) => console.log(r));
-      console.log('begin initNPCModel');
-
-      initNPCModel(actor).then((r) => console.log(r));
-
+      initNPCModel(actor).then((r) => console.log(`Knowledge Recalled: ${r}`));
       console.log('end initNPCModel');
    }
    // Update documentedActors once the actor has been created and added to the list
@@ -86,7 +81,7 @@ function initNPCModel(actor)
    }
    catch (error)
    {
-      console.error("Error initializing NPCModel: ", error);
+      console.error("Knowledge Recalled: Error initializing NPCModel: ", error);
    }
 }
 
@@ -139,23 +134,23 @@ async function updateNPCModelFlags(actor)
          if (!isEqual(existingFlags, updatedFlags))
          {
             await actor.setFlag("fvtt-knowledge-recalled-pf2e", "npcFlags", updatedFlags);
-            console.log("Flags updated:", updatedFlags);
+            console.log("Knowledge Recalled: Flags updated:", JSON.parse(updatedFlags));
          }
          else
          {
-            console.log("Flags have not changed. Skipping update.");
+            console.log("Knowledge Recalled: Flags have not changed. Skipping update.");
          }
       }
       else
       {
-         console.log("No existing flags found. Initializing flags...");
+         console.log("Knowledge Recalled: No existing flags found. Initializing flags...");
          // Initialize flags if necessary
          // ...
       }
    }
    catch (error)
    {
-      console.error("Error updating NPC flags:", error);
+      console.error("Knowledge Recalled: Error updating NPC flags:", error);
    }
 }
 
