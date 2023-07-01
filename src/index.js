@@ -58,7 +58,13 @@ Hooks.on('createActor', (actor) =>
    // Check if the actor is an NPC
    if (actor.type === 'npc')
    {
+UpdatedKnowledgeRecalledModule
+      (actor).then((r) => console.log(r));
+      console.log('begin initNPCModel');
+
       initNPCModel(actor).then((r) => console.log(r));
+
+      console.log('end initNPCModel');
    }
    // Update documentedActors once the actor has been created and added to the list
    Hooks.once('renderActorDirectory', () =>
