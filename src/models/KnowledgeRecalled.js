@@ -1,21 +1,11 @@
-//import NPCActor from "./ActorModel.js";
-//import NPCModel from "./NPCModel.js";
+
 
 // eslint-disable-next-line no-unused-vars
 export default class KnowledgeRecalled extends Application
 {
-   NPCActors = [];
+   documentedActors = [];
    encounteredNPCActors = [];
-   // constructor(FoundryActors)
-   // {
-   //    super();
-   //    console.log("Storing NPC Actors");
-   //
-   //    for (const element of FoundryActors)
-   //    {
-   //       KnowledgeRecalled.NPCActors.push(new NPCModel(element));
-   //    }
-   // }
+   npcActors = [];
 
    static _onReady(listOfFoundryActors)
    {
@@ -24,17 +14,14 @@ export default class KnowledgeRecalled extends Application
 
    getActors()
    {
-      return this.NPCActors;
+      return this.documentedActors;
    }
 
    getEncounteredActors()
    {
       return this.encounteredNPCActors;
    }
-   checkForDuplicateActor(actorId)
-   {
-      return this.NPCActors.some((npcActor) => npcActor.actorId === actorId);
-   }
+
    addToEncounteredActorArray(NPCActor)
    {
       const isDuplicate = this.checkForDuplicateActor(NPCActor.actorId);
@@ -44,12 +31,20 @@ export default class KnowledgeRecalled extends Application
       }
    }
 
-   addToNPCActorArray(NPCActor)
+   addToNpcActorsArray(NPCActor)
    {
-      const isDuplicate = this.checkForDuplicateActor(NPCActor.actorId);
-      if (!isDuplicate)
-      {
-         this.encounteredNPCActors.push(NPCActor);
-      }
+      // const isDuplicate = this.checkForDuplicateActor(NPCActor.actorId);
+      // if (!isDuplicate)
+      // {
+      //    this.npcActors.push(NPCActor);
+      // }
+      this.npcActors.push(NPCActor);
    }
+
+   checkForDuplicateActor(actorId)
+   {
+      return this.documentedActors.some((npcActor) => npcActor.actorId === actorId);
+   }
+
+
 }

@@ -1,14 +1,7 @@
 import GMJournalApplication from "./view/GMJournal/GMJournal.js";
 import KnowledgeRecalled from "./models/knowledgeRecalled.js";
-import NPCFlagsManager from "./models/NPCValueProcessor.js";
-import { initializeFlags, updateFlags } from "./control/data.js";
-import NPCValueProcessor from "./models/NPCValueProcessor.js";
 import NPCModel from "./models/NPCModel.js";
 import { isEqual } from 'lodash';
-
-
-
-//const npcActors = [];
 
 KnowledgeRecalled._onReady();
 
@@ -18,19 +11,18 @@ Hooks.once("init", () =>
 {
    CONFIG.debug.hooks = isDev;
 });
-
-
-
 Hooks.once('ready', () => new GMJournalApplication().render(true, { focus: true }));
 
 Hooks.on("ready", () =>
 {
-   getActiveEncounters();
+   updateActiveEncounters();
+   updateDocumentedActors();
+   updateNPCActors();
 
 
 });
 
-function getActiveEncounters()
+function updateActiveEncounters()
 {
    const encounters = game.combats.combats;
    let activeEncounters = [];
@@ -48,9 +40,6 @@ function getActiveEncounters()
 
 }
 
-/**
- *
- */
 function addNPCtoKnowledgeRecalledEncounters(encounter)
 {
    const npcCombatants = encounter.turns;
@@ -60,14 +49,22 @@ function addNPCtoKnowledgeRecalledEncounters(encounter)
       ui.KnowledgeRecalled.addToEncounteredActorArray(newActor);
    });
 }
-
-Hooks.on('createActor', (actor, options, userId) =>
+function updateDocumentedActors()
+{
+   ui.KnowledgeRecalled.documentedActors = ui.actors.documents;
+}
+Hooks.on('createActor', (actor) =>
 {
    // Check if the actor is an NPC
    if (actor.type === 'npc')
    {
       initNPCModel(actor).then((r) => console.log(r));
    }
+   // Update documentedActors once the actor has been created and added to the list
+   Hooks.once('renderActorDirectory', () =>
+   {
+      ui.KnowledgeRecalled.documentedActors = ui.actors.documents;
+   });
 });
 
 /**
@@ -77,9 +74,9 @@ function initNPCModel(actor)
 {
    try
    {
-      const KnowledgeRecalledNPCActors = new NPCModel(actor);
-      KnowledgeRecalledNPCActors.processValues();
-      ui.KnowledgeRecalled.addToNPCActorArray(KnowledgeRecalledNPCActors);
+      const KnowledgeRecalledNPCActor = new NPCModel(actor);
+      KnowledgeRecalledNPCActor.processValues();
+      ui.KnowledgeRecalled.addToNpcActorsArray(KnowledgeRecalledNPCActor);
    }
    catch (error)
    {
@@ -97,7 +94,7 @@ Hooks.on("updateActor", async (actor, updatedData) =>
 });
 
 // Function to update the NPC model flags
-async function updateNPCModelFlags(actor, updatedData)
+async function updateNPCModelFlags(actor)
 {
    // Access the updated flags from the updateData object
 
@@ -156,6 +153,16 @@ async function updateNPCModelFlags(actor, updatedData)
    }
 }
 
-
+function updateNPCActors()
+{
+   const actors = ui.KnowledgeRecalled.documentedActors;
+   for (const actor of actors)
+   {
+      if (actor.type === 'npc')
+      {
+         initNPCModel(actor);
+      }
+   }
+}
 
 
