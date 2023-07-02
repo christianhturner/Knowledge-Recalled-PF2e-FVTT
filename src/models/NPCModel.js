@@ -455,3 +455,4 @@ export default class NPCModel
       }
    }
 }
+

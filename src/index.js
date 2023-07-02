@@ -1,11 +1,9 @@
+import GMJournalApplication from "./view/GMJournal/GMJournal.js";
 import KnowledgeRecalled from "./models/knowledgeRecalled.js";
 import NPCModel from "./models/NPCModel.js";
-import GMJournal from "./view/GMJournal/GMJournalApplication.js";
+import { isEqual } from 'lodash';
 
-export const arrayOfNPCs = [];
-
-console.log("loading knowledge recalled");
-const npcActors = [];
+KnowledgeRecalled._onReady();
 
 // Remove for production
 const isDev = true;
@@ -13,140 +11,159 @@ Hooks.once("init", () =>
 {
    CONFIG.debug.hooks = isDev;
 });
+Hooks.once('ready', () => new GMJournalApplication().render(true, { focus: true }));
 
-
-// Hooks.once('createActor', () => new GMJournal().render(true, { focus: true }));
-
- Hooks.on("ready", () => new GMJournal().render(true, { focus: true }));
-// {
-//    console.log("KnowledgeRecalled Activity ");
-//    const activeEncounters = getActiveEncounters();
-//    console.log("activeEncounters: ", activeEncounters);
-//    console.log("npcActors: ", npcActors);
-//    for (const element of activeEncounters)
-//    {
-//       addNPCtoGlobalArray(element);
-//    }
-//    //console.log("npcActors: ", npcActors);
-//    KnowledgeRecalled._onReady(npcActors);
-//    const KnowledgeRecalledActors = KnowledgeRecalled.getActors();
-//    console.log("KnowledgeRecalledActors: ", KnowledgeRecalledActors);
-// });
-
-Hooks.on('createActor', (actor, options, userId) =>
+Hooks.on("ready", () =>
 {
+   updateActiveEncounters();
+   updateDocumentedActors();
+   updateNPCActors();
 
+
+});
+
+function updateActiveEncounters()
+{
+   const encounters = game.combats.combats;
+   let activeEncounters = [];
+   activeEncounters = encounters.filter((encounter) => encounter.active === true);
+   if (!activeEncounters)
+   {
+      console.log("Knowledge Recalled: No active encounter found.");
+      return [];
+   }
+
+   for (const element of activeEncounters)
+   {
+      addNPCtoKnowledgeRecalledEncounters(element);
+   }
+
+}
+
+function addNPCtoKnowledgeRecalledEncounters(encounter)
+{
+   const npcCombatants = encounter.turns;
+   npcCombatants.forEach((actor) => 
+   {
+      const newActor = game.actors.get(actor.actorId);
+      ui.KnowledgeRecalled.addToEncounteredActorArray(newActor);
+   });
+}
+function updateDocumentedActors()
+{
+   ui.KnowledgeRecalled.documentedActors = ui.actors.documents;
+}
+Hooks.on('createActor', (actor) =>
+{
    // Check if the actor is an NPC
    if (actor.type === 'npc')
    {
-      console.log('begin initNPCModel');
-
-      const flaggedNPC = initNPCModel(actor).then((r) => console.log(r));
-      arrayOfNPCs.push(flaggedNPC);
-
+      initNPCModel(actor).then((r) => console.log(`Knowledge Recalled: ${r}`));
       console.log('end initNPCModel');
-      new GMJournal().render(true, { focus: true });
+   }
+   // Update documentedActors once the actor has been created and added to the list
+   Hooks.once('renderActorDirectory', () =>
+   {
+      ui.KnowledgeRecalled.documentedActors = ui.actors.documents;
+   });
+});
+
+/**
+ *
+ */
+function initNPCModel(actor)
+{
+   try
+   {
+      const KnowledgeRecalledNPCActor = new NPCModel(actor);
+      KnowledgeRecalledNPCActor.processValues();
+      ui.KnowledgeRecalled.addToNpcActorsArray(KnowledgeRecalledNPCActor);
+   }
+   catch (error)
+   {
+      console.error("Knowledge Recalled: Error initializing NPCModel: ", error);
+   }
+}
+
+Hooks.on("updateActor", async (actor, updatedData) =>
+{
+   // Check if the update is relevant to the NPC flags
+   if (updatedData)
+   {
+      await updateNPCModelFlags(actor, updatedData);
    }
 });
 
-async function initNPCModel(actor)
-{
-   try
-   {
-      const KRNPC = await new NPCModel(actor);
-      console.log("Knowledge Recalled NPC: ", KRNPC);
-      KRNPC.processValues();
-      console.log("Knowledge Recalled NPC: ", KRNPC);
-   }
-   catch (error)
-   {
-      console.error("Error initializing NPCModel: ", error);
-   }
-}
-
+// Function to update the NPC model flags
 async function updateNPCModelFlags(actor)
 {
+   // Access the updated flags from the updateData object
+
    try
    {
-      const KRNPC = await new NPCModel(actor);
-      await KRNPC.checkForChangesOnUpdate(actor);
-      KRNPC.processValues();
-      console.log("Knowledge Recalled NPC: ", KRNPC);
+      const existingFlags = actor.getFlag("fvtt-knowledge-recalled-pf2e", "npcFlags");
+      if (existingFlags)
+      {
+         // Exclude visibility properties from the existingFlags object
+
+         const updatedFlags = Object.entries(existingFlags).reduce((flags, [key, value]) =>
+         {
+            if (!key.endsWith(".visibility"))
+            {
+               flags[key] = value;
+            }
+            return flags;
+         }, {});
+
+         // Repopulate the values that have path declarations
+         updatedFlags.baseCharacterInfo.name = actor.name;
+         updatedFlags.baseCharacterInfo.creatureType = actor.system.details.creatureType;
+         updatedFlags.baseCharacterInfo.alliance = actor.alliance;
+         updatedFlags.baseCharacterInfo.actorImg = actor.img;
+         updatedFlags.baseCharacterInfo.description = actor.description;
+         updatedFlags.rarity.value = actor.rarity;
+         updatedFlags.privateInfo.privateDescription = actor.system.details.privateNotes;
+         updatedFlags.privateInfo.CR = actor.level;
+
+         updatedFlags.armorClass.value = actor.attributes.ac.base;
+         updatedFlags.fortSave.value = actor.saves.fortitude.dc.value;
+         updatedFlags.refSave.value = actor.saves.reflex.dc.value;
+         updatedFlags.willSave.value = actor.saves.will.dc.value;
+         // Repopulate other values as needed...
+
+         if (!isEqual(existingFlags, updatedFlags))
+         {
+            await actor.setFlag("fvtt-knowledge-recalled-pf2e", "npcFlags", updatedFlags);
+            console.log("Knowledge Recalled: Flags updated:", JSON.parse(updatedFlags));
+         }
+         else
+         {
+            console.log("Knowledge Recalled: Flags have not changed. Skipping update.");
+         }
+      }
+      else
+      {
+         console.log("Knowledge Recalled: No existing flags found. Initializing flags...");
+         // Initialize flags if necessary
+         // ...
+      }
    }
    catch (error)
    {
-      console.error("Error initializing NPCModel: ", error);
+      console.error("Knowledge Recalled: Error updating NPC flags:", error);
    }
+}
 
-
-   /*Hooks.on('updateActor', (actor, options, userId) =>
+function updateNPCActors()
+{
+   const actors = ui.KnowledgeRecalled.documentedActors;
+   for (const actor of actors)
    {
-      // Check if the actor is an NPC
       if (actor.type === 'npc')
       {
-         updateNPCModelFlags(actor).then((r) => console.log(r));
+         initNPCModel(actor);
       }
-   });*/
-
-
-   function getActiveEncounters()
-   {
-      const encounters = game.combats.combats;
-      let activeEncounters = [];
-      activeEncounters = encounters.filter((encounter) => encounter.active === true);
-      if (!activeEncounters)
-      {
-         console.log("No active encounter found.");
-         return [];
-      }
-      return activeEncounters;
-   }
-
-   async function addNPCtoGlobalArray(encounter)
-   {
-      const npcCombatants = encounter.turns;
-      npcCombatants.forEach((actor) =>
-      {
-         if (
-          !npcActors.find((npcActor) =>
-          {
-             return npcActor.actorId === actor.actorId;
-          }) &&
-          actor.isNPC === true
-         )
-         {
-            const newActor = game.actors.get(actor.actorId);
-            npcActors.push(newActor);
-         }
-      });
    }
 }
 
 
-// async function getNPCActorsFromEncounters()
-// {
-//    const encounters = await game.combats;
-//    console.log(encounters);
-//    let activeEncounter = [];
-//    activeEncounter = encounters.find((encounter) => encounter.active === true);
-//
-//    if (!activeEncounter)
-//    {
-//       console.log("No active encounter found.");
-//       return [];
-//    }
-//
-//    const npcCombatants = activeEncounter.filter(
-//     (combatant) => combatant.actor.data.type === "npc"
-//    );
-//
-//    const npcActors = [];
-//
-//    for (const npcCombatant of npcCombatants)
-//    {
-//       const foundryNPC = npcCombatant.actor;
-//       npcActors.push(foundryNPC);
-//    }
-//
-//    return npcActors;
-// }
