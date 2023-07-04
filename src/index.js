@@ -1,4 +1,4 @@
-import GMJournalApplication from "./view/GMJournal/GMJournal.js";
+import GMJournalApplication from "./view/GMJournal/GMJournalApplication.js";
 import KnowledgeRecalled from "./models/knowledgeRecalled.js";
 import NPCModel from "./models/NPCModel.js";
 import { isEqual } from 'lodash';
