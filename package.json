@@ -9,6 +9,7 @@
     "Michael Leahy <support@typhonjs.io> (https://github.com/typhonrt)"
   ],
   "dependencies": {
+    "@appland/appmap-agent-js": "^13.9.0",
     "@typhonjs-fvtt/runtime": "^0.0.22",
     "@typhonjs-fvtt/svelte-standard": "^0.0.23",
     "jsdoc": "^4.0.2",
