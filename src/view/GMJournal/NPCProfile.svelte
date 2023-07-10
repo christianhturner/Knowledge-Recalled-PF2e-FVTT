@@ -1,6 +1,6 @@
 <script>
 import {setContext} from "svelte";
-import {ApplicationShell} from "@typhonjs-fvtt/runtime/_dist/svelte/component/core/index.js";
+
 
 let elementRoot
 let module = ui.knowledgeRecalled;
@@ -13,8 +13,7 @@ function updateSelectedActor(actor) {
 }
 </script>
 
-<svelte:options accessors={true} />
-   <ApplicationShell bind:elementRoot >
+
       {#if npcArray}
          {#each npcArray as npc}
             <button on:click={() => updateSelectedActor(npc)}>{npc.name}</button>
@@ -23,5 +22,3 @@ function updateSelectedActor(actor) {
          <h2> Selected Actor: {selectedNPC.flags.name}</h2>
             <p> Actor Data: {selectedNPC.flags.defaultDC}</p>
       {/if}
-
-   </ApplicationShell>

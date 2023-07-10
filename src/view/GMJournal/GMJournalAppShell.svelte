@@ -7,16 +7,17 @@
    import { rippleFocus }        from '@typhonjs-fvtt/svelte-standard/action';
    import { TJSInput }           from '@typhonjs-fvtt/svelte-standard/component';
    import { createFilterQuery }  from '@typhonjs-fvtt/svelte-standard/store';
-   import { setContext} from "svelte";
+   import {getContext, setContext} from "svelte";
+   import NPCProfile from "./NPCProfile.svelte";
 
-
-
-
-
-
-
+   const { application } = getContext("#external");
+   let elementRoot;
 
 </script>
+<svelte:options accessors={true} />
+<ApplicationShell bind:elementRoot>
+   <NPCProfile />
+</ApplicationShell>
 
 
 <style>

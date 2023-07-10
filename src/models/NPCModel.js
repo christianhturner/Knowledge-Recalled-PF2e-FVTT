@@ -314,7 +314,6 @@ export default class NPCModel
          //    traits,
          // ],
       };
-
       if (!this.flags.initialized)
       {
          try
