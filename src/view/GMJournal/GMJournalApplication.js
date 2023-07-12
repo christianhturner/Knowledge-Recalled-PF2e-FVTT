@@ -18,18 +18,13 @@ export default class GMJournalApplication extends SvelteApplication
          classes: [],
          resizable: true,
          minimizable: true,
-         title: 'Knowledge Recalled GM Journal',
-         width: 600,
          height: 400,
-         // sessionStorage: true,
-         positionOrtho: false,
-         transformOrigin: null,
+         width: 600,
+         title: 'Knowledge Recalled GM Journal',
 
          svelte: {
             class: GMJournalAppShell,
             target: document.body,
-            intro: true,
-            props: {}
          }
       });
    }

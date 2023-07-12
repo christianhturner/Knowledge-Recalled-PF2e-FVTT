@@ -1,5 +1,0 @@
-name: fvtt-knowledge-recalled-pf2e
-packages:
-  - path: src
-language: javascript
-appmap_dir: tmp/appmap
