@@ -261,7 +261,7 @@ export default class NPCModel
       const lowestSave = Math.min(fortitudeSaveValue, willSaveValue, reflexSaveValue);
       const lowestSavesArray = [];
 
-      removeFlag(this.actor, "lowestSave.value");
+      removeFlag(this.actor, "npcFlags.lowestSave.value");
 
       if (fortitudeSaveValue === lowestSave)
       {
