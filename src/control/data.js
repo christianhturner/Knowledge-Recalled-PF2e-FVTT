@@ -4,10 +4,11 @@ export function removeFlag(object, flagPath)
    if (flag)
    {
       object.unsetFlag('fvtt-knowledge-recalled-pf2e', `npcFlags.${flagPath}`);
+      console.log(`Knowledge Recalled: Flag npcFlags.${flagPath} removed from ${object.name}`);
    }
    else
    {
-      console.log(`Flag npcFlags.${flagPath} does not exist on ${object.name}`);
+      console.log(`Knowledge Recalled Flag npcFlags.${flagPath} does not exist on ${object.name}`);
    }
 }
 

@@ -15,16 +15,17 @@ export default class GMJournalApplication extends SvelteApplication
    {
       return foundry.utils.mergeObject(super.defaultOptions, {
          id: 'gm-journal',
-         classes: [],
+         classes: ['gm-journal'],
          resizable: true,
          minimizable: true,
-         height: 400,
          width: 600,
+         height: 400,
          title: 'Knowledge Recalled GM Journal',
 
          svelte: {
             class: GMJournalAppShell,
             target: document.body,
+            intro: true,
          }
       });
    }

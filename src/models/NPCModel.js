@@ -91,7 +91,7 @@ export default class NPCModel
             discoveredByPC: "",
          },
          lowestSave: {
-            lowestSaveValue: [],
+            value: [],
             visibility: false,
             discoveredByPC: "",
          },
@@ -261,7 +261,7 @@ export default class NPCModel
       const lowestSave = Math.min(fortitudeSaveValue, willSaveValue, reflexSaveValue);
       const lowestSavesArray = [];
 
-      removeFlag(this.actor, lowestSave.lowestSaveValue);
+      removeFlag(this.actor, "lowestSave.value");
 
       if (fortitudeSaveValue === lowestSave)
       {

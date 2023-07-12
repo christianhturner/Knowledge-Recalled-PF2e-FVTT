@@ -4,15 +4,20 @@
    import NPCProfile from "./NPCProfile.svelte";
 
    const { application } = getContext("#external");
-   let elementRoot;
+   export let elementRoot = void 0;
 
 </script>
 <svelte:options accessors={true} />
 <ApplicationShell bind:elementRoot>
+   <div>
    <NPCProfile />
+   </div>
 </ApplicationShell>
 
 
 <style>
-
+   div {
+      width: 100%;
+      height: 100%;
+   }
 </style>
