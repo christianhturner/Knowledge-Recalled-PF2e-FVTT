@@ -1,23 +1,14 @@
-<script>
-   import { ApplicationShell }   from '@typhonjs-fvtt/runtime/svelte/component/core';
-   import {getContext, setContext} from "svelte";
-   import NPCProfile from "./NPCProfile.svelte";
-
-   const { application } = getContext("#external");
-   export let elementRoot = void 0;
-
-</script>
 <svelte:options accessors={true} />
+
+<script>
+    import { getContext } from "svelte";
+    import { ApplicationShell } from "#runtime/svelte/component/core";
+
+    const { application } = getContext("#external");
+    export let elementRoot;
+</script>
+
 <ApplicationShell bind:elementRoot>
-   <div>
-   <NPCProfile />
-   </div>
+    <h1>This is a header</h1>
 </ApplicationShell>
 
-
-<style>
-   div {
-      width: 100%;
-      height: 100%;
-   }
-</style>
