@@ -1,5 +1,6 @@
 import ViewManager from "./control/ViewManager";
-import { getActiveEncounters } from "./control/utilities";
+import { getActiveEncounters, getActor } from "./control/utilities";
+import NPCModel from "./models/NPCModel";
 
 
 // eslint-disable-next-line no-unused-vars
@@ -15,6 +16,12 @@ export default class KnowledgeRecalled extends Application {
     populateGMJournal() {
         const activeEncounters = getActiveEncounters();
         console.log(activeEncounters);
+    }
+
+    testNpcModel(actorId) {
+        let npc = getActor(actorId);
+        const npcModel = new NPCModel(npc);
+        console.log(npcModel);
     }
 
     // Depricate
