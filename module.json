@@ -1,52 +1,52 @@
 {
-    "id": "fvtt-knowledge-recalled-pf2e",
-    "name": "fvtt-knowledge-recalled-pf2e",
-    "title": "Knowledge Recalled | PF2E",
-    "description": "",
-    "author": "Christian Turner, Alec Holloway, & Will Prince",
-    "authors": [
-        {
-            "name": "Christian Turner & Alec Holloway",
-            "url": "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e"
-        }
-    ],
-    "url": "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e",
-    "readme": "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e/blob/master/README.md",
-    "bugs": "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e/issues",
-    "changelog": "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e/releases/latest/",
-    "compatibleCoreVersion": "11",
-    "compatibility": {
-        "minimum": "11.293",
-        "verified": "11.293",
-        "maximum": "11"
-    },
-    "dependencies": [
-        {
-            "name": "socketlib",
-            "manifest": "https://raw.githubusercontent.com/manuelVo/foundryvtt-socketlib/master/module.json"
-        },
-        {
-            "name": "lib-wrapper",
-            "manifest": "https://github.com/ruipin/fvtt-lib-wrapper/releases/latest/download/module.json"
-        }
-    ],
-    "esmodules": [
-        "index.js"
-    ],
-    "styles": [
-        "style.css"
-    ],
-    "languages": [
-        {
-            "lang": "en",
-            "name": "English",
-            "path": "lang/en.json"
-        }
-    ],
-    "socket": true,
-    "manifest": "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e/releases/latest/download/module.json",
-    "download": "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e/releases/download/0.0.0/module.zip",
-    "protected": false,
-    "coreTranslation": false,
-    "library": false
+  "id": "fvtt-knowledge-recalled-pf2e",
+  "title": "Knowledge Recalled | PF2E",
+  "authors": [
+    {
+      "name": "Christian Turner & Alec Holloway",
+      "url": "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e"
+    }
+  ],
+  "url": "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e",
+  "readme": "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e/blob/master/README.md",
+  "bugs": "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e/issues",
+  "changelog": "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e/releases/latest/",
+  "compatibility": {
+    "minimum": "11.293",
+    "verified": "11.293",
+    "maximum": "11"
+  },
+  "esmodules": [
+    "index.js"
+  ],
+  "styles": [
+    "style.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json",
+      "flags": {}
+    }
+  ],
+  "socket": true,
+  "manifest": "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e/releases/latest/download/module.json",
+  "download": "https://github.com/chturner94/fvtt-knowledge-recalled-pf2e/releases/download/0.0.0/module.zip",
+  "relationships": {
+    "requires": [
+      {
+        "id": "socketlib",
+        "type": "module",
+        "manifest": "https://raw.githubusercontent.com/manuelVo/foundryvtt-socketlib/master/module.json",
+        "compatibility": {}
+      },
+      {
+        "id": "lib-wrapper",
+        "type": "module",
+        "manifest": "https://github.com/ruipin/fvtt-lib-wrapper/releases/latest/download/module.json",
+        "compatibility": {}
+      }
+    ]
+  }
 }
