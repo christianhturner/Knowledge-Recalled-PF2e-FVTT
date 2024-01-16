@@ -13,6 +13,10 @@ export default class NPCManager {
         return instance;
     }
 
+    initializeFlags() {
+
+    };
+
     registerActor(actorOrId) {
         let actor;
         let actorId;
@@ -37,4 +41,21 @@ export default class NPCManager {
         this.npcActors.set(actor.id, actor);
 
     }
+
+    getFlags() {
+
+    };
+
+    setFlags() {
+
+    }
+
+    calculateDC() {
+
+    };
+
+    checkForDuplicate() {
+
+    }
+
 }
