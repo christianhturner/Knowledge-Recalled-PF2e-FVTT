@@ -8,10 +8,33 @@ export default class NPCManager {
     constructor() {
         if (!instance) {
             instance = this;
-            this.NpcActors = {};
+            this.npcActors = new Map();
         }
         return instance;
     }
 
+    registerActor(actorOrId) {
+        let actor;
+        let actorId;
+        if (typeof actorOrId === "object") {
+            actor = actorOrId;
+            actorId = actor.actorId;
+        } else {
+            actorId = actorOrId;
+            actor = getActor(actorId);
+        };
 
+        if (!actor) {
+            console.debug(`Knowledge Recalled: registerActor error, ${actorOrId} is not valid.
+            Ensure you passed either the actor object or actorId.
+            `, actorOrId)
+        };
+
+        if (this.npcActors.has(actorId)) {
+            console.log("Knowledge recalled: registerActor Notice, ${actor.name} is already registered.", actorOrId);
+        }
+
+        this.npcActors.set(actor.id, actor);
+
+    }
 }
