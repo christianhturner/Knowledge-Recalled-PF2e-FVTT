@@ -1,6 +1,7 @@
 import { dcByLevel, rarityMap } from "../constants/constants"
 import { removeFlag } from "../control/data.js"
 import { getActor } from "../control/utilities";
+
 // If this is the manager, it should be independent of any actor, but we can register actors? and maybew
 // look them up based on their actorID?
 
