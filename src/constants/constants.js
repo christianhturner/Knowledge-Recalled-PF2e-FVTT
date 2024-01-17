@@ -1,14 +1,14 @@
 export const CONSTANTS = {
-   moduleName: '',
-   moduleLabel: '',
-   flabDB: '',
+    moduleName: '',
+    moduleLabel: '',
+    flabDB: '',
 };
 
 
-export const getConstants = () =>
-{
+export const getConstants = () => {
     CONSTANTS.moduleName = 'Knowledge Recalled';
-    CONSTANTS.moduleLabel = 'knowledge-recalled';
+    CONSTANTS.moduleLabel = 'fvtt-knowledge-recalled-pf2e';
+    CONSTANTS.npcFlags = 'npcFlags';
     CONSTANTS.flabDB = 'knowledge-recalled';
     return CONSTANTS;
 };
@@ -16,31 +16,31 @@ export const getConstants = () =>
 
 // Defines the left-hand UI buttons. First button is the main button, which renders the sub buttons.
 export const knowledgeRecalledIconLauncher = [
-   {
-      name: CONSTANTS.moduleName,
-      title: CONSTANTS.moduleLabel,
-      icon: 'fas fa-book',
-      visible: true,
+    {
+        name: CONSTANTS.moduleName,
+        title: CONSTANTS.moduleLabel,
+        icon: 'fas fa-book',
+        visible: true,
 
-   },
+    },
 ];
 
 export const adjustmentScale = [
- "incredibly easy",
- "very easy",
- "easy",
- "normal",
- "hard",
- "very hard",
- "incredibly hard"
+    "incredibly easy",
+    "very easy",
+    "easy",
+    "normal",
+    "hard",
+    "very hard",
+    "incredibly hard"
 ];
 
 export const proficiencyLabels = [
- "untrained",
- "trained",
- "expert",
- "master",
- "legendary"
+    "untrained",
+    "trained",
+    "expert",
+    "master",
+    "legendary"
 ];
 
 export const proficiencyRankLabelsMap = new Map();
@@ -96,55 +96,55 @@ dcByLevel.set(24, 48);
 dcByLevel.set(25, 50);
 
 export const simpleDCs = new Map();
- simpleDCs.set("untrained", 10);
- simpleDCs.set("trained", 15);
- simpleDCs.set("expert", 20);
- simpleDCs.set("master", 25);
- simpleDCs.set("legendary", 30);
+simpleDCs.set("untrained", 10);
+simpleDCs.set("trained", 15);
+simpleDCs.set("expert", 20);
+simpleDCs.set("master", 25);
+simpleDCs.set("legendary", 30);
 
- export const coreKnowledgeSkills =
-  [
-   "Arcana",
-   "Crafting",
-   "Nature",
-   "Occultism",
-   "Religion",
-   "Society"
-  ];
+export const coreKnowledgeSkills =
+    [
+        "Arcana",
+        "Crafting",
+        "Nature",
+        "Occultism",
+        "Religion",
+        "Society"
+    ];
 
- export const nonKnowledgeSkills =
-  [
-   "Acrobatics",
-   "Athletics",
-   "Deception",
-   "Diplomacy",
-   "Intimidation",
-   "Medicine",
-   "Performance",
-   "Stealth",
-   "Survival",
-   "Thievery"
-  ];
+export const nonKnowledgeSkills =
+    [
+        "Acrobatics",
+        "Athletics",
+        "Deception",
+        "Diplomacy",
+        "Intimidation",
+        "Medicine",
+        "Performance",
+        "Stealth",
+        "Survival",
+        "Thievery"
+    ];
 
- export const recallKnowledgeAssociatedSkills = new Map();
-   recallKnowledgeAssociatedSkills.set("aberration", ["Occultism"]);
-   recallKnowledgeAssociatedSkills.set("animal", ["Nature"]);
-   recallKnowledgeAssociatedSkills.set("astral", ["Occultism"]);
-   recallKnowledgeAssociatedSkills.set("beast", ["Arcana", "Nature"]);
-   recallKnowledgeAssociatedSkills.set("celestial", ["Religion"]);
-   recallKnowledgeAssociatedSkills.set("construct", ["Arcana", "Crafting"]);
-   recallKnowledgeAssociatedSkills.set("dragon", ["Arcana"]);
-   recallKnowledgeAssociatedSkills.set("elemental", ["Arcana", "Nature"]);
-   recallKnowledgeAssociatedSkills.set("ethereal", ["Occultism"]);
-   recallKnowledgeAssociatedSkills.set("fey", ["Nature"]);
-   recallKnowledgeAssociatedSkills.set("fiend", ["Religion"]);
-   recallKnowledgeAssociatedSkills.set("fungus", ["Nature"]);
-   recallKnowledgeAssociatedSkills.set("humanoid", ["Society"]);
-   recallKnowledgeAssociatedSkills.set("monitor", ["Religion"]);
-   recallKnowledgeAssociatedSkills.set("ooze", ["Occultism"]);
-   recallKnowledgeAssociatedSkills.set("plant", ["Nature"]);
-   recallKnowledgeAssociatedSkills.set("spirit", ["Occultism"]);
-   recallKnowledgeAssociatedSkills.set("undead", ["Religion"]);
+export const recallKnowledgeAssociatedSkills = new Map();
+recallKnowledgeAssociatedSkills.set("aberration", ["Occultism"]);
+recallKnowledgeAssociatedSkills.set("animal", ["Nature"]);
+recallKnowledgeAssociatedSkills.set("astral", ["Occultism"]);
+recallKnowledgeAssociatedSkills.set("beast", ["Arcana", "Nature"]);
+recallKnowledgeAssociatedSkills.set("celestial", ["Religion"]);
+recallKnowledgeAssociatedSkills.set("construct", ["Arcana", "Crafting"]);
+recallKnowledgeAssociatedSkills.set("dragon", ["Arcana"]);
+recallKnowledgeAssociatedSkills.set("elemental", ["Arcana", "Nature"]);
+recallKnowledgeAssociatedSkills.set("ethereal", ["Occultism"]);
+recallKnowledgeAssociatedSkills.set("fey", ["Nature"]);
+recallKnowledgeAssociatedSkills.set("fiend", ["Religion"]);
+recallKnowledgeAssociatedSkills.set("fungus", ["Nature"]);
+recallKnowledgeAssociatedSkills.set("humanoid", ["Society"]);
+recallKnowledgeAssociatedSkills.set("monitor", ["Religion"]);
+recallKnowledgeAssociatedSkills.set("ooze", ["Occultism"]);
+recallKnowledgeAssociatedSkills.set("plant", ["Nature"]);
+recallKnowledgeAssociatedSkills.set("spirit", ["Occultism"]);
+recallKnowledgeAssociatedSkills.set("undead", ["Religion"]);
 
 
 export const FILES = {
