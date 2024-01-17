@@ -45,10 +45,16 @@ export default class NPCManager {
         return actor;
     };
 
+    /**
+    * Method to register new NPCs to the NPCManager by providing either an Actor Object or Actor.actorId string value
+    * @method
+    * @param {string | Actor } actorOrId
+    * @returns void 
+    */
     registerActor(actorOrId) {
         let actor;
         let actorId;
-        if (typeof actorOrId === "object") {
+        if (typeof actorOrId === Actor) {
             actor = actorOrId;
             actorId = actor.actorId;
         } else {
@@ -57,13 +63,17 @@ export default class NPCManager {
         };
 
         if (!actor) {
-            console.debug(`Knowledge Recalled: registerActor error, ${actorOrId} is not valid.
+            return console.debug(`Knowledge Recalled: registerActor error, ${actorOrId} is not valid.
             Ensure you passed either the actor object or actorId.
             `, actorOrId)
         };
 
+        if (!actor.type == 'npc') {
+            return console.log(`The actor provided is not an NPC`);
+        }
+
         if (this.npcActors.has(actorId)) {
-            console.log("Knowledge recalled: registerActor Notice, ${actor.name} is already registered.", actorOrId);
+            return console.log("Knowledge recalled: registerActor Notice, ${actor.name} is already registered.", actorOrId);
         }
 
         this.npcActors.set(actor.id, actor);
