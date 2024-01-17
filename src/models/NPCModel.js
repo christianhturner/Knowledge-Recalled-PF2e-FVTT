@@ -30,6 +30,21 @@ export default class NPCManager {
 
     };
 
+    /**
+    * Method that returns an actor object that exist and is stored on the object.
+    * @method
+    * @param {string} actorId - ActorId for foundry Actor object
+    * @returns {Actor | undefined}
+    */
+    getActor(actorId) {
+        let actor;
+        if (!this.npcActors.get(actorId)) {
+            console.debug(`Knowledge Recalled: getActor can't find ${actorId}`);
+        }
+        actor = this.npcActors.get(actorId);
+        return actor;
+    };
+
     registerActor(actorOrId) {
         let actor;
         let actorId;
