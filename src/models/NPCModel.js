@@ -7,11 +7,23 @@ import { getActor } from "../control/utilities";
 
 export default class NPCManager {
     constructor() {
-        if (!instance) {
-            instance = this;
+        if (!ui.KnowledgeRecalled.NPCManager) {
+            ui.KnowledgeRecalled.NPCManager = this;
             this.npcActors = new Map();
         }
-        return instance;
+        return ui.KnowledgeRecalled.NPCManager;
+    }
+
+    /**
+     * Intnded to be called when Foundry is Ready i.e. Hooks.on Ready
+     * @method
+     * @static
+     * @description
+     * Embeds the View Manger into the applications primary class which is embeded in Foundry's UI global variable.
+     * Accessible at ui.KnowledgeRecalled.ViewManager
+     */
+    static _onReady() {
+        ui.KnowledgeRecalled.NPCManager = new NPCManager;
     }
 
     initializeFlags() {
