@@ -26,7 +26,27 @@ export default class NPCManager {
         ui.KnowledgeRecalled.NPCManager = new NPCManager;
     }
 
-    initializeFlags() {
+    initializeFlags(actorOrId) {
+        let actor;
+        let actorId;
+        if (typeof actorOrId === Actor) {
+            actor = actorOrId;
+            actorId = actor.actorId;
+        }
+        if (typeof actorOrId === "string") {
+            actorId = actorOrId;
+            actor = getActor(actorOrId);
+        };
+        if (actor.type != 'npc') {
+            return console.debug(`Actor is not of the NPC type.`);
+        }
+        if (this.getFlags(actorId)) {
+            return console.debug(`Actor flags are already initialized for ${actorId}`, actor);
+        }
+        const flags = {
+
+        };
+        this.setFlags(flags, actor);
 
     };
 
@@ -80,11 +100,19 @@ export default class NPCManager {
 
     }
 
-    getFlags() {
-
+    getFlags(actorId) {
+        const actor = getActor(actorId);
+        const flags = actor.getFlag('fvtt-knowledge-recalled-pf2e', 'npcFlags');
+        if (!flags) {
+            flags = this.initializeFlags(actor);
+            return flags;
+        }
+        else {
+            return flags;
+        }
     };
 
-    setFlags() {
+    setFlags(flags, actor) {
 
     }
 
