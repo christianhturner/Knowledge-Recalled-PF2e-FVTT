@@ -44,3 +44,20 @@ export function getActor(actorId) {
     console.log(actor);
     return actor;
 }
+
+/**
+ * Gets the nested property value of an object
+ * @function
+ *
+ * @param {object} obj - The object to get the property from
+ * @param {string} path - The path to the property separated by dots
+ * @returns {*} The property value
+ */
+export function getProperty(obj, path) {
+    let keys = path.split('.');
+    let result = obj;
+    for (let key of keys) {
+        result = result[key];
+    }
+    return result
+}
