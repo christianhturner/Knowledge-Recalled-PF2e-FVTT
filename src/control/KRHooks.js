@@ -1,5 +1,6 @@
 import KnowledgeRecalled from "../KnowledgeRecalled";
 import { insertKnowledgeRecalledbuttons } from "../foundryUiOverrides";
+import EncounterManager from "../models/EncounterModel";
 import NPCManager from "../models/NPCModel";
 import ViewManager from "./ViewManager";
 export default async function registerHooks() {
@@ -8,6 +9,7 @@ export default async function registerHooks() {
         ViewManager._onReady();
         ui.KnowledgeRecalled.ViewManager.init();
         NPCManager._onReady();
+        EncounterManager._onReady();
     });
     Hooks.on('getSceneControlButtons', (controls) => {
         insertKnowledgeRecalledbuttons(controls);
