@@ -14,7 +14,9 @@ export default class EncounterManager {
             ui.KnowledgeRecalled.EncounterManager = this;
             this.encounters = new Map();
             this.activeEncounters = new Map();
+            this.currentEncounter = new Map();
         }
+        this.updateEncounters();
         return ui.KnowledgeRecalled.EncounterManager;
     }
 
@@ -28,7 +30,15 @@ export default class EncounterManager {
      */
     static _onReady() {
         ui.KnowledgeRecalled.EncounterManager = new EncounterManager;
+    };
+
+    updateEncounters() {
+        this.encounters = this.listAllEncounters();
+        this.activeEncounters = this.listActiveEncounters();
+        this.currentEncounter = this.listCurrentEncounter();
+
     }
+
 
     /**
      * List Foundry Encounters
