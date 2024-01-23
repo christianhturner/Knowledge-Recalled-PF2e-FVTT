@@ -3,7 +3,7 @@ import NPCModel from "./models/NPCModel.js";
 import { isEqual } from 'lodash';
 import { insertKnowledgeRecalledbuttons } from "./foundryUiOverrides.js";
 import ViewManager from "./control/ViewManager.js";
-import registerHooks from "./control/EventManager.js";
+import registerHooks from "./control/foundryHooks.js";
 
 registerHooks();
 
