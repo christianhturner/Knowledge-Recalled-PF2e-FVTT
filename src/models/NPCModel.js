@@ -130,8 +130,16 @@ export default class NPCModel {
      * @param {Actor.id} actorId
      * @returns {flags}
      */
-    getFlags(actorId) {
-        const actor = game.actors.get(actorId);
+    getFlags(actorOrId) {
+        let actor;
+        let actorId
+        if (typeof actorOrId === 'string') {
+            actorId = actorId;
+            actor = game.actors.get(actorId);
+        } else {
+            actor = actorOrId;
+            actorId = actor.id;
+        }
         const flags = actor.getFlag('fvtt-knowledge-recalled-pf2e', 'npcFlags');
         if (!flags) {
             console.debug('No flags initialized, please initialize this actor.')
