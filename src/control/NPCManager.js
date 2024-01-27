@@ -1,4 +1,5 @@
 import NPCModel from "../models/NPCModel";
+import { getActor } from "./utilities";
 
 export default class NPCManager {
     constructor() {
@@ -33,7 +34,8 @@ export default class NPCManager {
      * @param {Actor} actorId - ActorId for foundry Actor object
      * @returns {NPCModel} - our custom Object
      */
-    createNPCObject(actor) {
+    createNPCObject(actorId) {
+        const actor = getActor(actorId)
         const NPCKRActor = new NPCModel(actor);
         console.debug(`KnowledgeRecalled CreateNPCObject Method`, NPCKRActor)
         return NPCKRActor;
