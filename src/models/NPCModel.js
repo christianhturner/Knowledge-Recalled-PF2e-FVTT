@@ -6,22 +6,17 @@ import { getActor, getProperty } from "../control/utilities";
 // look them up based on their actorID?
 export default class NPCModel {
     // hasn't been tested
-    constructor(actorOrId) {
-        let actor;
-        let actorId;
-        if (typeof actorOrId === Actor) {
-            actor = actorOrId;
-            actorId = actor.id;
-        } else {
-            actorId = actorOrId;
-            actor = getActor(actorId);
-        }
-
+    constructor(actorId) {
+        const actor = getActor(actorId);
         if (this.getFlags(actorId)) {
-            return actor;
+            this = actor;
+            console.debug(this);
+            return this;
         } else {
             this.initializeFlags(actor);
-            return actor;
+            this = actor;
+            console.debug(this);
+            return this;
         }
     }
 
