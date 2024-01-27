@@ -34,6 +34,8 @@ export default class NPCManager {
      * @returns {NPCModel} - our custom Object
      */
     createNPCObject(actor) {
-        return new NPCModel(actor);
+        const NPCKRActor = new NPCModel(actor);
+        console.debug(`KnowledgeRecalled CreateNPCObject Method`, NPCKRActor)
+        return NPCKRActor;
     }
 }
