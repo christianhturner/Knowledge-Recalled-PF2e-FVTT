@@ -1,8 +1,8 @@
 import { insertKnowledgeRecalledbuttons } from "../foundryUiOverrides";
 import KnowledgeRecalled from "../KnowledgeRecalled";
 import ViewManager from "./ViewManager";
-import NPCManager from "../models/NPCModel";
 import EncounterManager from "./EncounterManager";
+import NPCManager from "./NPCManager";
 
 export default async function registerHooks() {
     Hooks.on("ready", () => {
