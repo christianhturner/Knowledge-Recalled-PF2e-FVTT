@@ -29,15 +29,25 @@ export default async function registerHooks() {
     });
 
     Hooks.on('createCombat', (encounter, changes) => {
-
+        ui.KnowledgeRecalled.EncounterManager.updateEncounters();
+        console.debug('Knowledge Recalled create combat.', encounter, changes);
     });
 
     Hooks.on('deleteCombat', (encounter, changes) => {
-
+        ui.KnowledgeRecalled.EncounterManager.updateEncounters();
+        console.debug('Knowledge Recalled delete combat.', encounter, changes);
     });
 
-    Hooks.on('updateCombat'), (encounter, changes) => {
+    Hooks.on('updateCombat', (encounter, changes) => {
+        ui.KnowledgeRecalled.EncounterManager.updateEncounters();
+        console.debug('Knowledge Recalled update combat.', encounter, changes);
+    });
 
-    }
+    Hooks.on('combatStart', (round, turn) => {
+        ui.KnowledgeRecalled.EncounterManager.updateEncounters();
+        console.debug('Knowledge recalled combat start.', round, turn);
+    });
+
+    // See combatTurn to see more advanced eents if and when needed
 
 };

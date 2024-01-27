@@ -24,8 +24,10 @@ export default class EncounterManager {
 
     };
 
-    updateEncounter(encounterId, diffs) {
-
+    updateEncounters() {
+        this.activeEncounters = this.listActiveEncounters();
+        this.encounters = this.listAllEncounters();
+        this.currentEncounter = this.listCurrentEncounter();
     };
 
 
