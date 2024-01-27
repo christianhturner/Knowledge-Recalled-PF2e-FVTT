@@ -158,7 +158,27 @@ export default class NPCModel {
     setFlags(flags, actor) {
         actor.setFlag('fvtt-knowledge-recalled-pf2e', 'npcFlags', flags);
         console.debug(`Set flags on ${actor.name}:`, flags, actor);
-    }
+    };
+
+    /**
+    * Method for constructing flags for abilities. In pathfinder, this includes Attacks, abilities, passive abilities, and spells/rituals.
+    * Expected as a response of the updateActors Hook.
+    * @method
+    * @param {MeleePF2e} meleePf2e - Returned from PreCreateItem Hook value[0] in the array
+    * 
+    */
+    constructAbilitiesFlags(meleePf2e) {
+        const id = meleePf2e.id;
+        let type;
+        if (meleePf2e.isMelee) {
+            type = 'melee';
+        }
+        if (meleePf2e.isRanged || meleePf2e.isThrown) {
+            type = 'ranged';
+        };
+
+
+    };
 
     calculateDC() {
 
@@ -169,3 +189,8 @@ export default class NPCModel {
     }
 
 }
+
+/**
+ * @typedef {{img: string, name: string, id: string, system: object, type: string, isMelee: boolean, isRanged: boolean, isThrown: boolean, description: string}} MeleePF2e
+ * Item document for abilities, attacks, and passive abilities for the pathfinder2e system. @link https://github.com/foundryvtt/pf2e/blob/acd79e87c94b24b79d23ce7edb9ce4a027ffc636/src/module/item/melee/document.ts#L14
+ */
