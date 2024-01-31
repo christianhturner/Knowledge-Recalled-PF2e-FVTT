@@ -6,15 +6,15 @@ import { getActor, getProperty } from "../control/utilities";
 // look them up based on their actorID?
 export default class NPCModel {
     // hasn't been tested
-    constructor(actorId) {
-        const actor = getActor(actorId);
-        if (this.getFlags(actorId)) {
-            this = actor;
-            console.debug(this);
+    constructor(actor) {
+        this.actor = actor;
+    };
+
+    init() {
+        if (this.getFlags(this.actor.id)) {
             return this;
         } else {
             this.initializeFlags(actor);
-            this = actor;
             console.debug(this);
             return this;
         }
@@ -134,13 +134,13 @@ export default class NPCModel {
         let actor;
         let actorId
         if (typeof actorOrId === 'string') {
-            actorId = actorId;
+            actorId = actorOrId;
             actor = game.actors.get(actorId);
         } else {
             actor = actorOrId;
             actorId = actor.id;
         }
-        const flags = actor.getFlag('fvtt-knowledge-recalled-pf2e', 'npcFlags');
+        const flags = this.actor.getFlag('fvtt-knowledge-recalled-pf2e', 'npcFlags');
         if (!flags) {
             console.debug('No flags initialized, please initialize this actor.')
         }
@@ -167,8 +167,14 @@ export default class NPCModel {
     * @param {MeleePF2e} meleePf2e - Returned from PreCreateItem Hook value[0] in the array
     * 
     */
-    constructAbilitiesFlags(meleePf2e) {
+    static constructAbilitiesFlags(meleePf2e) {
         const id = meleePf2e.id;
+        const visibility = false;
+        const gmDescription = '';
+        const description = meleePf2e.description;
+        const discoveredBy = '';
+        const name = meleePf2e.name;
+        const owner = meleePf2e.parent.id;
         let type;
         if (meleePf2e.isMelee) {
             type = 'melee';
@@ -176,6 +182,32 @@ export default class NPCModel {
         if (meleePf2e.isRanged || meleePf2e.isThrown) {
             type = 'ranged';
         };
+        const data = {
+            name: name,
+            type: type,
+            description: description,
+            gmDescription: gmDescription,
+            visibility: visibility,
+            discoveredBy: discoveredBy
+        };
+        // map does not work, throws an iterator error. This may be fine though
+        // previously `const abilityData = new Map(id, data);`
+        const abilityData = [id, data];
+        console.debug(`Knowledge Recalled new ability property link created for ${id}, ${name}`,
+            abilityData);
+        return abilityData;
+        // need to determin if we will set this, or hand
+    };
+
+    /**
+     * Method for checking against a map for a duplicate.
+     * @param {Object} actor - Actor object we are checking for duplicate
+     * @param {string} path - Starting at the Actor, the dot notation path to the item
+     * @param {string} itemId - string item id
+     */
+    checkForDuplicateItemDocuments(actor, path, itemId) {
+        // I need a utility function for parsing a string to resolve the path being passed.
+
 
 
     };
