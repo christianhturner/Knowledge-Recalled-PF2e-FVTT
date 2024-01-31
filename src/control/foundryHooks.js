@@ -3,6 +3,7 @@ import KnowledgeRecalled from "../KnowledgeRecalled";
 import ViewManager from "./ViewManager";
 import EncounterManager from "./EncounterManager";
 import NPCManager from "./NPCManager";
+import NPCModel from "../models/NPCModel";
 
 export default async function registerHooks() {
     Hooks.on("ready", () => {
@@ -50,4 +51,12 @@ export default async function registerHooks() {
 
     // See combatTurn to see more advanced eents if and when needed
 
+    Hooks.on('createItem', (item, options, userId) => {
+        NPCModel.constructAbilitiesFlags(item);
+        // TODO: 
+        // - Add this value to the flags for new items on create
+        // - create method for deleting from flag
+        // - Create method for updating and preserving portions of the data that shouldn't change as long
+        // as the ID remains the same.
+    })
 };
