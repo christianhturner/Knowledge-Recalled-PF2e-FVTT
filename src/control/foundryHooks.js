@@ -52,6 +52,13 @@ export default async function registerHooks() {
     // See combatTurn to see more advanced eents if and when needed
 
     Hooks.on('createItem', (item, options, userId) => {
+        /*
+        * We may instead want to do something like this:
+        * const item = item; so we can pass into the constructAbilitiesFlags
+        * const actorId = get this from the item
+        * We can then const actor = NPCManager.GetActor(actorId); returns NPCModel
+        * actor.constructAbilitiesFlags(item); Then we can more safely inject this into the model
+        */
         NPCModel.constructAbilitiesFlags(item);
         // TODO: 
         // - Add this value to the flags for new items on create

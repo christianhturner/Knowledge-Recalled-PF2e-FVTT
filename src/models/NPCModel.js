@@ -24,6 +24,13 @@ export default class NPCModel {
      * }
      */
 
+    /*
+     * TODO: Maybe we should remove the static nature of the createAbilitiyItems??? I do think we
+     * may need a static method getActor, which will provide a means to get an Actorby ID, and 
+     * return the object we are pondering above. Then that could have the create done on itself
+     * and then simply stored inside of the this.flags.
+     */
+
     init() {
         if (this.getFlags(this.actor.id)) {
             return this;
