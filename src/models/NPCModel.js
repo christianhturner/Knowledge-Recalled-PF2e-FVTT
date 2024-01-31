@@ -9,6 +9,20 @@ export default class NPCModel {
     constructor(actor) {
         this.actor = actor;
     };
+    /*
+     * Maybe the object itself should appear as object = {
+     * actor: { PF2E Actor Object },
+     * flags: { flags },
+     *
+     * TODO: IDEA
+     * When we are working on the actual object itself we can reference the actor on the object
+     * and the flags will apear under the actor key as well, but that represents the flags when 
+     * stored on the object in the database at rest. When we are working the object during `edit`
+     * we fetch that and store it at the top level of the object. Then our Set flags method can
+     * simply merge down the flags at the top level into the actual actor object to be written to the
+     * database.
+     * }
+     */
 
     init() {
         if (this.getFlags(this.actor.id)) {
