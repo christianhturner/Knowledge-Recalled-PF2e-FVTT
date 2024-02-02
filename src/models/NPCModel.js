@@ -32,6 +32,12 @@ export default class NPCModel {
      */
 
     init() {
+        if (this.actor.getFlag('fvtt-knowledge-recalled-pf2e', 'npcFlags')) {
+            this.flags = this.actor.getFlag('fvtt-knowledge-recalled-pf2e', 'npcFlags');
+        } else {
+            this.initializeFlags();
+        }
+        /*
         if (this.getFlags(this.actor.id)) {
             return this;
         } else {
@@ -39,33 +45,19 @@ export default class NPCModel {
             console.debug(this);
             return this;
         }
+        */
     }
 
-    initializeFlags(actorOrId) {
-        let actor;
-        let actorId;
-        if (typeof actorOrId === Actor) {
-            actor = actorOrId;
-            actorId = actor.id;
-            if (!this.getActor(actorId)) {
-                this.registerActor(actor);
-            };
-        }
-        if (typeof actorOrId === "string") {
-            if (!this.getActor(actorId)) {
-                this.registerActor(actorOrId);
-            }
-            actorId = actorOrId;
-            actor = getActor(actorOrId);
-        };
-        if (actor.type != 'npc') {
+    /**
+     * @method
+     * @private
+     */
+    initializeFlags() {
+        if (this.actor.type != 'npc') {
             return console.debug(`Actor is not of the NPC type.`);
         }
-        if (this.getFlags(actorId)) {
-            return console.debug(`Actor flags are already initialized for ${actorId}`, actor);
-        }
-        const flags = {
-            actorID: actor.id,
+        this.flags = {
+            actorID: this.actor.id,
             defaultDC: 0,
             modifiedDC: 0,
             baseCharacterInfo: {
@@ -111,7 +103,7 @@ export default class NPCModel {
                 adjustment: {},
             }
         };
-        this.setFlags(flags, actor);
+        this.setFlags(this.flags, this.actor);
 
     };
 
@@ -176,8 +168,8 @@ export default class NPCModel {
     * @param {Object} flags - flags listed in the initializeFlags methods
     * @param {Actor} actor - Foundry Actor object.
     */
-    setFlags(flags, actor) {
-        actor.setFlag('fvtt-knowledge-recalled-pf2e', 'npcFlags', flags);
+    setFlags(flags) {
+        this.actor.setFlag('fvtt-knowledge-recalled-pf2e', 'npcFlags', flags);
         console.debug(`Set flags on ${actor.name}:`, flags, actor);
     };
 
