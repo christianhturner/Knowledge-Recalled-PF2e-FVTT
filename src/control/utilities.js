@@ -60,4 +60,21 @@ export function getProperty(obj, path) {
         result = result[key];
     }
     return result
+};
+
+/**
+ * @function
+ * A utility function to determine if Actor with matching name already exist.
+ * @param {Actor} actor 
+ *
+ * @returns {boolean | undefined}
+ */
+
+export function checkForExistingActor(actor) {
+    const actorsArray = game.actors;
+    if (actorsArray.find(a => a.name === actor.name)) {
+        console.debug(`${actor.name}: ${actor.id} already exist`);
+        return actor.id;
+    }
+    return undefined
 }
