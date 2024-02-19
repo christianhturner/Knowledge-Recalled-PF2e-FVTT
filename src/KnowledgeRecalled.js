@@ -1,13 +1,12 @@
-import ViewManager from "./control/ViewManager";
 import { getActiveEncounters, getActor } from "./control/utilities";
-import NPCModel from "./models/NPCModel";
+import { NPCModel } from "./models/NPCModel";
 
 /**
  * Parent class which I embed other singleton manager classes to.
  * @class
  */
 // eslint-disable-next-line no-unused-vars
-export default class KnowledgeRecalled extends Application {
+export class KnowledgeRecalled extends Application {
     constructor() {
         super();
     }

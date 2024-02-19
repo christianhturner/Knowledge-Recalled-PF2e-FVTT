@@ -4,7 +4,7 @@ import { getActor, getProperty } from "../control/utilities";
 
 // If this is the manager, it should be independent of any actor, but we can register actors? and maybew
 // look them up based on their actorID?
-export default class NPCModel {
+export class NPCModel {
     // hasn't been tested
     constructor(actor) {
         this.actor = actor;

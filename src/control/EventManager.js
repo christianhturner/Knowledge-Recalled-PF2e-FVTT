@@ -1,7 +1,6 @@
-import registerHooks from "./foundryHooks";
 
 
-export default class EventManager {
+export class EventManager {
     constructor() {
         if (!ui.KnowledgeRecalled.EventManager) {
             ui.KnowledgeRecalled.EventManager = this;

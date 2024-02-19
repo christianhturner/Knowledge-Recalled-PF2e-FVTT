@@ -1,7 +1,7 @@
-import NPCModel from "../models/NPCModel";
+import { NPCModel } from "../models/NPCModel";
 import { getActor } from "./utilities";
 
-export default class NPCManager {
+export class NPCManager {
     constructor() {
         if (!ui.KnowledgeRecalled.NPCManager) {
             ui.KnowledgeRecalled.NPCManager = this;

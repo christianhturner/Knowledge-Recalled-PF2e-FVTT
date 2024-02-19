@@ -1,4 +1,3 @@
-import {TJSGameSettings} from "@typhonjs-fvtt/svelte-standard/_dist/store/index.js";
 import {get} from "svelte/store";
 
 export interface KnowledgeRecalledBackupEntry {

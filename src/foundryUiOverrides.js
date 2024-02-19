@@ -1,8 +1,6 @@
-import KnowledgeRecalled from "./KnowledgeRecalled";
-import ViewManager from "./control/ViewManager";
-import GMJournalApplication from "./view/GMJournal/GMJournalApplication";
+import { ViewManager } from "./control/ViewManager";
 
-export default function registerUIOverrides() {
+export function registerUIOverrides() {
     const viewManager = new ViewManager();
     Hooks.on('getSceneControlButtons', (controls) => {
         insertJournalbuttons(controls);

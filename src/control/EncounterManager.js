@@ -5,7 +5,7 @@
  * @property {Map<key, encounter>} encounters
  * @property {Map<key, encounter>} currentEncounter
  */
-export default class EncounterManager {
+export class EncounterManager {
     // encounters should be created at startup, and not stored.
 
 

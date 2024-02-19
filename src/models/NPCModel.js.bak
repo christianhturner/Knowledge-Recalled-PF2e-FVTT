@@ -6,7 +6,7 @@ import { removeFlag } from "../control/data.js";
  *
  * @class
  */
-export default class NPCModel
+export class NPCModel
 {
    /**
     * Create an instance of NPCModel

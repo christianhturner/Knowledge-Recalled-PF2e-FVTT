@@ -1,13 +1,13 @@
 import { insertKnowledgeRecalledbuttons } from "../foundryUiOverrides";
-import KnowledgeRecalled from "../KnowledgeRecalled";
-import ViewManager from "./ViewManager";
-import EncounterManager from "./EncounterManager";
-import NPCManager from "./NPCManager";
-import NPCModel from "../models/NPCModel";
+import { KnowledgeRecalled } from "../KnowledgeRecalled";
+import { ViewManager } from "./ViewManager";
+import { EncounterManager } from "./EncounterManager";
+import { NPCManager } from "./NPCManager";
+import { NPCModel } from "../models/NPCModel";
 import { checkForExistingActor } from "./utilities";
-import DuplicateActorPrompt from "../view/Dialogs/DuplicateActorPrompt";
 
-export default async function registerHooks() {
+
+export async function registerHooks() {
     Hooks.on("ready", () => {
         KnowledgeRecalled._onReady();
         ViewManager._onReady();
@@ -26,8 +26,7 @@ export default async function registerHooks() {
 
     Hooks.on('createActor', (actor, changes, userId) => {
         checkForExistingActor(actor);
-        new DuplicateActorPrompt(actor);
-    })
+    });
     // Hook will be used for updating the data between actor document and the NPCModel flag store
     Hooks.on('updateActor', (actor, changes) => {
         if (!changes) {
