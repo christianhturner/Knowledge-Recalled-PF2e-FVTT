@@ -39,5 +39,12 @@ export class NPCManager {
         const NPCKRActor = new NPCModel(actor).init();
         console.debug(`KnowledgeRecalled CreateNPCObject Method`, NPCKRActor)
         return NPCKRActor;
-    }
+    };
+
+    /**
+     * Method for returning Abilities ItemDocuments
+     * @method
+     * @param {MeleePF2e} meleePF2e - ability and attack ItemDocuments
+     * @returns {}
+     */
 }
