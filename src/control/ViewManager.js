@@ -1,5 +1,5 @@
 import { writable } from "svelte/store"
-import BasicApplication from "../view/BasicApplication";
+import GMJournalApplication from "../view/GMJournalApplication";
 export class ViewManager {
     apps = {};
     appsState = {};
@@ -26,7 +26,7 @@ export class ViewManager {
      * all of the applications we will be managing.
      */
     init() {
-        this.registerApplication('gmJournal', new BasicApplication)
+        this.registerApplication('gmJournal', new GMJournalApplication)
     }
     /**
     * Register an application with the View Manager. Not intended to be used outside of ViewManager
