@@ -1,5 +1,4 @@
 import { dcByLevel, rarityMap } from "../constants/constants"
-import { removeFlag } from "../control/data.js"
 import { getActor, getProperty } from "../control/utilities";
 
 // If this is the manager, it should be independent of any actor, but we can register actors? and maybew
@@ -178,6 +177,7 @@ export class NPCModel {
     * Expected as a response of the updateActors Hook.
     * @method
     * @param {MeleePF2e} meleePf2e - Returned from PreCreateItem Hook value[0] in the array
+    * @returns {AbilityData}
     * 
     */
     static constructAbilitiesFlags(meleePf2e) {
@@ -239,3 +239,27 @@ export class NPCModel {
  * @typedef {{img: string, name: string, id: string, system: object, type: string, isMelee: boolean, isRanged: boolean, isThrown: boolean, description: string}} MeleePF2e
  * Item document for abilities, attacks, and passive abilities for the pathfinder2e system. @link https://github.com/foundryvtt/pf2e/blob/acd79e87c94b24b79d23ce7edb9ce4a027ffc636/src/module/item/melee/document.ts#L14
  */
+
+/**
+ * @typedef abilityData
+ * @type {Object}
+ * @param {string} name
+ * @param {string} type
+ * @param {string} description
+ * @param {string} gmDescription
+ * @param {boolean} visibility
+ * @param {string} discoveredBy
+ */
+
+/**
+ * @typedef AbilityData
+ * @type {Map<string, abilityData>}
+ */
+
+// TODO: Investigate the event where items are created, I noticed that we are creating every item
+// which may be okay, but if their is a more effecient way lets try and use that. Let's inspect what
+// events occur when an item is created, edited, and deleted and see if we can hone in on something that
+// is more specific with the Actor itself.
+//
+// TODO: Let's investigate the observer pattern for keeping the store and the data at rest in sync
+//

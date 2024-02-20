@@ -1,46 +1,45 @@
 export const CONSTANTS = {
-    moduleName: '',
-    moduleLabel: '',
-    flabDB: '',
+   moduleLabel: '',
+   flabDB: '',
 };
 
 
 export const getConstants = () => {
-    CONSTANTS.moduleName = 'Knowledge Recalled';
-    CONSTANTS.moduleLabel = 'fvtt-knowledge-recalled-pf2e';
-    CONSTANTS.npcFlags = 'npcFlags';
-    CONSTANTS.flabDB = 'knowledge-recalled';
-    return CONSTANTS;
+   CONSTANTS.moduleName = 'Knowledge Recalled';
+   CONSTANTS.moduleLabel = 'fvtt-knowledge-recalled-pf2e';
+   CONSTANTS.npcFlags = 'npcFlags';
+   CONSTANTS.flabDB = 'knowledge-recalled';
+   return CONSTANTS;
 };
 
 
 // Defines the left-hand UI buttons. First button is the main button, which renders the sub buttons.
 export const knowledgeRecalledIconLauncher = [
-    {
-        name: CONSTANTS.moduleName,
-        title: CONSTANTS.moduleLabel,
-        icon: 'fas fa-book',
-        visible: true,
+   {
+      name: CONSTANTS.moduleName,
+      title: CONSTANTS.moduleLabel,
+      icon: 'fas fa-book',
+      visible: true,
 
-    },
+   },
 ];
 
 export const adjustmentScale = [
-    "incredibly easy",
-    "very easy",
-    "easy",
-    "normal",
-    "hard",
-    "very hard",
-    "incredibly hard"
+   "incredibly easy",
+   "very easy",
+   "easy",
+   "normal",
+   "hard",
+   "very hard",
+   "incredibly hard"
 ];
 
 export const proficiencyLabels = [
-    "untrained",
-    "trained",
-    "expert",
-    "master",
-    "legendary"
+   "untrained",
+   "trained",
+   "expert",
+   "master",
+   "legendary"
 ];
 
 export const proficiencyRankLabelsMap = new Map();
@@ -103,28 +102,28 @@ simpleDCs.set("master", 25);
 simpleDCs.set("legendary", 30);
 
 export const coreKnowledgeSkills =
-    [
-        "Arcana",
-        "Crafting",
-        "Nature",
-        "Occultism",
-        "Religion",
-        "Society"
-    ];
+   [
+      "Arcana",
+      "Crafting",
+      "Nature",
+      "Occultism",
+      "Religion",
+      "Society"
+   ];
 
 export const nonKnowledgeSkills =
-    [
-        "Acrobatics",
-        "Athletics",
-        "Deception",
-        "Diplomacy",
-        "Intimidation",
-        "Medicine",
-        "Performance",
-        "Stealth",
-        "Survival",
-        "Thievery"
-    ];
+   [
+      "Acrobatics",
+      "Athletics",
+      "Deception",
+      "Diplomacy",
+      "Intimidation",
+      "Medicine",
+      "Performance",
+      "Stealth",
+      "Survival",
+      "Thievery"
+   ];
 
 export const recallKnowledgeAssociatedSkills = new Map();
 recallKnowledgeAssociatedSkills.set("aberration", ["Occultism"]);
@@ -148,9 +147,8 @@ recallKnowledgeAssociatedSkills.set("undead", ["Religion"]);
 
 
 export const FILES = {
-    ORIGIN_FOLDER: 'data',
-    moduleDataDirectory: "knowledge-recalled-data",
-    backupManagerJSON: "backup-manager.json"
+   ORIGIN_FOLDER: 'data',
+   moduleDataDirectory: "knowledge-recalled-data",
+   backupManagerJSON: "backup-manager.json"
 };
-
 
