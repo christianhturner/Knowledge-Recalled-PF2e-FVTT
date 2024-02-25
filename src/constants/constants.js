@@ -1,4 +1,5 @@
 export const CONSTANTS = {
+   moduleId: 'fvtt-knowledge-recalled-pf2e',
    moduleLabel: '',
    flabDB: '',
 };
