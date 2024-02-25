@@ -1,5 +1,8 @@
 ![template-svelte-esm](https://i.imgur.com/rmfWSrs.jpg)
 
+## dependencies
+https://github.com/RPG-Made-Simple/FVTT-Debugger
+
 
 [![TyphonJS Discord](https://img.shields.io/discord/737953117999726592?label=TyphonJS%20Discord)](https://discord.gg/mnbgN8f)
 [![Twitch](https://img.shields.io/twitch/status/typhonrt?style=social)](https://www.twitch.tv/typhonrt)

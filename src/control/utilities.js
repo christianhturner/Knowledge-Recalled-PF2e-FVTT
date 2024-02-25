@@ -1,21 +1,22 @@
+import { CONSTANTS } from "../constants/constants";
 
 /**
  * @function
  * A utility function that returns all active encounters registered in the combat tracker.
  */
 export function getActiveEncounters() {
-    const encounters = game.combats.combats;
-    const activeEncounters = [];
-    for (let index = 0; index < encounters.length; index++) {
-        const testEncounter = encounters[index];
-        if (testEncounter.isActive) {
-            activeEncounters.push(testEncounter)
-        }
-    }
-    if (activeEncounters.length != 0) {
-        return activeEncounters;
-    }
-    console.error("No active encounters.");
+   const encounters = game.combats.combats;
+   const activeEncounters = [];
+   for (let index = 0; index < encounters.length; index++) {
+      const testEncounter = encounters[index];
+      if (testEncounter.isActive) {
+         activeEncounters.push(testEncounter)
+      }
+   }
+   if (activeEncounters.length != 0) {
+      return activeEncounters;
+   }
+   console.error("No active encounters.");
 };
 
 /**
@@ -25,12 +26,12 @@ export function getActiveEncounters() {
  * @param {Array<string>} actorIds 
  */
 export function getActors(actorIds) {
-    const arrayOfActors = [];
-    for (let index = 0; index < actorIds.length; index++) {
-        const actorId = actorIds[index];
-        arrayOfActors.push(game.actors.get(actorId));
-    }
-    console.log(arrayOfActors);
+   const arrayOfActors = [];
+   for (let index = 0; index < actorIds.length; index++) {
+      const actorId = actorIds[index];
+      arrayOfActors.push(game.actors.get(actorId));
+   }
+   console.log(arrayOfActors);
 }
 
 /**
@@ -40,9 +41,9 @@ export function getActors(actorIds) {
  * @param {string} actorId 
  */
 export function getActor(actorId) {
-    const actor = game.actors.get(actorId);
-    console.log(actor);
-    return actor;
+   const actor = game.actors.get(actorId);
+   console.log(actor);
+   return actor;
 }
 
 /**
@@ -54,13 +55,14 @@ export function getActor(actorId) {
  * @returns {*} The property value
  */
 export function getProperty(obj, path) {
-    let keys = path.split('.');
-    let result = obj;
-    for (let key of keys) {
-        result = result[key];
-    }
-    return result
+   let keys = path.split('.');
+   let result = obj;
+   for (let key of keys) {
+      result = result[key];
+   }
+   return result
 };
+
 
 /**
  * @function
@@ -71,12 +73,12 @@ export function getProperty(obj, path) {
  */
 
 export function checkForExistingActor(actor) {
-    const actorsArray = game.actors;
-    if (actorsArray.find(a => a.name === actor.name)) {
-        console.debug(`${actor.name}: ${actor.id} already exist`);
-        return actor.id;
-    }
-    return undefined
+   const actorsArray = game.actors;
+   if (actorsArray.find(a => a.name === actor.name)) {
+      console.debug(`${actor.name}: ${actor.id} already exist`);
+      return actor.id;
+   }
+   return undefined
 }
 
 /**
@@ -87,12 +89,12 @@ export function checkForExistingActor(actor) {
  * removeFlag(actor, 'npcFlags.lowestSave.value');
  */
 export function removeFlag(object, flagPath) {
-    const flag = object.getFlag('fvtt-knowledge-recalled-pf2e', `${flagPath}`);
-    if (flag) {
-        object.unsetFlag('fvtt-knowledge-recalled-pf2e', `${flagPath}`);
-        console.log(`Knowledge Recalled: Flag npcFlags.${flagPath} removed from ${object.name}`);
-    }
-    else {
-        console.log(`Knowledge Recalled Flag npcFlags.${flagPath} does not exist on ${object.name}`);
-    }
+   const flag = object.getFlag('fvtt-knowledge-recalled-pf2e', `${flagPath}`);
+   if (flag) {
+      object.unsetFlag('fvtt-knowledge-recalled-pf2e', `${flagPath}`);
+      console.log(`Knowledge Recalled: Flag npcFlags.${flagPath} removed from ${object.name}`);
+   }
+   else {
+      console.log(`Knowledge Recalled Flag npcFlags.${flagPath} does not exist on ${object.name}`);
+   }
 }
