@@ -14,6 +14,8 @@ let devMode = true;
 export async function registerHooks() {
    Hooks.on("ready", () => {
       KnowledgeRecalled._onReady();
+      //ViewManager._onReady();
+      //ui.KnowledgeRecalled.ViewManager.init();
       NPCManager._onReady();
       EncounterManager._onReady();
    });
