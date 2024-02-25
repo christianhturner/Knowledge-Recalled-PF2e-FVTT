@@ -7,6 +7,8 @@ import { NPCModel } from "../models/NPCModel";
 import { checkForExistingActor } from "./utilities";
 import { SetupDebugger } from "../Debugger";
 
+// Parameter should be able to be checked within the module settings.
+let devMode = true;
 
 
 export async function registerHooks() {
@@ -15,6 +17,9 @@ export async function registerHooks() {
       NPCManager._onReady();
       EncounterManager._onReady();
    });
+   Hooks.once('debugger.ready', () =>
+      new SetupDebugger(devMode)
+   );
    Hooks.on('getSceneControlButtons', (controls) => {
       insertKnowledgeRecalledbuttons(controls);
    });
