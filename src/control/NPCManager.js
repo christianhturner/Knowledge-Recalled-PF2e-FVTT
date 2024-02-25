@@ -45,6 +45,6 @@ export class NPCManager {
      * Method for returning Abilities ItemDocuments
      * @method
      * @param {MeleePF2e} meleePF2e - ability and attack ItemDocuments
-     * @returns {}
+     * @returns {AbilityData}
      */
 }

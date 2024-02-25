@@ -19,9 +19,11 @@ export async function registerHooks() {
       NPCManager._onReady();
       EncounterManager._onReady();
    });
+
    Hooks.once('debugger.ready', () =>
       new SetupDebugger(devMode)
    );
+
    Hooks.on('getSceneControlButtons', (controls) => {
       insertKnowledgeRecalledbuttons(controls);
    });
@@ -71,6 +73,15 @@ export async function registerHooks() {
       * We can then const actor = NPCManager.GetActor(actorId); returns NPCModel
       * actor.constructAbilitiesFlags(item); Then we can more safely inject this into the model
       */
+
+      const actorOwner = item.parent;
+      if (actorOwner.type == 'npc') {
+         const actorId = actorOwner.id;
+         const NpcActor = ui.KnowledgeRecalled.NPCManager.createNPCObject(actorId);
+         NpcActor.constructAbilitiesFlags(item);
+
+      }
+
       // TODO: 
       // - Add this value to the flags for new items on create
       // - create method for deleting from flag
@@ -78,3 +89,14 @@ export async function registerHooks() {
       // as the ID remains the same.
    });
 
+   Hooks.on('updateItem', (item, options, userId) => {
+      console.debug(`Item ${item.name} created`)
+
+   });
+
+   Hooks.on('deleteItem', (item, options, userId) => {
+      console.debug(`Item ${item.name} deleted`)
+   });
+
+
+};

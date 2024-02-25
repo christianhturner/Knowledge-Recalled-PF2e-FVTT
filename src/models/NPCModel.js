@@ -3,10 +3,22 @@ import { getActor, getProperty } from "../control/utilities";
 
 // If this is the manager, it should be independent of any actor, but we can register actors? and maybew
 // look them up based on their actorID?
+/**
+ * NPCModel
+ * @class
+ * @property {actor} actor
+ * @property {flags} flag
+ *
+ * @type {object} flags
+ * @property {string} actorID
+ * @property {number} defaultDC
+ * 
+ */
 export class NPCModel {
     // hasn't been tested
     constructor(actor) {
         this.actor = actor;
+        this.flags = {};
     };
     /*
      * Maybe the object itself should appear as object = {
@@ -36,6 +48,7 @@ export class NPCModel {
         } else {
             this.initializeFlags();
         }
+        return this;
         /*
         if (this.getFlags(this.actor.id)) {
             return this;
@@ -95,12 +108,11 @@ export class NPCModel {
             immunities: {},
             resistances: {},
             weaknesses: {},
-            passiveAbilities: {},
-            actionAbilities: {},
-            spellAbilities: {},
-            difficultyAdjustmentByPlayerId: {
-                adjustment: {},
-            }
+            attacks: new Map,
+            passiveAbilities: new Map,
+            actionAbilities: new Map,
+            spellAbilities: new Map,
+            difficultyAdjustmentByPlayerId: new Map,
         };
         this.setFlags(this.flags, this.actor);
 
@@ -180,8 +192,12 @@ export class NPCModel {
     * @returns {AbilityData}
     * 
     */
-    static constructAbilitiesFlags(meleePf2e) {
+    constructAbilitiesFlags(meleePf2e) {
         const id = meleePf2e.id;
+        if (this.checkForDuplicateDocuments(id, 'attacks')) {
+            console.debug(`${id} already exists`)
+            return
+        }
         const visibility = false;
         const gmDescription = '';
         const description = meleePf2e.description;
@@ -208,20 +224,26 @@ export class NPCModel {
         const abilityData = [id, data];
         console.debug(`Knowledge Recalled new ability property link created for ${id}, ${name}`,
             abilityData);
-        return abilityData;
+        this.flags.attacks.set(abilityData)
         // need to determin if we will set this, or hand
     };
 
     /**
      * Method for checking against a map for a duplicate.
+     * @private
      * @param {Object} actor - Actor object we are checking for duplicate
      * @param {string} path - Starting at the Actor, the dot notation path to the item
      * @param {string} itemId - string item id
+     * @returns {boolean}
      */
-    checkForDuplicateItemDocuments(actor, path, itemId) {
-        // I need a utility function for parsing a string to resolve the path being passed.
-
-
+    checkForDuplicateDocuments(documentId, property) {
+        const prop = this.flags[property];
+        if (prop.has(documentId)) {
+            console.debug(`Document with ${documentId} already exist`)
+            return true
+        } else {
+            return false
+        }
 
     };
 
