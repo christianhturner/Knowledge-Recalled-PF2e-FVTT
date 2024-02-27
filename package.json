@@ -20,13 +20,18 @@
     "@typhonjs-config/eslint-config": "^0.6.0",
     "@typhonjs-fvtt/eslint-config-foundry.js": "^0.8.0",
     "eslint": "^8",
+    "jsdoc": "^4.0.2",
     "svelte-preprocess": "^5",
     "vite": "^4.4.0"
   },
-  "browserslist": [">5%", "not IE 11"],
+  "browserslist": [
+    ">5%",
+    "not IE 11"
+  ],
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "eslint": "eslint ."
+    "eslint": "eslint .",
+    "jsdoc": "jsdoc -c jsdoc.json"
   }
 }

@@ -1,0 +1,9 @@
+{
+  "include": [
+    "./src/**/*",
+    "./external/**/*",
+    "./external/client/**/*",
+    "./external/common/types.mjs",
+    "./external/client/ui/**/*"
+  ]
+}
