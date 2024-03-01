@@ -9,8 +9,6 @@
   // ESLint configs are prone to particular choices, so if the first config below doesn't work for you then replace
   // with one that you do prefer. The second config defines globals defined in `foundry.js` for use w/ `no-shadow`.
   "extends": [
-    "@typhonjs-fvtt/eslint-config-foundry.js",
-    "@typhonjs-config-eslint",
     "eslint:recommended",
     "plugin:jsdoc/recommended"
   ],
@@ -19,8 +17,12 @@
     "jquery": true,
     "mocha": true
   },
+  "globals": {
+    "arguments": true
+  },
   "plugins": [
-    "import"
+    "import",
+    "@stylistic"
   ],
   // Prevents overwriting any built in globals particularly from `@typhonjs-fvtt/eslint-config-foundry.js`, but also
   // node & browser environments. `event / window.event` shadowing is allowed due to being a common variable name and
@@ -28,7 +30,9 @@
   //
   // Note: if you are using Typescript you must use `@typescript-eslint/no-shadow`
   "rules": {
-    "indent": 4,
+    /* Jsdoc */
+    "jsdoc/no-defaults": "off",
+    "jsdoc/no-undefined-types": "off",
     "no-shadow": [
       "error",
       {
@@ -44,6 +48,10 @@
         ]
       }
     ],
+    "indent": [
+      "warn",
+      4
+    ],
     "block-spacing": "error",
     "brace-style": [
       "warn",
@@ -51,6 +59,11 @@
       {
         "allowSingleLine": true
       }
-    ]
+    ],
+    /* stylistic */
+    "@stylistic/array-bracket-newline": {
+      "multiline": true,
+      "minItems": 2
+    }
   }
 }

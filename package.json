@@ -17,6 +17,7 @@
     "svelte": "^4.2.0"
   },
   "devDependencies": {
+    "@stylistic/eslint-plugin-js": "^1.6.2",
     "@typhonjs-config/eslint-config": "^0.6.0",
     "@typhonjs-fvtt/eslint-config-foundry.js": "^0.8.0",
     "eslint": "^8",
