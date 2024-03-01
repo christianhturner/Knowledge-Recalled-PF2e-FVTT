@@ -90,6 +90,12 @@ export async function registerHooks() {
    });
 
    Hooks.on('updateItem', (item, options, userId) => {
+      const actorOwner = item.parent;
+      if (actorOwner.type == 'npc') {
+         const actorId = actorOwner.id;
+         const NpcActor = ui.KnowledgeRecalled.NPCManager.createNPCObject(actorId);
+         NpcActor.updateAttacksFlags(item);
+      }
       console.debug(`Item ${item.name} created`)
 
    });
