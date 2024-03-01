@@ -7,12 +7,6 @@ import { getActor, getProperty } from "../control/utilities";
  * NPCModel
  * @class
  * @property {actor} actor
- * @property {flags} flag
- *
- * @type {object} flags
- * @property {string} actorID
- * @property {number} defaultDC
- * 
  */
 export class NPCModel {
    // hasn't been tested
@@ -181,7 +175,7 @@ export class NPCModel {
    */
    setFlags(flags) {
       this.actor.setFlag('fvtt-knowledge-recalled-pf2e', 'npcFlags', flags);
-      console.info(`Set flags on ${actor.name}:`, flags, actor);
+      console.info(`Set flags on ${this.actor.name}:`, this.flags, this.actor);
    };
 
    /**
@@ -200,10 +194,8 @@ export class NPCModel {
       }
       const visibility = false;
       const gmDescription = '';
-      const description = meleePf2e.description;
       const discoveredBy = '';
       const name = meleePf2e.name;
-      const owner = meleePf2e.parent.id;
       let type;
       if (meleePf2e.isMelee) {
          type = 'melee';
@@ -214,7 +206,6 @@ export class NPCModel {
       const data = {
          name: name,
          type: type,
-         description: description,
          gmDescription: gmDescription,
          visibility: visibility,
          discoveredBy: discoveredBy
@@ -228,6 +219,42 @@ export class NPCModel {
       this.setFlags(this.flags);
       // need to determin if we will set this, or hand
    };
+   /**
+    * Method for updating Attacks
+    * @method
+    * @param {MeleePF2e} MeleePF2e - Returned from UpdateCreateItem Hook value[0] in the array
+    * @returns {AbilityData}
+    */
+   updateAttacksFlags(meleePf2e) {
+      const id = meleePf2e.id;
+      if (!this.checkForDuplicateDocuments(id, 'attacks')) {
+         console.debug(`${id} doesn't exit please debug.`)
+         return
+      };
+      const name = meleePf2e.name;
+      let type;
+      if (meleePf2e.isMelee) {
+         type = 'melee';
+      }
+      if (meleePf2e.isRanged || meleePf2e.isThrown) {
+         type = 'ranged';
+      };
+      const tempData = {
+         name: name,
+         type: type,
+      };
+      //debug found error here
+      const existingData = this.flags.attacks.find(item => item[0] === id)[1];
+      const mergedData = { ...existingData, ...tempData };
+      this.flags.attacks = this.flags.attacks.map(item => {
+         if (item[0] === id) {
+            return [id, mergedData];
+         }
+         return item;
+      });
+      this.info(`Knowledge Recalled updated ability ${id}, ${name}`, item)
+      this.setFlags(this.flags)
+   }
 
    /**
     * Method for checking against a map for a duplicate.
@@ -239,7 +266,8 @@ export class NPCModel {
     */
    checkForDuplicateDocuments(documentId, property) {
       const prop = this.flags[property];
-      if (prop.hasOwnProperty(documentId)) {
+      const duplicateFlag = prop.map(item => item[0].includes(documentId));
+      if (duplicateFlag) {
          console.info(`Document with ${documentId} already exist`)
          return true
       } else {
