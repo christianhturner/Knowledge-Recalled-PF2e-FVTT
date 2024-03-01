@@ -252,7 +252,7 @@ export class NPCModel {
          }
          return item;
       });
-      this.info(`Knowledge Recalled updated ability ${id}, ${name}`, item)
+      console.info(`Knowledge Recalled updated ability ${id}, ${name}`, mergedData)
       this.setFlags(this.flags)
    }
 
@@ -266,7 +266,7 @@ export class NPCModel {
     */
    checkForDuplicateDocuments(documentId, property) {
       const prop = this.flags[property];
-      const duplicateFlag = prop.map(item => item[0].includes(documentId));
+      const duplicateFlag = prop.some(item => item[0].includes(documentId));
       if (duplicateFlag) {
          console.info(`Document with ${documentId} already exist`)
          return true
