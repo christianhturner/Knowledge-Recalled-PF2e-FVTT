@@ -6,24 +6,32 @@ import { NPCManager } from "./NPCManager";
 import { NPCModel } from "../models/NPCModel";
 import { checkForExistingActor } from "./utilities";
 import { SetupDebugger } from "../Debugger";
+import { API } from "../API/api";
+import { CONSTANTS } from "../constants/constants";
+
+/** @type {import('../API/api').API} */
+let Api
+
+/** @type {import('../Debugger').SetupDebugger} */
+let Debug
 
 // Parameter should be able to be checked within the module settings.
 let devMode = true;
 
-
 export async function registerHooks() {
+
    Hooks.on("ready", () => {
-      KnowledgeRecalled._onReady();
-      //ViewManager._onReady();
-      //ui.KnowledgeRecalled.ViewManager.init();
-      NPCManager._onReady();
-      EncounterManager._onReady();
+      const moduleData = game.modules.get(CONSTANTS.moduleId)
+      const api = new API
+      moduleData.public = api;
+      Object.freeze(moduleData.public);
+      Api = moduleData.public
    });
-
-   Hooks.once('debugger.ready', () =>
-      new SetupDebugger(devMode)
-   );
-
+   Hooks.on("debugger.ready", () => {
+      const moduleData = game.modules.get(CONSTANTS.moduleId);
+      moduleData.debugger = new SetupDebugger(devMode);
+      Debug = moduleData.debugger
+   })
    Hooks.on('getSceneControlButtons', (controls) => {
       insertKnowledgeRecalledbuttons(controls);
    });
@@ -44,22 +52,22 @@ export async function registerHooks() {
    });
 
    Hooks.on('createCombat', (encounter, changes) => {
-      ui.KnowledgeRecalled.EncounterManager.updateEncounters();
+      Api.encounterManager.updateEncounters();
       console.debug('Knowledge Recalled create combat.', encounter, changes);
    });
 
    Hooks.on('deleteCombat', (encounter, changes) => {
-      ui.KnowledgeRecalled.EncounterManager.updateEncounters();
+      Api.encounterManager.updateEncounters();
       console.debug('Knowledge Recalled delete combat.', encounter, changes);
    });
 
    Hooks.on('updateCombat', (encounter, changes) => {
-      ui.KnowledgeRecalled.EncounterManager.updateEncounters();
+      Api.encoutnerManager.updateEncounters();
       console.debug('Knowledge Recalled update combat.', encounter, changes);
    });
 
    Hooks.on('combatStart', (round, turn) => {
-      ui.KnowledgeRecalled.EncounterManager.updateEncounters();
+      Api.encounterManager.updateEncounters();
       console.debug('Knowledge recalled combat start.', round, turn);
    });
 
@@ -77,7 +85,7 @@ export async function registerHooks() {
       const actorOwner = item.parent;
       if (actorOwner.type == 'npc') {
          const actorId = actorOwner.id;
-         const NpcActor = ui.KnowledgeRecalled.NPCManager.createNPCObject(actorId);
+         const NpcActor = Api.npcManager.createNPCObject(actorId);
          NpcActor.constructAbilitiesFlags(item);
 
       }
@@ -93,7 +101,7 @@ export async function registerHooks() {
       const actorOwner = item.parent;
       if (actorOwner.type == 'npc') {
          const actorId = actorOwner.id;
-         const NpcActor = ui.KnowledgeRecalled.NPCManager.createNPCObject(actorId);
+         const NpcActor = Api.npcManager.createNPCObject(actorId);
          NpcActor.updateAttacksFlags(item);
       }
       console.debug(`Item ${item.name} created`)

@@ -4,6 +4,11 @@ export const CONSTANTS = {
    flabDB: '',
 };
 
+/** @type {import('../API/api').API} */
+//export const Api = game.modules.get(CONSTANTS.moduleId)?.public;
+
+/** @type {import('../Debugger').SetupDebugger} */
+//export const Debug = game.modules.get(CONSTANTS.moduleId)?.debugger;
 
 export const getConstants = () => {
    CONSTANTS.moduleName = 'Knowledge Recalled';
@@ -152,4 +157,3 @@ export const FILES = {
    moduleDataDirectory: "knowledge-recalled-data",
    backupManagerJSON: "backup-manager.json"
 };
-

@@ -1,3 +1,4 @@
+import { CONSTANTS } from "../constants/constants";
 import { NPCModel } from "../models/NPCModel";
 import { getActor } from "./utilities";
 
@@ -9,10 +10,11 @@ import { getActor } from "./utilities";
  */
 export class NPCManager {
    constructor() {
-      if (!ui.KnowledgeRecalled.NPCManager) {
-         ui.KnowledgeRecalled.NPCManager = this;
+      const moduleData = game.modules.get(CONSTANTS.moduleId);
+      if (!moduleData?.public?.npcManager) {
+         return this;
       }
-      return ui.KnowledgeRecalled.NPCManager;
+      return moduleData.public.npcManager;
    }
 
    /**
@@ -23,9 +25,6 @@ export class NPCManager {
     * Embeds the View Manger into the applications primary class which is embeded in Foundry's UI global variable.
     * Accessible at ui.KnowledgeRecalled.ViewManager
     */
-   static _onReady() {
-      ui.KnowledgeRecalled.NPCManager = new NPCManager;
-   };
 
    /**
    * Method to register new NPCs to the NPCManager by providing either an Actor Object or Actor.actorId string value

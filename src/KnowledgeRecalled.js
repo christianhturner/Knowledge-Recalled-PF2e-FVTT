@@ -1,3 +1,4 @@
+import { CONSTANTS } from "./constants/constants";
 import { getActiveEncounters, getActor } from "./control/utilities";
 import { NPCModel } from "./models/NPCModel";
 
@@ -8,11 +9,12 @@ import { NPCModel } from "./models/NPCModel";
 // eslint-disable-next-line no-unused-vars
 export class KnowledgeRecalled extends Application {
    constructor() {
-      super();
-   }
-
-   static _onReady() {
-      ui.KnowledgeRecalled = new KnowledgeRecalled();
+      const moduleData = game.modules.get(CONSTANTS.moduleId);
+      if (!moduleData?.public?.knowledgeRecalled) {
+         super();
+         return this
+      }
+      return moduleData.public.knowledgeRecalled;
    }
 
    populateGMJournal() {
