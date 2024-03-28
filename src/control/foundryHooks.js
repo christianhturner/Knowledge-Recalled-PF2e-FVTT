@@ -8,6 +8,7 @@ import { checkForExistingActor } from "./utilities";
 import { SetupDebugger } from "../Debugger";
 import { API } from "../API/api";
 import { CONSTANTS } from "../constants/constants";
+import { Quench } from "@ethaks/fvtt-quench";
 
 /** @type {import('../API/api').API} */
 let Api
@@ -27,11 +28,20 @@ export async function registerHooks() {
       Object.freeze(moduleData.public);
       Api = moduleData.public
    });
-   Hooks.on("debugger.ready", () => {
-      const moduleData = game.modules.get(CONSTANTS.moduleId);
-      moduleData.debugger = new SetupDebugger(devMode);
-      Debug = moduleData.debugger
-   })
+   // Development Hooks
+   // -- Debugger
+   if (devMode) {
+      Hooks.on("debugger.ready", () => {
+         const moduleData = game.modules.get(CONSTANTS.moduleId);
+         moduleData.debugger = new SetupDebugger(devMode);
+         Debug = moduleData.debugger
+      });
+      // -- Quench - testing framework
+      Hooks.on("quenchReady", (/**@type {import('../../node_modules/@ethaks/fvtt-quench/lib/quench.d.ts').Quench}*/ quench) => {
+      })
+   };
+
+
    Hooks.on('getSceneControlButtons', (controls) => {
       insertKnowledgeRecalledbuttons(controls);
    });
