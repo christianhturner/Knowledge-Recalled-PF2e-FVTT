@@ -61,9 +61,6 @@
       }
     ],
     /* stylistic */
-    "@stylistic/array-bracket-newline": {
-      "multiline": true,
-      "minItems": 2
-    }
+    "@stylistic/array-bracket-newline": ["error", "multiline"]
   }
 }

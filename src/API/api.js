@@ -2,6 +2,7 @@ import { KnowledgeRecalled } from "../KnowledgeRecalled";
 import { NPCManager } from "../control/NPCManager";
 import { EncounterManager } from "../control/EncounterManager";
 import { CONSTANTS } from "../constants/constants";
+import { ViewManager } from "../control/ViewManager";
 
 /**
  * @class
@@ -27,5 +28,9 @@ export class API {
        * @type {EncounterManager}
        */
       this.encounterManager = new EncounterManager;
+      /**
+       * @type {ViewManager}
+       */
+      this.viewManager = new ViewManager;
    };
 }

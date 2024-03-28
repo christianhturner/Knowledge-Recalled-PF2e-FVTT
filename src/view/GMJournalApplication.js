@@ -3,23 +3,23 @@ import { SvelteApplication } from '#runtime/svelte/application';
 import GMJournalAppShell from './GMJournalAppShell.svelte';
 
 export default class BasicApplication extends SvelteApplication {
-    /**
-     * Default Application options
-     *
-     * @returns {object} options - Application options.
-     * @see https://foundryvtt.com/api/Application.html#options
-     */
-    static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
-            title: 'TemplateESM.title',  // Automatically localized from `lang/en.json`.
-            width: 300,
+   /**
+    * Default Application options
+    *
+    * @returns {object} options - Application options.
+    * @see https://foundryvtt.com/api/Application.html#options
+    */
+   static get defaultOptions() {
+      return foundry.utils.mergeObject(super.defaultOptions, {
+         title: 'TemplateESM.title',  // Automatically localized from `lang/en.json`.
+         width: 300,
 
-            svelte: {
-                class: GMJouranlShell,
-                target: document.body
-            }
-        });
-    }
+         svelte: {
+            class: GMJournalAppShell,
+            target: document.body
+         }
+      });
+   }
 }
 
 // TODO: A good inspiration I think is this package [here](https://github.com/MrVauxs/foundry-summons/blob/9a6544c133e175402c9e99630987c7b91135cd4c/src/summon/menu/SummoningMenu.svelte#L6)

@@ -8,7 +8,6 @@ import { checkForExistingActor } from "./utilities";
 import { SetupDebugger } from "../Debugger";
 import { API } from "../API/api";
 import { CONSTANTS } from "../constants/constants";
-import { Quench } from "@ethaks/fvtt-quench";
 
 /** @type {import('../API/api').API} */
 let Api
@@ -43,6 +42,7 @@ export async function registerHooks() {
 
 
    Hooks.on('getSceneControlButtons', (controls) => {
+      Api.viewManager.init()
       insertKnowledgeRecalledbuttons(controls);
    });
    Hooks.on('closeApplication', (app, html) => {
