@@ -25,4 +25,3 @@ export function insertKnowledgeRecalledbuttons(sceneControl) {
       button: true,
    });
 
-}
