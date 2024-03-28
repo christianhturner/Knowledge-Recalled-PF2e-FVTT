@@ -22,4 +22,4 @@ export function insertKnowledgeRecalledbuttons(sceneControl) {
       onClick: () => { Api.viewManager.openCloseNegotiate("gmJournal"); },
       button: true,
    });
-
+}

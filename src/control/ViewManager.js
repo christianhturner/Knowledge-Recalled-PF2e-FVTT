@@ -100,7 +100,6 @@ export class ViewManager {
     * also manages the applications state value.
     * @method
     * @param {string} name - Application name setup when using the registerApplication method.
-    * @example close("gmJournal" | "playerJournal")
     */
    close(name) {
       const app = this.getApp(name);
