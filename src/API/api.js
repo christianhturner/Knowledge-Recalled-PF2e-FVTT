@@ -5,32 +5,35 @@ import { CONSTANTS } from "../constants/constants";
 import { ViewManager } from "../control/ViewManager";
 
 /**
+ * @typedef {Module & object} ThisModule
+ * @property {API} public
+ */
+
+/**
  * @class
  */
 export class API {
-   /**
-    * @returns {API}
-    */
    constructor() {
-      const moduleData = game.modules.get(CONSTANTS.moduleId)
+      /** @type {ThisModule} */
+      const moduleData = game.modules.get(CONSTANTS.moduleId);
       if (moduleData?.public) {
          return moduleData.public;
       }
       /**
-         * @type {KnowledgeRecalled}
-         */
-      this.knowledgeRecalled = new KnowledgeRecalled;
+       * @type {KnowledgeRecalled}
+       */
+      this.knowledgeRecalled = new KnowledgeRecalled();
       /**
-         * @type {NPCManager}
-         */
-      this.npcManager = new NPCManager;
+       * @type {NPCManager}
+       */
+      this.npcManager = new NPCManager();
       /**
        * @type {EncounterManager}
        */
-      this.encounterManager = new EncounterManager;
+      this.encounterManager = new EncounterManager();
       /**
        * @type {ViewManager}
        */
-      this.viewManager = new ViewManager;
-   };
+      this.viewManager = new ViewManager();
+   }
 }
