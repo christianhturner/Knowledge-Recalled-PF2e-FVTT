@@ -1,9 +1,18 @@
 {
+  "compilerOptions": {
+    "baseUrl": ".",
+    // Enable type checking
+    "checkJs": false,
+    "target": "es2022",
+    "module": "es2022",
+    "strictNullChecks": true
+  },
   "include": [
     "./src/**/*",
     "./external/**/*",
     "./external/client/**/*",
     "./external/common/types.mjs",
     "./external/client/ui/**/*"
-  ]
+  ],
+  "exclude": ["node_modules", "dist"]
 }

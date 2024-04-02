@@ -6,11 +6,13 @@
  * NPM: https://www.npmjs.com/package/@typhonjs-fvtt/eslint-config-foundry.js
  */
 {
-  // ESLint configs are prone to particular choices, so if the first config below doesn't work for you then replace
+  // ESLint configs are prone to particulaj choices, so if the first config below doesn't work for you then replace
   // with one that you do prefer. The second config defines globals defined in `foundry.js` for use w/ `no-shadow`.
   "extends": [
     "eslint:recommended",
-    "plugin:jsdoc/recommended"
+    "plugin:jsdoc/recommended",
+    "@typhonjs-config/eslint-config/esm/2022/browser",
+    "@typhonjs-fvtt/eslint-config-foundry.js"
   ],
   // Defines / overrides a few more environment parameters not provided in the configs above.
   "env": {
@@ -22,7 +24,8 @@
   },
   "plugins": [
     "import",
-    "@stylistic"
+    "@stylistic",
+    "@stylistic/js"
   ],
   // Prevents overwriting any built in globals particularly from `@typhonjs-fvtt/eslint-config-foundry.js`, but also
   // node & browser environments. `event / window.event` shadowing is allowed due to being a common variable name and
@@ -48,9 +51,9 @@
         ]
       }
     ],
-    "indent": [
+    "@stylistic/js/indent": [
       "warn",
-      4
+      3
     ],
     "block-spacing": "error",
     "brace-style": [
@@ -61,6 +64,12 @@
       }
     ],
     /* stylistic */
-    "@stylistic/array-bracket-newline": ["error", "multiline"]
+    "@stylistic/array-bracket-newline": [
+      "error",
+      {
+        "multiline": true,
+        "minItems": 2
+      }
+    ]
   }
 }
