@@ -6,7 +6,8 @@ import { ViewManager } from "../control/ViewManager";
 
 /**
  * @typedef {Module & object} ThisModule
- * @property {API} public
+ *
+ * @property {API} public - api field within the mdoule
  */
 
 /**

@@ -1,19 +1,92 @@
 import { dcByLevel, rarityMap } from "../constants/constants"
 import { getActor, getProperty } from "../control/utilities";
+/**
+ * @typedef NpcFlags - data object that represnts our data for NPCs
+ *
+ * @type {object}
+ * @property {string} actorId - document Id for foundry's actor document
+ *
+ * @property {number} defaultDC - our calculation for enemies default DC
+ *
+ * @property {number} modifiedDC - modifiedDC for when things change; may remove
+ *
+ * @property {basicNpcEntry} baseCharacterInfo - visibility entry for things like name, descr, etc
+ *
+ * @property {basicNpcEntry} rarity - rarity value of the creature
+ *
+ * @property {basicNpcEntry} privateInfo - PrivateInformation typically only available to gm
+ *
+ * @property {arrayOfNpcTraitEntries} traits - array of traits
+ *
+ * @property {basicNpcEntry} armorClass - values for armor class
+ *
+ * @property {basicNpcEntry} fortSave - values for fort save
+ *
+ * @property {basicNpcEntry} willSave - values for will save
+ *
+ * @property {basicNpcEntry} refSave - values for ref save
+ *
+ * @property {lowestSave} lowestSave - value for lowestSave
+ *
+ * @property {arrayOfNpcTraitEntries} immunities - array of immunities
+ *
+ * @property {arrayOfNpcTraitEntries} resistances - array of resistances
+ *
+ * @property {arrayOfNpcTraitEntries} weaknesses - array of weaknesses
+ *
+ * @property {Map} attacks - map of attacks
+ *
+ * @property {Map} passiveAbilities - map of passiveAbilities
+ *
+ * @property {Map} actionAbilities - map of actionAbilities
+ *
+ * @property {Map} spellAbilities - map of spell abilities
+ *
+ * @property {Map} difficultyAdjustmentByPlayerId - map of difficultyAdjustmentByPlayerId
+ */
+
+/**
+ * @typedef basicNpcEntry - simple entry representing visibility and discoveredBy
+ *
+ * @type {object}
+ * @property {boolean} visibility - determines whether this can be seen by player
+ *
+ * @property {string} discoveredBy - record of which player discovered this value
+ */
+
+/**
+ * @typedef npcTraitEntry - entry representing visibility and discovered by for array of traits
+ *
+ * @type {object}
+ * @property {string} trait - trait name value; set list from pf2e system
+ *
+ * @property {basicNpcEntry} value - visibility and discovered by for each trait
+ */
+
+/**
+ * @typedef arrayOfNpcTraitEntries - array of trait entries
+ *
+ * @type {Array}
+ * @property {npcTraitEntry} traits - array of trait entries
+ */
 
 // If this is the manager, it should be independent of any actor, but we can register actors? and maybew
 // look them up based on their actorID?
 /**
  * NPCModel
+ *
  * @class
- * @property {actor} actor
+ *
+ * @property {actor} actor - Foundry actor object
  */
 export class NPCModel {
    // hasn't been tested
    constructor(actor) {
+      /** @type {Actor} */
       this.actor = actor;
+      /** @type {NpcFlags} */
       this.flags = {};
-   };
+   }
    /*
     * Maybe the object itself should appear as object = {
     * actor: { PF2E Actor Object },
@@ -55,7 +128,10 @@ export class NPCModel {
    }
 
    /**
-    * @method
+    * @function
+    *
+    * @returns {void}
+    *
     * @private
     */
    initializeFlags() {
@@ -113,13 +189,17 @@ export class NPCModel {
    };
 
    /**
-   * method for taking Actor object and changes diff, and updating the flags accordingly, intended to be attached
-   * to the updateActor hook, and returns both the actor and the diff.
-   * @method
-   * @param {Actor} actor - actor object, can resolve if string of id is passed
-   * @param {Object} diff - value passed by the updateActor hook as a diff of the changed values.
-   * @returns {void} Updates flags on object
-   */
+    * method for taking Actor object and changes diff, and updating the flags accordingly, intended to be attached
+    * to the updateActor hook, and returns both the actor and the diff.
+    *
+    * @function
+    *
+    * @param {Actor} actor - actor object, can resolve if string of id is passed
+    *
+    * @param {object} diff - value passed by the updateActor hook as a diff of the changed values.
+    *
+    * @returns {void} Updates flags on object
+    */
    updateDiff(actor, diff) {
       if (typeof actor === 'string') {
          try {
@@ -143,10 +223,11 @@ export class NPCModel {
    };
 
    /**
-    * Method for return flags on an actor Object.
-    * @method
-    * @param {Actor.id} actorId
-    * @returns {flags}
+    * @function
+    *
+    * @param {Actor.id} actorOrId - Id for the Actor document
+    * 
+    * @returns {void | NpcFlags} - flags which make up the NPCModel data
     */
    getFlags(actorOrId) {
       let actor;
@@ -168,24 +249,24 @@ export class NPCModel {
    };
 
    /**
-   * Method to set the flags on NPC Actor objects
-   * @method
-   * @param {Object} flags - flags listed in the initializeFlags methods
-   * @param {Actor} actor - Foundry Actor object.
-   */
+    * Method to set the flags on NPC Actor objects
+    *
+    * @function
+    *
+    * @param {object} flags - flags listed in the initializeFlags methods
+    */
    setFlags(flags) {
       this.actor.setFlag('fvtt-knowledge-recalled-pf2e', 'npcFlags', flags);
       console.info(`Set flags on ${this.actor.name}:`, this.flags, this.actor);
    };
 
    /**
-   * Method for constructing flags for abilities. In pathfinder, this includes Attacks, abilities, passive abilities, and spells/rituals.
-   * Expected as a response of the updateActors Hook.
-   * @method
-   * @param {MeleePF2e} meleePf2e - Returned from PreCreateItem Hook value[0] in the array
-   * @returns {AbilityData}
-   * 
-   */
+    * Method for constructing flags for abilities. In pathfinder, this includes Attacks, abilities, passive abilities, and spells/rituals.
+    * Expected as a response of the updateActors Hook.
+    *
+    * @function
+    * @param {MeleePF2e} meleePf2e - Returned from PreCreateItem Hook value[0] in the array
+    */
    constructAbilitiesFlags(meleePf2e) {
       const id = meleePf2e.id;
       if (this.checkForDuplicateDocuments(id, 'attacks')) {
@@ -221,9 +302,10 @@ export class NPCModel {
    };
    /**
     * Method for updating Attacks
-    * @method
-    * @param {MeleePF2e} MeleePF2e - Returned from UpdateCreateItem Hook value[0] in the array
-    * @returns {AbilityData}
+    *
+    * @function
+    *
+    * @param {MeleePF2e} meleePf2e - Returned from UpdateCreateItem Hook value[0] in the array
     */
    updateAttacksFlags(meleePf2e) {
       const id = meleePf2e.id;
@@ -259,10 +341,11 @@ export class NPCModel {
    /**
     * Method for checking against a map for a duplicate.
     * @private
-    * @param {Object} actor - Actor object we are checking for duplicate
-    * @param {string} path - Starting at the Actor, the dot notation path to the item
-    * @param {string} itemId - string item id
-    * @returns {boolean}
+    * @param {string} documentId - Actor object we are checking for duplicate
+    *
+    * @param {string} property - Starting at the Actor, the dot notation path to the item
+    *
+    * @returns {boolean} - Returns true or false as to whether or not this documentId representation already exist.
     */
    checkForDuplicateDocuments(documentId, property) {
       const prop = this.flags[property];
@@ -284,6 +367,7 @@ export class NPCModel {
 
    }
 
+
 }
 
 /**
@@ -293,17 +377,24 @@ export class NPCModel {
 
 /**
  * @typedef abilityData
- * @type {Object}
+ *
+ * @type {object}
  * @param {string} name
+ *
  * @param {string} type
+ *
  * @param {string} description
+ *
  * @param {string} gmDescription
+ *
  * @param {boolean} visibility
+ *
  * @param {string} discoveredBy
  */
 
 /**
  * @typedef AbilityData
+ *
  * @type {Map<string, abilityData>}
  */
 
