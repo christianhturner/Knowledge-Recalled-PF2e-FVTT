@@ -1,5 +1,5 @@
-import { dcByLevel, rarityMap } from "../constants/constants"
-import { getActor, getProperty } from "../control/utilities";
+import { getActor, getThisProperty } from "../control/utilities";
+
 /**
  * @typedef NpcFlags - data object that represnts our data for NPCs
  *
@@ -135,7 +135,7 @@ export class NPCModel {
     * @private
     */
    initializeFlags() {
-      if (this.actor.type != 'npc') {
+      if (this.actor.type !== 'npc') {
          return console.debug(`Actor is not of the NPC type.`);
       }
       this.flags = {
@@ -178,15 +178,15 @@ export class NPCModel {
          immunities: {},
          resistances: {},
          weaknesses: {},
-         attacks: new Map,
-         passiveAbilities: new Map,
-         actionAbilities: new Map,
-         spellAbilities: new Map,
-         difficultyAdjustmentByPlayerId: new Map,
+         attacks: new Map(),
+         passiveAbilities: new Map(),
+         actionAbilities: new Map(),
+         spellAbilities: new Map(),
+         difficultyAdjustmentByPlayerId: new Map(),
       };
       this.setFlags(this.flags, this.actor);
 
-   };
+   }
 
    /**
     * method for taking Actor object and changes diff, and updating the flags accordingly, intended to be attached
@@ -205,22 +205,24 @@ export class NPCModel {
          try {
             actor = getActor(actor);
          } catch (error) {
-            return console.error(`Invalid actor or actorId`, error)
-         };
-      };
+            return console.error(`Invalid actor or actorId`, error);
+         }
+      }
       const actorId = actor.id;
-      for (let [key, value] of Object.entries(diff)) {
+      for (const [
+         key, value
+      ] of Object.entries(diff)) {
          // If value is an object call recursively
          if (typeof value === 'object') {
             this.updateDiff(actor, value);
          } else {
-            let flag = this.getFlags(actorId);
+            const flag = this.getFlags(actorId);
             if (flag[key]) {
-               flag.value = getProperty(actor, key);
+               flag.value = getThisProperty(actor, key);
             }
          }
       }
-   };
+   }
 
    /**
     * @function
@@ -231,7 +233,7 @@ export class NPCModel {
     */
    getFlags(actorOrId) {
       let actor;
-      let actorId
+      let actorId;
       if (typeof actorOrId === 'string') {
          actorId = actorOrId;
          actor = game.actors.get(actorId);
@@ -241,12 +243,11 @@ export class NPCModel {
       }
       const flags = this.actor.getFlag('fvtt-knowledge-recalled-pf2e', 'npcFlags');
       if (!flags) {
-         console.debug('No flags initialized, please initialize this actor.')
-      }
-      else {
+         console.debug('No flags initialized, please initialize this actor.');
+      } else {
          return flags;
       }
-   };
+   }
 
    /**
     * Method to set the flags on NPC Actor objects
@@ -258,20 +259,21 @@ export class NPCModel {
    setFlags(flags) {
       this.actor.setFlag('fvtt-knowledge-recalled-pf2e', 'npcFlags', flags);
       console.info(`Set flags on ${this.actor.name}:`, this.flags, this.actor);
-   };
+   }
 
    /**
     * Method for constructing flags for abilities. In pathfinder, this includes Attacks, abilities, passive abilities, and spells/rituals.
     * Expected as a response of the updateActors Hook.
     *
     * @function
+    *
     * @param {MeleePF2e} meleePf2e - Returned from PreCreateItem Hook value[0] in the array
     */
    constructAbilitiesFlags(meleePf2e) {
       const id = meleePf2e.id;
       if (this.checkForDuplicateDocuments(id, 'attacks')) {
-         console.debug(`${id} already exists`)
-         return
+         console.debug(`${id} already exists`);
+         return;
       }
       const visibility = false;
       const gmDescription = '';
@@ -283,23 +285,26 @@ export class NPCModel {
       }
       if (meleePf2e.isRanged || meleePf2e.isThrown) {
          type = 'ranged';
-      };
+      }
       const data = {
-         name: name,
-         type: type,
-         gmDescription: gmDescription,
-         visibility: visibility,
-         discoveredBy: discoveredBy
+         name,
+         type,
+         gmDescription,
+         visibility,
+         discoveredBy
       };
       // map does not work, throws an iterator error. This may be fine though
       // previously `const abilityData = new Map(id, data);`
-      const abilityData = [id, data];
+      const abilityData = [
+         id, data
+      ];
       console.info(`Knowledge Recalled new ability property link created for ${id}, ${name}`,
          abilityData);
-      this.flags.attacks.push(abilityData)
+      this.flags.attacks.push(abilityData);
       this.setFlags(this.flags);
       // need to determin if we will set this, or hand
-   };
+   }
+
    /**
     * Method for updating Attacks
     *
@@ -310,9 +315,9 @@ export class NPCModel {
    updateAttacksFlags(meleePf2e) {
       const id = meleePf2e.id;
       if (!this.checkForDuplicateDocuments(id, 'attacks')) {
-         console.debug(`${id} doesn't exit please debug.`)
-         return
-      };
+         console.debug(`${id} doesn't exit please debug.`);
+         return;
+      }
       const name = meleePf2e.name;
       let type;
       if (meleePf2e.isMelee) {
@@ -320,26 +325,29 @@ export class NPCModel {
       }
       if (meleePf2e.isRanged || meleePf2e.isThrown) {
          type = 'ranged';
-      };
+      }
       const tempData = {
-         name: name,
-         type: type,
+         name,
+         type,
       };
-      //debug found error here
-      const existingData = this.flags.attacks.find(item => item[0] === id)[1];
+      // debug found error here
+      const existingData = this.flags.attacks.find((item) => item[0] === id)[1];
       const mergedData = { ...existingData, ...tempData };
-      this.flags.attacks = this.flags.attacks.map(item => {
+      this.flags.attacks = this.flags.attacks.map((item) => {
          if (item[0] === id) {
-            return [id, mergedData];
+            return [
+               id, mergedData
+            ];
          }
          return item;
       });
-      console.info(`Knowledge Recalled updated ability ${id}, ${name}`, mergedData)
-      this.setFlags(this.flags)
+      console.info(`Knowledge Recalled updated ability ${id}, ${name}`, mergedData);
+      this.setFlags(this.flags);
    }
 
    /**
     * Method for checking against a map for a duplicate.
+    *
     * @private
     * @param {string} documentId - Actor object we are checking for duplicate
     *
@@ -349,21 +357,17 @@ export class NPCModel {
     */
    checkForDuplicateDocuments(documentId, property) {
       const prop = this.flags[property];
-      const duplicateFlag = prop.some(item => item[0].includes(documentId));
+      const duplicateFlag = prop.some((item) => item[0].includes(documentId));
       if (duplicateFlag) {
-         console.info(`Document with ${documentId} already exist`)
-         return true
+         console.info(`Document with ${documentId} already exist`);
+         return true;
       } else {
-         return false
+         return false;
       }
 
-   };
+   }
 
    calculateDC() {
-
-   };
-
-   checkForDuplicate() {
 
    }
 

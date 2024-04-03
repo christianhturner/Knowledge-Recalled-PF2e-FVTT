@@ -10,19 +10,20 @@ export function getActiveEncounters() {
    for (let index = 0; index < encounters.length; index++) {
       const testEncounter = encounters[index];
       if (testEncounter.isActive) {
-         activeEncounters.push(testEncounter)
+         activeEncounters.push(testEncounter);
       }
    }
    if (activeEncounters.length != 0) {
       return activeEncounters;
    }
    console.error("No active encounters.");
-};
+}
 
 /**
  * @function
  * A utility function that can take an array of actorIds and returns an array of 
  * actors from FoundryVTT.
+ *
  * @param {Array<string>} actorIds 
  */
 export function getActors(actorIds) {
@@ -38,6 +39,7 @@ export function getActors(actorIds) {
  * @function
  * A utility function that extends the foundry built in function to return an
  * an actor from their actorId.
+ *
  * @param {string} actorId 
  */
 export function getActor(actorId) {
@@ -48,41 +50,50 @@ export function getActor(actorId) {
 
 /**
  * Gets the nested property value of an object
+ *
  * @function
  *
  * @param {object} obj - The object to get the property from
+ *
  * @param {string} path - The path to the property separated by dots
+ *
  * @returns {*} The property value
  */
-export function getProperty(obj, path) {
-   let keys = path.split('.');
+export function getThisProperty(obj, path) {
+   const keys = path.split('.');
    let result = obj;
-   for (let key of keys) {
+   for (const key of keys) {
       result = result[key];
    }
-   return result
-};
+   return result;
+}
 
 
 /**
  * @function
  * A utility function to determine if Actor with matching name already exist.
+ *
  * @param {Actor} actor 
  *
  * @returns {boolean | undefined}
  */
 
+/**
+ *
+ * @param actor
+ */
 export function checkForExistingActor(actor) {
    const actorsArray = game.actors;
-   if (actorsArray.find(a => a.name === actor.name)) {
+   if (actorsArray.find((a) => a.name === actor.name)) {
       console.debug(`${actor.name}: ${actor.id} already exist`);
       return actor.id;
    }
-   return undefined
+   return undefined;
 }
 
 /**
  * @param object - Document object which the flag is stored.
+ *
  * @param flagPath - Path to the flag under the object.flags namespace.
  *
  * @example
@@ -93,8 +104,7 @@ export function removeFlag(object, flagPath) {
    if (flag) {
       object.unsetFlag('fvtt-knowledge-recalled-pf2e', `${flagPath}`);
       console.log(`Knowledge Recalled: Flag npcFlags.${flagPath} removed from ${object.name}`);
-   }
-   else {
+   } else {
       console.log(`Knowledge Recalled Flag npcFlags.${flagPath} does not exist on ${object.name}`);
    }
 }

@@ -1,4 +1,4 @@
-import { foundryUiOverrides } from "../foundryUiOverrides";
+import { insertKnowledgeRecalledbuttons } from "../foundryUiOverrides";
 import { checkForExistingActor } from "./utilities";
 import { SetupDebugger } from "../Debugger";
 import { API } from "../API/api";
@@ -11,7 +11,7 @@ let Api;
 let Debug;
 
 // Parameter should be able to be checked within the module settings.
-let devMode = true;
+const devMode = true;
 
 /**
  *
@@ -38,13 +38,13 @@ export async function registerHooks() {
       // -- Quench - testing framework
       Hooks.on(
          "quenchReady",
-         (/**@type {import('../../node_modules/@ethaks/fvtt-quench/lib/quench.d.ts').Quench}*/ quench) => {},
+         (/** @type {import('../../node_modules/@ethaks/fvtt-quench/lib/quench.d.ts').Quench}*/ quench) => { },
       );
    }
 
    Hooks.on("getSceneControlButtons", (controls) => {
       Api.viewManager.init();
-      foundryUiOverrides.insertKnowledgeRecalledbuttons(controls);
+      insertKnowledgeRecalledbuttons(controls);
    });
    Hooks.on("closeApplication", (app, html) => {
       console.log(`Here is the application`, app);
@@ -94,7 +94,7 @@ export async function registerHooks() {
        */
 
       const actorOwner = item.parent;
-      if (actorOwner.type == "npc") {
+      if (actorOwner.type === "npc") {
          const actorId = actorOwner.id;
          const NpcActor = Api.npcManager.createNPCObject(actorId);
          NpcActor.constructAbilitiesFlags(item);
@@ -109,7 +109,7 @@ export async function registerHooks() {
 
    Hooks.on("updateItem", (item, options, userId) => {
       const actorOwner = item.parent;
-      if (actorOwner.type == "npc") {
+      if (actorOwner.type === "npc") {
          const actorId = actorOwner.id;
          const NpcActor = Api.npcManager.createNPCObject(actorId);
          NpcActor.updateAttacksFlags(item);
@@ -118,6 +118,12 @@ export async function registerHooks() {
    });
 
    Hooks.on("deleteItem", (item, options, userId) => {
+      const actorOwner = item.parent;
+      if (actorOwner.type === "npc") {
+         const actorId = actorOwner.id;
+         const NpcActor = Api.npcManager.createNPCObject(actorId);
+         NpcActor.deleteAttackFlags(item);
+      }
       console.debug(`Item ${item.name} deleted`);
    });
 }
