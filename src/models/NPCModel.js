@@ -306,6 +306,23 @@ export class NPCModel {
    }
 
    /**
+    * Method to delete Attacks
+    *
+    * @function
+    *
+    * @param {MeleePF2e} meleePf2e - Returned from DeleteItem Hook value[0] in the array
+    */
+   deleteAttackFlags(meleePf2e) {
+      const id = meleePf2e.id;
+      if (!this.checkForDuplicateDocuments(id, 'attacks')) {
+         console.debug(`${id} doesn't exist please debug.`);
+         return;
+      }
+      const filteredAttacks = this.flags.attacks.filter(([k]) => k !== id);
+      this.flags.attacks = filteredAttacks;
+      this.setFlags(this.flags);
+   }
+   /**
     * Method for updating Attacks
     *
     * @function
