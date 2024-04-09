@@ -3,12 +3,11 @@ import { checkForExistingActor } from "./utilities";
 import { SetupDebugger } from "../Debugger";
 import { API } from "../API/api";
 import { CONSTANTS } from "../constants/constants";
+import { setupTests } from "../quench";
 
 /** @type {import('../API/api').API} */
 let Api;
 
-/** @type {import('../Debugger').SetupDebugger} */
-let Debug;
 
 // Parameter should be able to be checked within the module settings.
 const devMode = true;
@@ -31,15 +30,14 @@ export async function registerHooks() {
    // -- Debugger
    if (devMode) {
       Hooks.on("debugger.ready", () => {
+         /** @type {import('../Debugger').SetupDebugger} */
          const moduleData = game.modules.get(CONSTANTS.moduleId);
          moduleData.debugger = new SetupDebugger(devMode);
-         Debug = moduleData.debugger;
+         const Debug = moduleData.debugger;
+         console.log(Debug);
       });
       // -- Quench - testing framework
-      Hooks.on(
-         "quenchReady",
-         (/** @type {import('../../node_modules/@ethaks/fvtt-quench/lib/quench.d.ts').Quench}*/ quench) => { },
-      );
+      setupTests();
    }
 
    Hooks.on("getSceneControlButtons", (controls) => {
@@ -98,6 +96,7 @@ export async function registerHooks() {
          const actorId = actorOwner.id;
          const NpcActor = Api.npcManager.createNPCObject(actorId);
          NpcActor.constructAbilitiesFlags(item);
+         NpcActor.setFlags();
       }
 
       // TODO:
@@ -113,6 +112,7 @@ export async function registerHooks() {
          const actorId = actorOwner.id;
          const NpcActor = Api.npcManager.createNPCObject(actorId);
          NpcActor.updateAttacksFlags(item);
+         NpcActor.setFlags();
       }
       console.debug(`Item ${item.name} created`);
    });
@@ -123,6 +123,7 @@ export async function registerHooks() {
          const actorId = actorOwner.id;
          const NpcActor = Api.npcManager.createNPCObject(actorId);
          NpcActor.deleteAttackFlags(item);
+         NpcActor.setFlags();
       }
       console.debug(`Item ${item.name} deleted`);
    });
