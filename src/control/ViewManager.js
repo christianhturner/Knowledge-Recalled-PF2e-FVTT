@@ -2,13 +2,17 @@ import GMJournalApplication from "../view/GMJournalApplication";
 import { CONSTANTS } from "../constants/constants";
 /**
  * @class Module
+ *
  * @augments {Module}
+ *
  * @property {API} public
  */
 
 /**
  * API#ViewManager
+ *
  * @class ViewManager
+ *
  * @memberof {API}
  *
  */
@@ -39,9 +43,13 @@ export class ViewManager {
    }
    /**
     * Register an application with the View Manager. Not intended to be used outside of ViewManager
-    * @param {String} name - Name of the application.
-    * @param {Object} app - The application instance.
+    *
+    * @param {string} name - Name of the application.
+    *
+    * @param {object} app - The application instance.
+    *
     * @param {boolean} protectWindow - Protected Windows cannot be closed
+    *
     * @listens {ViewManager#init}
     */
    registerApplication(name, app, protectWindow) {
@@ -70,7 +78,9 @@ export class ViewManager {
    /**
     * Helper function for allowing you to interact with the applications managed by the ViewManager by passing
     * the key value as a string.
-    * @method
+    *
+    * @function
+    *
     * @param {string} name - Application name setup when using the registerApplication method.
     */
    getApp(name) {
@@ -80,8 +90,11 @@ export class ViewManager {
    /**
     * Method for opening a registered application by passing it's string name.
     * Also manages the applications state value.
-    * @method
+    *
+    * @function
+    *
     * @param {string} name - Application name setup when using the registerApplication method.
+    *
     * @example open("gmJournal" | "playerJournal")
     */
    open(name) {
@@ -98,7 +111,9 @@ export class ViewManager {
    /**
     * Method for closing a registered application by passing it's string name.
     * also manages the applications state value.
-    * @method
+    *
+    * @function
+    *
     * @param {string} name - Application name setup when using the registerApplication method.
     */
    close(name) {
@@ -118,13 +133,13 @@ export class ViewManager {
    }
    /**
     * Method to close all opened applications.
-    * @method
     *
+    * @function
     */
    closeAll() {
       // array to store the applications we plan to close
       const appsToClose = [];
-      //loop through the appsState objects
+      // loop through the appsState objects
       for (const appName in this.appsState) {
          const app = this.appsState[appName];
          console.log(app);
@@ -148,8 +163,11 @@ export class ViewManager {
     * Method to negotiate open or close behavior, based on the applications current state.
     * Useful when a single method is intended to be supplied that should open and close
     * the application, such as a button for opening and closing.
-    * @method
+    *
+    * @function
+    *
     * @param {string} name - Application name setup when using the registerApplication method.
+    *
     * @example openCloseNegotiate("gmJournal" | "playerJournal")
     */
    openCloseNegotiate(name) {
@@ -165,8 +183,11 @@ export class ViewManager {
    /**
     * Method for manually setting and applications state, for use if opening and closing occurs outside of the managements
     * open and close methods.
-    * @method
+    *
+    * @function
+    *
     * @param {string} name - Application name setup when using the registerApplication method.
+    *
     * @param {boolean} setAppsStateOpen - changes the value of ui.KnowledgeRecalled.ViewManager.appsState[name].open to the specified value
     */
    manuallyAlterStatesOpenValue(name, setAppsStateOpen) {
