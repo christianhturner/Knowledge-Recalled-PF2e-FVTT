@@ -402,8 +402,7 @@ export class NPCModel {
  */
 
 /**
- * @typedef {{img: string, name: string, id: string, system: object, type: string, description: string, actionCost:
- * undefined|object} AbilityItemPF2e
+ * @typedef {{img: string, name: string, id: string, system: object, type: string, description: string, actionCost: undefined|object}} AbilityItemPF2e
  * AbilityItems document from the pathfinder 2e system.
  */
 
