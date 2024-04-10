@@ -469,4 +469,3 @@ export class NPCModel {
 // is more specific with the Actor itself.
 //
 // TODO: Let's investigate the observer pattern for keeping the store and the data at rest in sync
-//

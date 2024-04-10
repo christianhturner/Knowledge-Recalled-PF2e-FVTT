@@ -95,7 +95,7 @@ export async function registerHooks() {
       if (actorOwner.type === "npc") {
          const actorId = actorOwner.id;
          const NpcActor = Api.npcManager.createNPCObject(actorId);
-         NpcActor.constructAbilitiesFlags(item);
+         NpcActor.constructAttacksFlags(item);
          NpcActor.setFlags();
       }
 
