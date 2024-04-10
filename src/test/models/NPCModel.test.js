@@ -62,6 +62,7 @@ function registerNPCCreateTest(quench) {
                if (actorOne) {
                   didItWork = true;
                }
+               quench.utils.pause(500);
                expect(didItWork).to.equal(true);
 
                console.log(testActor);
@@ -76,6 +77,14 @@ function registerNPCCreateTest(quench) {
 
                const actorFlags = actorOne.flags['fvtt-knowledge-recalled-pf2e'].npcFlags;
                expect(actorFlags.attacks.length).to.equal(attackCount);
+            });
+            it("Test action Count", () => {
+               /** @type {Array<object>} */
+               const action = actorOne.items.filter((item) => item.type === 'action');
+               const actionCount = action.length;
+
+               const actorFlags = actorOne.flags['fvtt-knowledge-recalled-pf2e'].npcFlags;
+               expect(actorFlags.actionAbilities.length).to.equal(actionCount);
             });
             // TODO: - [ ] Implement ability Count
             //       - [ ] Implement Spell Count

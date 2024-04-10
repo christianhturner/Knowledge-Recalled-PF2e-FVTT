@@ -56,9 +56,15 @@ export class NPCModel {
          const actions = this.actor.items.filter((item) => item.type === 'action');
          /** @type {Array<object>} */
          const spells = this.actor.items.filter((item) => item.type === 'spell');
+
          if (attacks) {
             attacks.forEach((attack) => {
                this.constructAttacksFlags(attack);
+            });
+         }
+         if (actions) {
+            actions.forEach((action) => {
+               this.constructAbilitiesFlags(action);
             });
          }
       }
@@ -221,6 +227,45 @@ export class NPCModel {
       this.flags.attacks.push(abilityData);
       // need to determin if we will set this, or hand
    }
+   /**
+    * Method for constructing flags for abilities. In pathfinder, this includes Attacks, abilities, passive abilities, and spells/rituals.
+    * Expected as a response of the updateActors Hook.
+    *
+    * @function
+    *
+    * @param {AbilityItemPF2e} abilityItemPF2e - Returned from PreCreateItem Hook value[0] in the array
+    */
+   constructAbilitiesFlags(abilityItemPF2e) {
+      const id = abilityItemPF2e.id;
+      if (this.checkForDuplicateDocuments(id, 'attacks')) {
+         console.debug(`${id} already exists`);
+         return;
+      }
+      const visibility = false;
+      const gmDescription = '';
+      const discoveredBy = '';
+      const name = abilityItemPF2e.name;
+      let isPassive = false;
+      if (!abilityItemPF2e.actionCost) {
+         isPassive = true;
+      }
+      const data = {
+         name,
+         isPassive,
+         gmDescription,
+         visibility,
+         discoveredBy
+      };
+      // map does not work, throws an iterator error. This may be fine though
+      // previously `const abilityData = new Map(id, data);`
+      const abilityData = [
+         id, data
+      ];
+      console.info(`Knowledge Recalled new ability property link created for ${id}, ${name}`,
+         abilityData);
+      this.flags.actionAbilities.push(abilityData);
+      // need to determin if we will set this, or hand
+   }
 
    /**
     * Method to delete Attacks
@@ -316,6 +361,12 @@ export class NPCModel {
 /**
  * @typedef {{img: string, name: string, id: string, system: object, type: string, isMelee: boolean, isRanged: boolean, isThrown: boolean, description: string}} MeleePF2e
  * Item document for abilities, attacks, and passive abilities for the pathfinder2e system. @link https://github.com/foundryvtt/pf2e/blob/acd79e87c94b24b79d23ce7edb9ce4a027ffc636/src/module/item/melee/document.ts#L14
+ */
+
+/**
+ * @typedef {{img: string, name: string, id: string, system: object, type: string, description: string, actionCost:
+ * undefined|object} AbilityItemPF2e
+ * AbilityItems document from the pathfinder 2e system.
  */
 
 /**
