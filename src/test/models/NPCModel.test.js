@@ -51,9 +51,6 @@ function registerNPCCreateTest(quench) {
                // const actions = actorOne.actor.items.filter((item) => item.type === 'action');
                // const actionCount = actions.length;
                //
-               // /** @type {Array<object>} */
-               // const spells = actorOne.actor.items.filter((item) => item.type === 'spell');
-               // const spellCount = spells.length;
 
                const npcManager = new NPCManager();
                const testActor = npcManager.createNPCObject(actorOne.id);
@@ -86,9 +83,14 @@ function registerNPCCreateTest(quench) {
                const actorFlags = actorOne.flags['fvtt-knowledge-recalled-pf2e'].npcFlags;
                expect(actorFlags.actionAbilities.length).to.equal(actionCount);
             });
-            // TODO: - [ ] Implement ability Count
-            //       - [ ] Implement Spell Count
-            //       - [ ] Should we check against our ID against the creatures?
+            it("Test Spell Count", () => {
+               /** @type {Array<object>} */
+               const spells = actorOne.items.filter((item) => item.type === 'spell');
+               const spellCount = spells.length;
+
+               const actorFlags = actorOne.flags['fvtt-knowledge-recalled-pf2e'].npcFlags;
+               expect(actorFlags.spellAbilities.length).to.equal(spellCount);
+            });
          });
       });
 

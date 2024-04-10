@@ -45,15 +45,12 @@ export class NPCModel {
          this.flags = this.actor.getFlag('fvtt-knowledge-recalled-pf2e', 'npcFlags');
       } else {
          this.initializeFlags();
-         // TODO: locate all the attacks, actions, spells, etc, lokup on Items. 
-         // We can then pass these values into our construct methods whe we initialize the NPC.
-         // [] if attacks is not empty pass each to constructor
-         // [] if actions is not empty pass each to constructor
-         // [] if spells is not empty pass each to constructor
          /** @type {Array<object>} */
          const attacks = this.actor.items.filter((item) => item.type === 'melee');
+
          /** @type {Array<object>} */
          const actions = this.actor.items.filter((item) => item.type === 'action');
+
          /** @type {Array<object>} */
          const spells = this.actor.items.filter((item) => item.type === 'spell');
 
@@ -65,6 +62,11 @@ export class NPCModel {
          if (actions) {
             actions.forEach((action) => {
                this.constructAbilitiesFlags(action);
+            });
+         }
+         if (spells) {
+            spells.forEach((spell) => {
+               this.constructSpellFlags(spell);
             });
          }
       }
@@ -266,6 +268,42 @@ export class NPCModel {
       this.flags.actionAbilities.push(abilityData);
       // need to determin if we will set this, or hand
    }
+   /**
+    * Method for constructing flags for abilities. In pathfinder, this includes Attacks, abilities, passive abilities, and spells/rituals.
+    * Expected as a response of the updateActors Hook.
+    *
+    * @function
+    *
+    * @param {SpellItemPF2e} spellItemPF2e - Returned from PreCreateItem Hook value[0] in the array
+    */
+   constructSpellFlags(spellItemPF2e) {
+      const id = spellItemPF2e.id;
+      if (this.checkForDuplicateDocuments(id, 'attacks')) {
+         console.debug(`${id} already exists`);
+         return;
+      }
+      const visibility = false;
+      const gmDescription = '';
+      const discoveredBy = '';
+      const name = spellItemPF2e.name;
+      const isConsumable = spellItemPF2e.isFromConsumable;
+      const data = {
+         name,
+         isConsumable,
+         gmDescription,
+         visibility,
+         discoveredBy
+      };
+      // map does not work, throws an iterator error. This may be fine though
+      // previously `const abilityData = new Map(id, data);`
+      const abilityData = [
+         id, data
+      ];
+      console.info(`Knowledge Recalled new ability property link created for ${id}, ${name}`,
+         abilityData);
+      this.flags.spellAbilities.push(abilityData);
+      // need to determin if we will set this, or hand
+   }
 
    /**
     * Method to delete Attacks
@@ -367,6 +405,11 @@ export class NPCModel {
  * @typedef {{img: string, name: string, id: string, system: object, type: string, description: string, actionCost:
  * undefined|object} AbilityItemPF2e
  * AbilityItems document from the pathfinder 2e system.
+ */
+
+/**
+ * @typedef {{img: string, name: string, id: string, system: object, type: string, description: string, actionCost: undefined|object, isFromConsumable: boolean}} SpellItemPF2e
+ * SpellItems document from the pathfinder 2e system.
  */
 
 /**
