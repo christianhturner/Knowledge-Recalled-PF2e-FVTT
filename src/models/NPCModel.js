@@ -58,7 +58,7 @@ export class NPCModel {
          const spells = this.actor.items.filter((item) => item.type === 'spell');
          if (attacks) {
             attacks.forEach((attack) => {
-               this.constructAbilitiesFlags(attack);
+               this.constructAttacksFlags(attack);
             });
          }
       }
@@ -180,14 +180,14 @@ export class NPCModel {
    }
 
    /**
-    * Method for constructing flags for abilities. In pathfinder, this includes Attacks, abilities, passive abilities, and spells/rituals.
+    * Method for constructing flags for attacks. In pathfinder, this includes Attacks, abilities, passive abilities, and spells/rituals.
     * Expected as a response of the updateActors Hook.
     *
     * @function
     *
     * @param {MeleePF2e} meleePf2e - Returned from PreCreateItem Hook value[0] in the array
     */
-   constructAbilitiesFlags(meleePf2e) {
+   constructAttacksFlags(meleePf2e) {
       const id = meleePf2e.id;
       if (this.checkForDuplicateDocuments(id, 'attacks')) {
          console.debug(`${id} already exists`);
@@ -216,7 +216,7 @@ export class NPCModel {
       const abilityData = [
          id, data
       ];
-      console.info(`Knowledge Recalled new ability property link created for ${id}, ${name}`,
+      console.info(`Knowledge Recalled new attack property link created for ${id}, ${name}`,
          abilityData);
       this.flags.attacks.push(abilityData);
       // need to determin if we will set this, or hand
