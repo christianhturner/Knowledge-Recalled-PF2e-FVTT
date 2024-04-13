@@ -317,6 +317,38 @@ export class NPCModel {
       this.flags.attacks = filteredAttacks;
    }
    /**
+    * Method to delete Attacks
+    *
+    * @function
+    *
+    * @param {AbilityItemPF2e} abilityItemPF2e - Returned from DeleteItem Hook value[0] in the array
+    */
+   deleteAbilityFlags(abilityItemPF2e) {
+      const id = abilityItemPF2e.id;
+      if (!this.checkForDuplicateDocuments(id, 'attacks')) {
+         console.debug(`${id} doesn't exist please debug.`);
+         return;
+      }
+      const filteredAttacks = this.flags.actionAbilities.filter(([k]) => k !== id);
+      this.flags.actionAbilities = filteredAttacks;
+   }
+   /**
+    * Method to delete Attacks
+    *
+    * @function
+    *
+    * @param {SpellItemPF2e} spellItemPF2e - Returned from DeleteItem Hook value[0] in the array
+    */
+   deleteSpellFlags(spellItemPF2e) {
+      const id = spellItemPF2e.id;
+      if (!this.checkForDuplicateDocuments(id, 'attacks')) {
+         console.debug(`${id} doesn't exist please debug.`);
+         return;
+      }
+      const filteredAttacks = this.flags.spellAbilities.filter(([k]) => k !== id);
+      this.flags.spellAbilities = filteredAttacks;
+   }
+   /**
     * Method for updating Attacks
     *
     * @function

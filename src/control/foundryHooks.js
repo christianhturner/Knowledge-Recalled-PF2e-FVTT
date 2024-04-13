@@ -84,24 +84,34 @@ export async function registerHooks() {
 
    Hooks.on("createItem", (item, options, userId) => {
       /*
-       * We may instead want to do something like this:
-       * const item = item; so we can pass into the constructAbilitiesFlags
-       * const actorId = get this from the item
-       * We can then const actor = NPCManager.GetActor(actorId); returns NPCModel
-       * actor.constructAbilitiesFlags(item); Then we can more safely inject this into the model
-       */
+* We may instead want to do something like this:
+* const item = item; so we can pass into the constructAbilitiesFlags
+* const actorId = get this from the item
+* We can then const actor = NPCManager.GetActor(actorId); returns NPCModel
+* actor.constructAbilitiesFlags(item); Then we can more safely inject this into the model
+*/
 
       const actorOwner = item.parent;
       if (actorOwner.type === "npc") {
+
          const actorId = actorOwner.id;
          const NpcActor = Api.npcManager.createNPCObject(actorId);
-         NpcActor.constructAttacksFlags(item);
+
+         switch (item.type) {
+            case 'melee' || 'ranged':
+               NpcActor.constructAttacksFlags(item);
+               break;
+            case 'spell':
+               NpcActor.constructSpellFlags(item);
+               break;
+            case 'action':
+               NpcActor.constructAbilitiesFlags(item);
+               break;
+         }
          NpcActor.setFlags();
       }
 
       // TODO:
-      // - Add this value to the flags for new items on create
-      // - create method for deleting from flag
       // - Create method for updating and preserving portions of the data that shouldn't change as long
       // as the ID remains the same.
    });
@@ -122,7 +132,17 @@ export async function registerHooks() {
       if (actorOwner.type === "npc") {
          const actorId = actorOwner.id;
          const NpcActor = Api.npcManager.createNPCObject(actorId);
-         NpcActor.deleteAttackFlags(item);
+         switch (item.type) {
+            case 'melee' || 'ranged':
+               NpcActor.deleteAttackFlags(item);
+               break;
+            case 'spell':
+               NpcActor.deleteSpellFlags(item);
+               break;
+            case 'action':
+               NpcActor.deleteAbilityFlags(item);
+               break;
+         }
          NpcActor.setFlags();
       }
       console.debug(`Item ${item.name} deleted`);
