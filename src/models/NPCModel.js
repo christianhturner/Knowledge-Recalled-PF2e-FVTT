@@ -1,4 +1,3 @@
-import { getActor, getThisProperty } from "../control/utilities";
 
 
 // If this is the manager, it should be independent of any actor, but we can register actors? and maybew
@@ -169,10 +168,6 @@ export class NPCModel {
 
    /**
     * Method to set the flags on NPC Actor objects
-    *
-    * @param actor - Foundry actor object
-    *
-    * @param KRObject - this object
     *
     * @function
     *
