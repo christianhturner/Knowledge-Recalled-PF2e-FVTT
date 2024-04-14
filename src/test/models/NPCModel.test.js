@@ -1,5 +1,6 @@
 /* eslint-disable no-shadow */
 
+import { log } from '../../lib/debugger';
 import { NPCManager } from '../../control/NPCManager';
 
 /**
@@ -61,12 +62,50 @@ function registerNPCCreateTest(quench) {
             it("Test attack Count", () => {
                for (let index = 0; index < npcArray.length; index++) {
                   /** @type {Array<object>} */
-                  const attacks = npcArray[index].items.filter((item) => item.type === 'melee');
+                  const attacks = npcArray[index].items.filter((item) => item.type === 'melee' || item.type === 'ranged');
                   const attackCount = attacks.length;
                   const actorFlags = npcArray[index].flags['fvtt-knowledge-recalled-pf2e'].npcFlags;
                   expect(actorFlags.attacks.length).to.equal(attackCount);
                }
 
+            });
+            it("Test attack flag against attack item", () => {
+               for (let index = 0; index < npcArray.length; index++) {
+                  /** @type {Array<object>} */
+                  const attackItems = npcArray[index].items.filter((item) => item.type === 'melee' || item.type === 'ranged');
+                  const attackFlags = npcArray[index].flags['fvtt-knowledge-recalled-pf2e'].npcFlags.attacks;
+                  for (let altIndex = 0; altIndex < attackItems.length; altIndex++) {
+                     const attackObject = attackItems[altIndex];
+                     const resolveAttackFlag = attackFlags.filter((attack) => attack[0] === attackObject.id);
+                     const attackFlagItem = resolveAttackFlag[0][1];
+                     let type;
+                     if (attackObject.isRanged) {
+                        type = 'ranged';
+                     } else {
+                        type = 'melee';
+                     }
+                     const attackRecordObject =
+                     {
+                        name: attackObject.name,
+                        type,
+                        gmDescription: attackFlagItem.gmDescription,
+                        visibility: attackFlagItem.visibility,
+                        discoveredBy: attackFlagItem.discoveredBy,
+                     };
+                     expect(attackFlagItem).to.have.property("name", attackRecordObject.name);
+                     expect(attackFlagItem).to.have.property("type", attackRecordObject.type);
+                     expect(attackFlagItem).to.have.property("gmDescription", attackRecordObject.gmDescription);
+                     expect(attackFlagItem).to.have.property("visibility", attackRecordObject.visibility);
+                     expect(attackFlagItem).to.have.property("discoveredBy", attackRecordObject.discoveredBy);
+                     log.debug(
+                        `Attack ${altIndex + 1} of ${attackItems.length} for ${npcArray[index].name}; ${index + 1} of ${npcArray.length} NPCs have been tested`,
+                        "testing actor attack entry:",
+                        attackRecordObject,
+                        "against actual record entry:",
+                        attackFlagItem
+                     );
+                  }
+               }
             });
             it("Test action Count", () => {
                for (let index = 0; index < npcArray.length; index++) {
