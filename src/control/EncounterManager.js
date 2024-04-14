@@ -1,3 +1,4 @@
+import { log } from "../lib/debugger";
 import { CONSTANTS } from "../constants/constants";
 
 /**
@@ -29,8 +30,6 @@ export class EncounterManager {
       return moduleData.public.encounterManager;
    }
 
-   getEncounter(encounterId) {
-   }
 
    updateEncounters() {
       this.activeEncounters = this.listActiveEncounters();
@@ -47,7 +46,7 @@ export class EncounterManager {
     * @returns {Array<game.combats>} - Returns an Array of encounters
     */
    listAllEncounters() {
-      console.debug(game.combats);
+      log.debug(game.combats);
       return game.combats;
    }
    /** 
@@ -68,7 +67,7 @@ export class EncounterManager {
             activeEncounters.set(key, encounter);
          }
       }
-      console.debug(activeEncounters);
+      log.debug(activeEncounters);
       return activeEncounters;
    }
 
@@ -80,7 +79,7 @@ export class EncounterManager {
     * @returns {game.combat} - Returns the currently viewed encounter
     */
    listCurrentEncounter() {
-      console.debug(game.combat);
+      log.debug(game.combat);
       return game.combat;
    }
 

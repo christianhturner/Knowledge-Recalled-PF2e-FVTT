@@ -2,6 +2,7 @@
 
 // If this is the manager, it should be independent of any actor, but we can register actors? and maybew
 // look them up based on their actorID?
+import { log } from "../lib/debugger";
 /**
  * NPCModel
  *
@@ -90,7 +91,7 @@ export class NPCModel {
     */
    initializeFlags() {
       if (this.actor.type !== 'npc') {
-         return console.debug(`Actor is not of the NPC type.`);
+         return log.debug(`Actor is not of the NPC type.`);
       }
       this.flags = {
          actorID: this.actor.id,
@@ -160,7 +161,7 @@ export class NPCModel {
       }
       const flags = this.actor.getFlag('fvtt-knowledge-recalled-pf2e', 'npcFlags');
       if (!flags) {
-         console.debug('No flags initialized, please initialize this actor.');
+         log.debug('No flags initialized, please initialize this actor.');
       } else {
          return flags;
       }
@@ -176,9 +177,9 @@ export class NPCModel {
    async setFlags() {
       try {
          await this.actor.setFlag('fvtt-knowledge-recalled-pf2e', 'npcFlags', this.flags);
-         console.info(`Set flags on ${this.actor.name}:`, this.flags, this.actor);
+         log.info(`Set flags on ${this.actor.name}:`, this.flags, this.actor);
       } catch (error) {
-         console.error(`Failed to update actor: {'${this.actor.id}: ${this.actor.name}'}`, error);
+         log.error(`Failed to update actor: {'${this.actor.id}: ${this.actor.name}'}`, error);
       }
    }
 
@@ -193,7 +194,7 @@ export class NPCModel {
    constructAttacksFlags(meleePf2e) {
       const id = meleePf2e.id;
       if (this.checkForDuplicateDocuments(id, 'attacks')) {
-         console.debug(`${id} already exists`);
+         log.debug(`${id} already exists`);
          return;
       }
       const visibility = false;
@@ -219,7 +220,7 @@ export class NPCModel {
       const abilityData = [
          id, data
       ];
-      console.info(`Knowledge Recalled new attack property link created for ${id}, ${name}`,
+      log.info(`new attack property link created for ${id}, ${name}`,
          abilityData);
       this.flags.attacks.push(abilityData);
       // need to determin if we will set this, or hand
@@ -235,7 +236,7 @@ export class NPCModel {
    constructAbilitiesFlags(abilityItemPF2e) {
       const id = abilityItemPF2e.id;
       if (this.checkForDuplicateDocuments(id, 'attacks')) {
-         console.debug(`${id} already exists`);
+         log.debug(`${id} already exists`);
          return;
       }
       const visibility = false;
@@ -258,7 +259,7 @@ export class NPCModel {
       const abilityData = [
          id, data
       ];
-      console.info(`Knowledge Recalled new ability property link created for ${id}, ${name}`,
+      log.info(`new ability property link created for ${id}, ${name}`,
          abilityData);
       this.flags.actionAbilities.push(abilityData);
       // need to determin if we will set this, or hand
@@ -274,7 +275,7 @@ export class NPCModel {
    constructSpellFlags(spellItemPF2e) {
       const id = spellItemPF2e.id;
       if (this.checkForDuplicateDocuments(id, 'attacks')) {
-         console.debug(`${id} already exists`);
+         log.debug(`${id} already exists`);
          return;
       }
       const visibility = false;
@@ -294,7 +295,7 @@ export class NPCModel {
       const abilityData = [
          id, data
       ];
-      console.info(`Knowledge Recalled new ability property link created for ${id}, ${name}`,
+      log.info(`new ability property link created for ${id}, ${name}`,
          abilityData);
       this.flags.spellAbilities.push(abilityData);
       // need to determin if we will set this, or hand
@@ -310,7 +311,7 @@ export class NPCModel {
    deleteAttackFlags(meleePf2e) {
       const id = meleePf2e.id;
       if (!this.checkForDuplicateDocuments(id, 'attacks')) {
-         console.debug(`${id} doesn't exist please debug.`);
+         log.debug(`${id} doesn't exist please debug.`);
          return;
       }
       const filteredAttacks = this.flags.attacks.filter(([k]) => k !== id);
@@ -326,7 +327,7 @@ export class NPCModel {
    deleteAbilityFlags(abilityItemPF2e) {
       const id = abilityItemPF2e.id;
       if (!this.checkForDuplicateDocuments(id, 'attacks')) {
-         console.debug(`${id} doesn't exist please debug.`);
+         log.debug(`${id} doesn't exist please debug.`);
          return;
       }
       const filteredAttacks = this.flags.actionAbilities.filter(([k]) => k !== id);
@@ -342,7 +343,7 @@ export class NPCModel {
    deleteSpellFlags(spellItemPF2e) {
       const id = spellItemPF2e.id;
       if (!this.checkForDuplicateDocuments(id, 'attacks')) {
-         console.debug(`${id} doesn't exist please debug.`);
+         log.debug(`${id} doesn't exist please debug.`);
          return;
       }
       const filteredAttacks = this.flags.spellAbilities.filter(([k]) => k !== id);
@@ -358,7 +359,7 @@ export class NPCModel {
    updateAttacksFlags(meleePf2e) {
       const id = meleePf2e.id;
       if (!this.checkForDuplicateDocuments(id, 'attacks')) {
-         console.debug(`${id} doesn't exit please debug.`);
+         log.debug(`${id} doesn't exit please debug.`);
          return;
       }
       const name = meleePf2e.name;
@@ -384,7 +385,7 @@ export class NPCModel {
          }
          return item;
       });
-      console.info(`Knowledge Recalled updated ability ${id}, ${name}`, mergedData);
+      log.info(`updated ability ${id}, ${name}`, mergedData);
    }
 
    /**
@@ -408,7 +409,7 @@ export class NPCModel {
       }
       const duplicateFlag = prop.some((item) => item[0].includes(documentId));
       if (duplicateFlag) {
-         console.info(`Document with ${documentId} already exist`);
+         log.info(`Document with ${documentId} already exist`);
          return true;
       } else {
          return false;

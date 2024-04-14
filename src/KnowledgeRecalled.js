@@ -1,5 +1,6 @@
 import { CONSTANTS } from "./constants/constants";
 import { getActiveEncounters, getActor } from "./control/utilities";
+import { log } from "./lib/debugger";
 import { NPCModel } from "./models/NPCModel";
 
 /**
@@ -20,13 +21,13 @@ export class KnowledgeRecalled extends Application {
 
    populateGMJournal() {
       const activeEncounters = getActiveEncounters();
-      console.log(activeEncounters);
+      log.debug(activeEncounters);
    }
 
    testNpcModel(actorId) {
       const npc = getActor(actorId);
       const npcModel = new NPCModel(npc);
-      console.log(npcModel);
+      log.debug(npcModel);
    }
 
    // Depricate

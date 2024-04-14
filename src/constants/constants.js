@@ -5,10 +5,10 @@ export const CONSTANTS = {
 };
 
 /** @type {import('../API/api').API} */
-//export const Api = game.modules.get(CONSTANTS.moduleId)?.public;
+// export const Api = game.modules.get(CONSTANTS.moduleId)?.public;
 
-/** @type {import('../Debugger').SetupDebugger} */
-//export const Debug = game.modules.get(CONSTANTS.moduleId)?.debugger;
+/** @type {import('../Debugger').DebugModule} */
+// export const Debug = game.modules.get(CONSTANTS.moduleId)?.debugger;
 
 export const getConstants = () => {
    CONSTANTS.moduleName = 'Knowledge Recalled';
@@ -135,11 +135,17 @@ export const recallKnowledgeAssociatedSkills = new Map();
 recallKnowledgeAssociatedSkills.set("aberration", ["Occultism"]);
 recallKnowledgeAssociatedSkills.set("animal", ["Nature"]);
 recallKnowledgeAssociatedSkills.set("astral", ["Occultism"]);
-recallKnowledgeAssociatedSkills.set("beast", ["Arcana", "Nature"]);
+recallKnowledgeAssociatedSkills.set("beast", [
+   "Arcana", "Nature"
+]);
 recallKnowledgeAssociatedSkills.set("celestial", ["Religion"]);
-recallKnowledgeAssociatedSkills.set("construct", ["Arcana", "Crafting"]);
+recallKnowledgeAssociatedSkills.set("construct", [
+   "Arcana", "Crafting"
+]);
 recallKnowledgeAssociatedSkills.set("dragon", ["Arcana"]);
-recallKnowledgeAssociatedSkills.set("elemental", ["Arcana", "Nature"]);
+recallKnowledgeAssociatedSkills.set("elemental", [
+   "Arcana", "Nature"
+]);
 recallKnowledgeAssociatedSkills.set("ethereal", ["Occultism"]);
 recallKnowledgeAssociatedSkills.set("fey", ["Nature"]);
 recallKnowledgeAssociatedSkills.set("fiend", ["Religion"]);

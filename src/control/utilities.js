@@ -1,4 +1,4 @@
-import { CONSTANTS } from "../constants/constants";
+import { log } from "../lib/debugger";
 
 /**
  * @function
@@ -13,10 +13,10 @@ export function getActiveEncounters() {
          activeEncounters.push(testEncounter);
       }
    }
-   if (activeEncounters.length != 0) {
+   if (activeEncounters.length !== 0) {
       return activeEncounters;
    }
-   console.error("No active encounters.");
+   log.error("No active encounters.");
 }
 
 /**
@@ -32,7 +32,7 @@ export function getActors(actorIds) {
       const actorId = actorIds[index];
       arrayOfActors.push(game.actors.get(actorId));
    }
-   console.log(arrayOfActors);
+   log.log(arrayOfActors);
 }
 
 /**
@@ -44,7 +44,7 @@ export function getActors(actorIds) {
  */
 export function getActor(actorId) {
    const actor = game.actors.get(actorId);
-   console.log(actor);
+   log.log(actor);
    return actor;
 }
 
@@ -81,11 +81,13 @@ export function getThisProperty(obj, path) {
 /**
  *
  * @param actor
+ *
+ * @returns {string} actorId
  */
 export function checkForExistingActor(actor) {
    const actorsArray = game.actors;
    if (actorsArray.find((a) => a.name === actor.name)) {
-      console.debug(`${actor.name}: ${actor.id} already exist`);
+      log.debug(`${actor.name}: ${actor.id} already exist`);
       return actor.id;
    }
    return undefined;
@@ -103,8 +105,8 @@ export function removeFlag(object, flagPath) {
    const flag = object.getFlag('fvtt-knowledge-recalled-pf2e', `${flagPath}`);
    if (flag) {
       object.unsetFlag('fvtt-knowledge-recalled-pf2e', `${flagPath}`);
-      console.log(`Knowledge Recalled: Flag npcFlags.${flagPath} removed from ${object.name}`);
+      log.log(`Knowledge Recalled: Flag npcFlags.${flagPath} removed from ${object.name}`);
    } else {
-      console.log(`Knowledge Recalled Flag npcFlags.${flagPath} does not exist on ${object.name}`);
+      log.log(`Knowledge Recalled Flag npcFlags.${flagPath} does not exist on ${object.name}`);
    }
 }

@@ -1,9 +1,9 @@
 import { insertKnowledgeRecalledbuttons } from "../foundryUiOverrides";
 import { checkForExistingActor } from "./utilities";
-import { SetupDebugger } from "../Debugger";
 import { API } from "../API/api";
 import { CONSTANTS } from "../constants/constants";
 import { setupTests } from "../quench";
+import { log } from "../lib/debugger";
 
 /** @type {import('../API/api').API} */
 let Api;
@@ -29,13 +29,6 @@ export async function registerHooks() {
    // Development Hooks
    // -- Debugger
    if (devMode) {
-      Hooks.on("debugger.ready", () => {
-         /** @type {import('../Debugger').SetupDebugger} */
-         const moduleData = game.modules.get(CONSTANTS.moduleId);
-         moduleData.debugger = new SetupDebugger(devMode);
-         const Debug = moduleData.debugger;
-         console.log(Debug);
-      });
       // -- Quench - testing framework
       setupTests();
    }
@@ -45,39 +38,54 @@ export async function registerHooks() {
       insertKnowledgeRecalledbuttons(controls);
    });
    Hooks.on("closeApplication", (app, html) => {
-      console.log(`Here is the application`, app);
-      console.log(`Here is the html`, html);
+      if (devMode) {
+         log.debug(`Here is the application`, app);
+         log.debug(`Here is the html`, html);
+      }
    });
 
    Hooks.on("createActor", (actor, changes, userId) => {
       checkForExistingActor(actor);
+      if (devMode) {
+         log.debug(actor, changes, userId);
+      }
    });
    // Hook will be used for updating the data between actor document and the NPCModel flag store
    Hooks.on("updateActor", (actor, changes) => {
-      if (!changes) {
-         console.debug("No changes occured.");
+      if (devMode) {
+         if (!changes) {
+            log.debug("No changes occured.");
+         }
+         log.log("Update Actor", actor, changes);
       }
-      console.log("Knowledge Recalled Update Actor", actor, changes);
    });
 
    Hooks.on("createCombat", (encounter, changes) => {
       Api.encounterManager.updateEncounters();
-      console.debug("Knowledge Recalled create combat.", encounter, changes);
+      if (devMode) {
+         log.debug("create combat.", encounter, changes);
+      }
    });
 
    Hooks.on("deleteCombat", (encounter, changes) => {
       Api.encounterManager.updateEncounters();
-      console.debug("Knowledge Recalled delete combat.", encounter, changes);
+      if (devMode) {
+         log.debug("delete combat.", encounter, changes);
+      }
    });
 
    Hooks.on("updateCombat", (encounter, changes) => {
       Api.encoutnerManager.updateEncounters();
-      console.debug("Knowledge Recalled update combat.", encounter, changes);
+      if (devMode) {
+         log.debug("update combat.", encounter, changes);
+      }
    });
 
    Hooks.on("combatStart", (round, turn) => {
       Api.encounterManager.updateEncounters();
-      console.debug("Knowledge recalled combat start.", round, turn);
+      if (devMode) {
+         log.debug("combat start.", round, turn);
+      }
    });
 
    // See combatTurn to see more advanced eents if and when needed
@@ -109,6 +117,9 @@ export async function registerHooks() {
                break;
          }
          NpcActor.setFlags();
+         if (devMode) {
+            log.debug(item, options, userId);
+         }
       }
 
       // TODO:
@@ -124,7 +135,10 @@ export async function registerHooks() {
          NpcActor.updateAttacksFlags(item);
          NpcActor.setFlags();
       }
-      console.debug(`Item ${item.name} created`);
+      if (devMode) {
+         log.debug(item, options, userId);
+         log.info(`Item ${item.name} created`);
+      }
    });
 
    Hooks.on("deleteItem", (item, options, userId) => {
@@ -145,6 +159,9 @@ export async function registerHooks() {
          }
          NpcActor.setFlags();
       }
-      console.debug(`Item ${item.name} deleted`);
+      if (devMode) {
+         log.debug(item, options, userId);
+         log.info(`Item ${item.name} deleted`);
+      }
    });
 }

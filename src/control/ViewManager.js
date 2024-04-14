@@ -1,5 +1,6 @@
 import GMJournalApplication from "../view/GMJournalApplication";
 import { CONSTANTS } from "../constants/constants";
+import { log } from "../lib/debugger";
 /**
  * @class Module
  *
@@ -35,7 +36,7 @@ export class ViewManager {
     */
    init() {
       if (this.#initialized) {
-         console.warn("ViewManager has already been initialized");
+         log.warn("ViewManager has already been initialized");
          return;
       }
       this.#initialized = true;
@@ -72,7 +73,7 @@ export class ViewManager {
             };
          }
       } else {
-         console.error(`This application, ${name}, has already been registered`);
+         log.error(`This application, ${name}, has already been registered`);
       }
    }
    /**
@@ -119,7 +120,7 @@ export class ViewManager {
    close(name) {
       const app = this.getApp(name);
       if (this.appsState[name].protected) {
-         return console.error(
+         return log.error(
             `This Application, ${name}, is a protected application and can't be closed with this method.`,
          );
       }
@@ -142,7 +143,7 @@ export class ViewManager {
       // loop through the appsState objects
       for (const appName in this.appsState) {
          const app = this.appsState[appName];
-         console.log(app);
+         log.log(app);
          // If open and not protected
          if (app.open && !app.protected) {
             // store apps in the array to close
@@ -177,7 +178,7 @@ export class ViewManager {
       if (!this.appsState[name].open) {
          this.open(name);
       } else {
-         console.log(`Cannot find application ${name}, are you sure the application has been registered?`);
+         log.log(`Cannot find application ${name}, are you sure the application has been registered?`);
       }
    }
    /**
