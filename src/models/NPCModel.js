@@ -2,7 +2,9 @@
 
 // If this is the manager, it should be independent of any actor, but we can register actors? and maybew
 // look them up based on their actorID?
+
 import { log } from "../lib/debugger";
+
 /**
  * NPCModel
  *
@@ -378,6 +380,41 @@ export class NPCModel {
       const existingData = this.flags.attacks.find((item) => item[0] === id)[1];
       const mergedData = { ...existingData, ...tempData };
       this.flags.attacks = this.flags.attacks.map((item) => {
+         if (item[0] === id) {
+            return [
+               id, mergedData
+            ];
+         }
+         return item;
+      });
+      log.info(`updated ability ${id}, ${name}`, mergedData);
+   }
+   /**
+    * Method for updating Attacks
+    *
+    * @function
+    *
+    * @param {AbilityItemPF2e} abilityItemPF2e - Returned from UpdateCreateItem Hook value[0] in the array
+    */
+   updateAbilityFlags(abilityItemPF2e) {
+      const id = abilityItemPF2e.id;
+      if (!this.checkForDuplicateDocuments(id, 'actionAbilities')) {
+         log.debug(`${id} doesn't exit please debug.`);
+         return;
+      }
+      let isPassive = false;
+      if (!abilityItemPF2e.actionCost) {
+         isPassive = true;
+      }
+      const name = abilityItemPF2e.name;
+      const tempData = {
+         name,
+         isPassive
+      };
+      // debug found error here
+      const existingData = this.flags.actionAbilities.find((item) => item[0] === id)[1];
+      const mergedData = { ...existingData, ...tempData };
+      this.flags.actionAbilities = this.flags.actionAbilities.map((item) => {
          if (item[0] === id) {
             return [
                id, mergedData
