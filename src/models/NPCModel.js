@@ -426,6 +426,42 @@ export class NPCModel {
    }
 
    /**
+    * Method for updating Attacks
+    *
+    * @function
+    *
+    * @param {SpellItemPF2e} spellItemPF2e - Returned from UpdateCreateItem Hook value[0] in the array
+    */
+   updateSpellFlags(spellItemPF2e) {
+      const id = spellItemPF2e.id;
+      if (!this.checkForDuplicateDocuments(id, 'spellAbilities')) {
+         log.debug(`${id} doesn't exit please debug.`);
+         return;
+      }
+      let isPassive = false;
+      if (!spellItemPF2e.actionCost) {
+         isPassive = true;
+      }
+      const name = spellItemPF2e.name;
+      const tempData = {
+         name,
+         isPassive
+      };
+      // debug found error here
+      const existingData = this.flags.spellAbilities.find((item) => item[0] === id)[1];
+      const mergedData = { ...existingData, ...tempData };
+      this.flags.spellAbilities = this.flags.spellAbilities.map((item) => {
+         if (item[0] === id) {
+            return [
+               id, mergedData
+            ];
+         }
+         return item;
+      });
+      log.info(`updated spell ${id}, ${name}`, mergedData);
+   }
+
+   /**
     * Method for checking against a map for a duplicate.
     *
     * @private

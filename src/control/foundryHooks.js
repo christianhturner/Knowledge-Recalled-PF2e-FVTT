@@ -137,7 +137,7 @@ export async function registerHooks() {
                NpcActor.updateAttacksFlags(item);
                break;
             case 'spell':
-
+               NpcActor.updateSpellFlags(item);
                break;
             case 'action':
                NpcActor.updateAbilityFlags(item);
