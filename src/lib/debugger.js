@@ -29,7 +29,7 @@ class Debugger {
    }
 
    debug(...params) {
-      console.debug(`[ERROR] ${this.getTime()} | ${this.moduleInfo}`, ...params);
+      console.debug(`[DEBUG] ${this.getTime()} | ${this.moduleInfo}`, ...params);
    }
 
    getTime() {
