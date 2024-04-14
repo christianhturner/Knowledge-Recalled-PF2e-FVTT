@@ -235,7 +235,7 @@ export class NPCModel {
     */
    constructAbilitiesFlags(abilityItemPF2e) {
       const id = abilityItemPF2e.id;
-      if (this.checkForDuplicateDocuments(id, 'attacks')) {
+      if (this.checkForDuplicateDocuments(id, 'actionAbilities')) {
          log.debug(`${id} already exists`);
          return;
       }
@@ -274,7 +274,7 @@ export class NPCModel {
     */
    constructSpellFlags(spellItemPF2e) {
       const id = spellItemPF2e.id;
-      if (this.checkForDuplicateDocuments(id, 'attacks')) {
+      if (this.checkForDuplicateDocuments(id, 'spellAbilities')) {
          log.debug(`${id} already exists`);
          return;
       }
@@ -326,7 +326,7 @@ export class NPCModel {
     */
    deleteAbilityFlags(abilityItemPF2e) {
       const id = abilityItemPF2e.id;
-      if (!this.checkForDuplicateDocuments(id, 'attacks')) {
+      if (!this.checkForDuplicateDocuments(id, 'actionAbilities')) {
          log.debug(`${id} doesn't exist please debug.`);
          return;
       }
@@ -342,7 +342,7 @@ export class NPCModel {
     */
    deleteSpellFlags(spellItemPF2e) {
       const id = spellItemPF2e.id;
-      if (!this.checkForDuplicateDocuments(id, 'attacks')) {
+      if (!this.checkForDuplicateDocuments(id, 'spellAbilities')) {
          log.debug(`${id} doesn't exist please debug.`);
          return;
       }
