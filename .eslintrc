@@ -53,7 +53,10 @@
     ],
     "@stylistic/js/indent": [
       "warn",
-      3
+      3,
+      {
+        "SwitchCase": 1
+      }
     ],
     "block-spacing": "error",
     "brace-style": [
