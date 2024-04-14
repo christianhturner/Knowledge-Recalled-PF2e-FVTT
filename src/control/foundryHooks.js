@@ -132,7 +132,17 @@ export async function registerHooks() {
       if (actorOwner.type === "npc") {
          const actorId = actorOwner.id;
          const NpcActor = Api.npcManager.createNPCObject(actorId);
-         NpcActor.updateAttacksFlags(item);
+         switch (item.type) {
+            case 'melee' || 'ranged':
+               NpcActor.updateAttacksFlags(item);
+               break;
+            case 'spell':
+
+               break;
+            case 'action':
+               NpcActor.updateAbilityFlags(item);
+               break;
+         }
          NpcActor.setFlags();
       }
       if (devMode) {
