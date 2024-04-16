@@ -99,6 +99,7 @@ export class NPCModel {
          actorID: this.actor.id,
          defaultDC: 0,
          modifiedDC: 0,
+         // base character info includes name, description, and traits
          baseCharacterInfo: {
             visibility: false,
             discoveredBy: '',
@@ -111,7 +112,6 @@ export class NPCModel {
             visibility: false,
             discoveredBy: '',
          },
-         traits: {},
          armorClass: {
             visibility: false,
             discoveredBy: '',
@@ -139,7 +139,7 @@ export class NPCModel {
          passiveAbilities: [],
          actionAbilities: [],
          spellAbilities: [],
-         difficultyAdjustmentByPlayerId: new Map(),
+         difficultyAdjustmentByPlayerId: [],
       };
    }
 
