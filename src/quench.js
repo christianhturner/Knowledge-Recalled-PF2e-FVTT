@@ -1,4 +1,4 @@
-import { registerNPCModelTests } from "./test/models/NPCModel.test";
+import { registerNPCModelTests } from "../test/models/NPCModel.test";
 /**
  *
  * @param quench - quench is a testing framework for Foundryvtt

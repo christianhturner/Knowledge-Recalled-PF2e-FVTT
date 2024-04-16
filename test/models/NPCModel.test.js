@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 
-import { log } from '../../lib/debugger';
-import { NPCManager } from '../../control/NPCManager';
+import { log } from '../../src/lib/debugger.js';
+import { NPCManager } from '../../src/control/NPCManager';
 
 /**
  * Registers all of the test for Knowledge Recalled
@@ -121,6 +121,42 @@ function registerNPCCreateTest(quench) {
                // const actorFlags = actorOne.flags['fvtt-knowledge-recalled-pf2e'].npcFlags;
                // expect(actorFlags.actionAbilities.length).to.equal(actionCount);
             });
+            it("Test action flag against action item", () => {
+               for (let index = 0; index < npcArray.length; index++) {
+                  /** @type {Array<object>} */
+                  const actionItems = npcArray[index].items.filter((item) => item.type === 'action');
+                  const actionFlags = npcArray[index].flags['fvtt-knowledge-recalled-pf2e'].npcFlags.actionAbilities;
+                  for (let altIndex = 0; altIndex < actionItems.length; altIndex++) {
+                     const actionObject = actionItems[altIndex];
+                     const resolveActionFlag = actionFlags.filter((attack) => attack[0] === actionObject.id);
+                     const actionFlagItem = resolveActionFlag[0][1];
+                     let isPassive = false;
+                     if (!actionObject.actionCost) {
+                        isPassive = true;
+                     }
+                     const actionRecordObject =
+                     {
+                        name: actionObject.name,
+                        isPassive,
+                        gmDescription: actionFlagItem.gmDescription,
+                        visibility: actionFlagItem.visibility,
+                        discoveredBy: actionFlagItem.discoveredBy,
+                     };
+                     expect(actionFlagItem).to.have.property("name", actionRecordObject.name);
+                     expect(actionFlagItem).to.have.property("isPassive", actionRecordObject.isPassive);
+                     expect(actionFlagItem).to.have.property("gmDescription", actionRecordObject.gmDescription);
+                     expect(actionFlagItem).to.have.property("visibility", actionRecordObject.visibility);
+                     expect(actionFlagItem).to.have.property("discoveredBy", actionRecordObject.discoveredBy);
+                     log.debug(
+                        `Attack ${altIndex + 1} of ${actionItems.length} for ${npcArray[index].name}; ${index + 1} of ${npcArray.length} NPCs have been tested`,
+                        "testing actor attack entry:",
+                        actionRecordObject,
+                        "against actual record entry:",
+                        actionFlagItem
+                     );
+                  }
+               }
+            });
             it("Test Spell Count", () => {
                for (let index = 0; index < npcArray.length; index++) {
                   /** @type {Array<object>} */
@@ -129,11 +165,38 @@ function registerNPCCreateTest(quench) {
                   const actorFlags = npcArray[index].flags['fvtt-knowledge-recalled-pf2e'].npcFlags;
                   expect(actorFlags.spellAbilities.length).to.equal(spellCount);
                }
-               // const spells = actorOne.items.filter((item) => item.type === 'spell');
-               // const spellCount = spells.length;
-               //
-               // const actorFlags = actorOne.flags['fvtt-knowledge-recalled-pf2e'].npcFlags;
-               // expect(actorFlags.spellAbilities.length).to.equal(spellCount);
+            });
+            it("Test spell flag against spell item", () => {
+               for (let index = 0; index < npcArray.length; index++) {
+                  /** @type {Array<object>} */
+                  const spellItem = npcArray[index].items.filter((item) => item.type === 'spell');
+                  const spellFlags = npcArray[index].flags['fvtt-knowledge-recalled-pf2e'].npcFlags.spellAbilities;
+                  for (let altIndex = 0; altIndex < spellItem.length; altIndex++) {
+                     const spellObject = spellItem[altIndex];
+                     const resolveSpellFlag = spellFlags.filter((attack) => attack[0] === spellObject.id);
+                     const spellFlagItem = resolveSpellFlag[0][1];
+                     const spellRecordObject =
+                     {
+                        name: spellObject.name,
+                        isConsumable: spellObject.isFromConsumable,
+                        gmDescription: spellFlagItem.gmDescription,
+                        visibility: spellFlagItem.visibility,
+                        discoveredBy: spellFlagItem.discoveredBy,
+                     };
+                     expect(spellFlagItem).to.have.property("name", spellRecordObject.name);
+                     expect(spellFlagItem).to.have.property("isConsumable", spellRecordObject.isConsumable);
+                     expect(spellFlagItem).to.have.property("gmDescription", spellRecordObject.gmDescription);
+                     expect(spellFlagItem).to.have.property("visibility", spellRecordObject.visibility);
+                     expect(spellFlagItem).to.have.property("discoveredBy", spellRecordObject.discoveredBy);
+                     log.debug(
+                        `Attack ${altIndex + 1} of ${spellItem.length} for ${npcArray[index].name}; ${index + 1} of ${npcArray.length} NPCs have been tested`,
+                        "testing actor attack entry:",
+                        spellRecordObject,
+                        "against actual record entry:",
+                        spellFlagItem
+                     );
+                  }
+               }
             });
          });
       });
