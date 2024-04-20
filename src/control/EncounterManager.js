@@ -22,9 +22,9 @@ export class EncounterManager {
    constructor() {
       const moduleData = game.modules.get(CONSTANTS.moduleId);
       if (!moduleData?.public?.encounterManager) {
-         this.activeEncounters = this.listActiveEncounters();
-         this.encounters = this.listAllEncounters();
-         this.currentEncounter = this.listCurrentEncounter();
+         this.activeEncounters = this.getActiveEncounters();
+         this.encounters = this.getAllEncounters();
+         this.currentEncounter = this.getCurrentEncounter();
          return this;
       }
       return moduleData.public.encounterManager;
@@ -32,9 +32,9 @@ export class EncounterManager {
 
 
    updateEncounters() {
-      this.activeEncounters = this.listActiveEncounters();
-      this.encounters = this.listAllEncounters();
-      this.currentEncounter = this.listCurrentEncounter();
+      this.activeEncounters = this.getActiveEncounters();
+      this.encounters = this.getAllEncounters();
+      this.currentEncounter = this.getCurrentEncounter();
    }
 
 
@@ -45,9 +45,10 @@ export class EncounterManager {
     *
     * @returns {Array<game.combats>} - Returns an Array of encounters
     */
-   listAllEncounters() {
-      log.debug(game.combats);
-      return game.combats;
+   getAllEncounters() {
+      const allEncounters = Array.from(game.combats.entries()).map(([key, value]) => ({ key, value }));
+      log.debug(allEncounters);
+      return allEncounters;
    }
    /** 
     * List Active Foundry Encounters
@@ -57,7 +58,7 @@ export class EncounterManager {
     * @returns {Array<game.combats.active} - Retuns an array of active encounters
     */
    // Fore each isn't working
-   listActiveEncounters() {
+   getActiveEncounters() {
       const encounters = game.combats;
       const activeEncounters = new Map();
       for (const [
@@ -78,7 +79,7 @@ export class EncounterManager {
     *
     * @returns {game.combat} - Returns the currently viewed encounter
     */
-   listCurrentEncounter() {
+   getCurrentEncounter() {
       log.debug(game.combat);
       return game.combat;
    }

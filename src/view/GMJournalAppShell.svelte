@@ -23,7 +23,8 @@
     */
 
    const encounterManager = new EncounterManager();
-   log.log(encounterManager.listCurrentEncounter()); //TODO: remove
+   let selectedCombat = new TJSDocument(encounterManager.currentEncounter);
+   log.log(selectedCombat.turns); //TODO: remove
 
    /**
     * @function
@@ -31,7 +32,7 @@
     * @returns {object[]} - TODO: May be an Array of Arrays
     */
    function actorsFromEncounter(encounter) {
-      const combatants = encounter.contents[0].turns; // TODO: optimize the encounter so that we can simply call
+      const combatants = encounter.turns; // TODO: optimize the encounter so that we can simply call
       // encounter.turns
       const npcManager = new NPCManager();
       const npcArray = [];
@@ -41,7 +42,7 @@
       });
       return npcArray;
    }
-   log.log(actorsFromEncounter(encounterManager.listAllEncounters()));
+   log.log(actorsFromEncounter(encounterManager.currentEncounter));
 </script>
 
 <!-- ApplicationShell provides the popOut / application shell frame, header bar, content areas -->
