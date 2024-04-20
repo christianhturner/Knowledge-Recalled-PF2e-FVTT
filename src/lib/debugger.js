@@ -28,6 +28,13 @@ class Debugger {
       console.error(`[ERROR] ${this.getTime()} | ${this.moduleInfo}`, ...params);
    }
 
+   /**
+    * @function
+    *
+    * @param {...*} params - accepts any type or object
+    *
+    * @returns {void}
+    */
    debug(...params) {
       console.debug(`[DEBUG] ${this.getTime()} | ${this.moduleInfo}`, ...params);
    }
