@@ -12,6 +12,7 @@
    let form;
 
    export let settings = {};
+   // FIXME: error stating this is not a function.
    let userCanChangeSettings = game.user.hasPermssion("SETTINGS_MODIFY");
 
    getSettings();
@@ -33,6 +34,9 @@
       }
       application.close();
    }
+
+   // TODO:
+   // inspiration - https://github.com/fantasycalendar/FoundryVTT-ItemPiles/blob/master/src/applications/settings-app/settings-shell.svelte
 </script>
 
 <ApplicationShell bind:elementRoot>
