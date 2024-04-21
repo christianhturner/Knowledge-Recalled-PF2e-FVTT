@@ -1,4 +1,38 @@
+import { CONSTANTS } from "../constants/constants";
 import { log } from "../lib/debugger";
+
+/**
+ * @exports
+ *
+ * @function
+ *
+ * @param {string} key - check constants/settings.js
+ *
+ * @returns {*}
+ */
+export function getSetting(key) {
+   return game.settings.get(CONSTANTS.moduleId, key);
+}
+
+/**
+ * @exports
+ *
+ * @function
+ *
+ * @param {string} key - key value for module settings.
+ *
+ * @param {string} value - value for the key being set.
+ *
+ * @returns {*}
+ */
+export function setSetting(key, value) {
+   if (value === undefinied) {
+      let error = new Error("SetSetting | value must not be undefinied!");
+      log.catchError("Error at line 31 `src/control/utilities`", error);
+      throw error
+   }
+   return game.settings.set(CONSTANTS.moduleId, key, value);
+}
 
 /**
  * @exports
