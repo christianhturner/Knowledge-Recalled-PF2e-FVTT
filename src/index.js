@@ -5,7 +5,3 @@ import './styles/styles.scss'
 registerHooks();
 
 // Remove for production
-const isDev = true;
-Hooks.once("init", () => {
-   CONFIG.debug.hooks = isDev;
-});

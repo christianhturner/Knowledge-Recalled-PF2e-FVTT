@@ -17,7 +17,7 @@ const devMode = true;
  *
  */
 export async function registerHooks() {
-   Hooks.on("init", () => {
+   Hooks.once("init", async () => {
       registerSettings();
    });
    Hooks.on("ready", () => {
