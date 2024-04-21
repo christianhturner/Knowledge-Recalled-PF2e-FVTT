@@ -1,5 +1,19 @@
 {
-  "TemplateESM": {
-    "title": "Template Svelte (ESM)"
+  "KNOWLEDGE-RECALLED": {
+    "title": "Knowledge Recalled",
+    "sub-title": "System for tracking recalled knowledge for Pathfinder 2nd Edition",
+    "SETTINGS": {
+      "label": "Module Settings",
+      "hint": "Open settings window to configure Knowledge Recalled.",
+      "DEBUG": {
+        "title": "Log Level",
+        "hint": "Set logging level to INFO | ERROR | DEBUG"
+      }
+    },
+    "APPLICATIONS": {
+      "SETTINGS": {
+        "title": "Knowledge Recalled Settings"
+      }
+    }
   }
 }
