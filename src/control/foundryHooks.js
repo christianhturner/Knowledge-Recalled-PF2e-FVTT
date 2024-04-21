@@ -4,6 +4,7 @@ import { API } from "../API/api";
 import { CONSTANTS } from "../constants/constants";
 import { setupTests } from "../quench";
 import { log } from "../lib/debugger";
+import { registerSettings } from "../settings";
 
 /** @type {import('../API/api').API} */
 let Api;
@@ -16,6 +17,9 @@ const devMode = true;
  *
  */
 export async function registerHooks() {
+   Hooks.on("init", () => {
+      registerSettings();
+   });
    Hooks.on("ready", () => {
       const moduleData = game.modules.get(CONSTANTS.moduleId);
       const api = new API();
