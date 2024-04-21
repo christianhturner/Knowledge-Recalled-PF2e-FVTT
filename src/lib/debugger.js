@@ -1,47 +1,80 @@
+import { CONSTANTS } from "../constants/settings.js";
+
 let instance;
 /**
  * @typedef logLevel
  */
 
 class Debugger {
-   constructor() {
+   constructor(logLevel) {
       if (instance) {
          throw new Error("Only one debugger class is allowed");
       }
       instance = this;
+      this.logLevel = logLevel;
       this.moduleInfo = "Knowledge Recalled:";
       this.sessionLog = [];
-   }
-
-   info(...params) {
-      const logInfo = `[INFO] ${this.getTime()} | ${this.moduleInfo}`;
-      const logObjects = params.filter(param => typeof param === 'object' || Array.isArray(param));
-      const logEntry = [logInfo, ...logObjects];
-      this.sessionLog.push(logEntry);
-      console.info(`[INFO] ${this.getTime()} | ${this.moduleInfo}`, ...params, this.sessionLog);
-   }
-
-   warn(...params) {
-      const logInfo = `[WARN] ${this.getTime()} | ${this.moduleInfo}`;
-      const logObjects = params.filter(param => typeof param === 'object' || Array.isArray(param));
-      const logEntry = [logInfo, ...logObjects];
-      this.sessionLog.push(logEntry);
-      console.warn(`[WARN] ${this.getTime()} | ${this.moduleInfo}`, ...params);
-   }
-
-   log(...params) {
-      const logInfo = `[LOG] ${this.getTime()} | ${this.moduleInfo}`;
-      const logObjects = params.filter(param => typeof param === 'object' || Array.isArray(param));
-      const logEntry = [logInfo, ...logObjects];
-      this.sessionLog.push(logEntry);
-
-      console.log(`[LOG] ${this.getTime()} | ${this.moduleInfo}`, ...params, this.sessionLog);
+      this.count = {
+         info: 0,
+         warn: 0,
+         log: 0,
+         debug: 0,
+         error: 0,
+      }
    }
 
    /**
     * @function
     *
-    * @param {...*} params - accepts all types including objects
+    * @param {...*} params - accepts all types including objects, and prints to console.info();
+    *
+    * @returns {void}
+    */
+   info(...params) {
+      const logInfo = `[INFO] ${this.getTime()} | ${this.moduleInfo}`;
+      const logObjects = params.filter(param => typeof param === 'object' || Array.isArray(param));
+      const logEntry = [logInfo, ...logObjects];
+      this.sessionLog.push(logEntry);
+      this.count.info++;
+      console.info(`[INFO] ${this.getTime()} | ${this.moduleInfo}`, ...params, this.count, this.sessionLog);
+   }
+
+   /**
+    * @function
+    *
+    * @param {...*} params - accepts all types including objects, and prints to console.warn();
+    *
+    * @returns {void}
+    */
+   warn(...params) {
+      const logInfo = `[WARN] ${this.getTime()} | ${this.moduleInfo}`;
+      const logObjects = params.filter(param => typeof param === 'object' || Array.isArray(param));
+      const logEntry = [logInfo, ...logObjects];
+      this.sessionLog.push(logEntry);
+      this.count.warn++;
+      console.warn(`[WARN] ${this.getTime()} | ${this.moduleInfo}`, ...params, this.count, this.sessionLog);
+   }
+
+   /**
+    * @function
+    *
+    * @param {...*} params - accepts all types including objects, and prints to console.log();
+    *
+    * @returns {void}
+    */
+   log(...params) {
+      const logInfo = `[LOG] ${this.getTime()} | ${this.moduleInfo}`;
+      const logObjects = params.filter(param => typeof param === 'object' || Array.isArray(param));
+      const logEntry = [logInfo, ...logObjects];
+      this.sessionLog.push(logEntry);
+      this.count.log++;
+      console.log(`[LOG] ${this.getTime()} | ${this.moduleInfo}`, ...params, this.count, this.sessionLog);
+   }
+
+   /**
+    * @function
+    *
+    * @param {...*} params - accepts all types including objects 
     *
     * @param {string} errorMessage - Passes a message into the Error constructor
     *
@@ -61,17 +94,14 @@ class Debugger {
       const logObjects = params.filter(param => typeof param === 'object' || Array.isArray(param));
       const logEntry = [logInfo, ...logObjects, new Error(errorMessage, { cause })];
       this.sessionLog.push(logEntry);
-      if (cause) {
-         console.error(`[ERROR] ${this.getTime()} | ${this.moduleInfo}`, ...params, new Error(errorMessage, { cause }));
-      } else {
-         console.error(`[ERROR] ${this.getTime()} | ${this.moduleInfo}`, ...params, new Error(errorMessage));
-      }
+      this.count.error++;
+      console.error(`[ERROR] ${this.getTime()} | ${this.moduleInfo}`, ...params, new Error(errorMessage, { cause }), this.count, this.sessionLog);
    }
 
-   /**DEBUG
+   /**
     * @function 
     *
-    * @param {...*} params - accept all types including objects
+    * @param {...*} params - accept all types including objects and prints to console.error();
     *
     *@returns {void}
     */
@@ -80,27 +110,31 @@ class Debugger {
       const logObjects = params.filter(param => typeof param === 'object' || Array.isArray(param));
       const logEntry = [logInfo, ...logObjects, new Error()];
       this.sessionLog.push(logEntry);
-      console.debug(`[ERROR] ${this.getTime()} | ${this.moduleInfo}`, ...params, new Error());
+      this.count.error++;
+      console.debug(`[ERROR] ${this.getTime()} | ${this.moduleInfo}`, ...params, new Error(), this.count, this.sessionLog);
    }
 
    /**
     * @function
     *
-    * @param {...*} params - accepts all types including objects
+    * @param {...*} params - accepts all types including objects and prints to console.debug();
     *
     * @returns {void}
     */
-   debug(showStack, ...params) {
+   debug(...params) {
       const logInfo = `[DEBUG] ${this.getTime()} | ${this.moduleInfo}`;
       const logObjects = params.filter(param => typeof param === 'object' || Array.isArray(param));
       const logEntry = [logInfo, ...logObjects];
       this.sessionLog.push(logEntry);
-      console.debug(`[DEBUG] ${this.getTime()} | ${this.moduleInfo}`, ...params);
+      this.count.debug++;
+      console.debug(`[DEBUG] ${this.getTime()} | ${this.moduleInfo}`, ...params, this.count, this.sessionLog);
    }
 
    /**
    * @private
+   *
    * @function
+   *
    * @return {string} - Returns time as a string in `HH:MM:SS.mmm` based on local time
    */
    getTime() {
@@ -111,30 +145,6 @@ class Debugger {
       return `${time}.${millisecond.toString().padStart(3, '0')}`;
    }
 
-   //    /**
-   //     * @private
-   //     * @function
-   //     * @return {string} - Returns source file and line number, `File: example.js, Line: 5`
-   //     */
-   //    getFileAndLine = () => {
-   //       const error = String(new Error());
-   //       if (!error) {
-   //          try {
-   //             throw new Error();
-   //          } catch (e) {
-   //             error = e;
-   //          }
-   //       }
-   //       const stackLines = error.split('\n');
-   //       const callerLine = stackLines[2].trim();
-   //       const matchResult = callerLine.match(/\s*at\s+\S+\s+\((.*?)\)/);
-   //       if (matchResult) {
-   //          const [, filePathLine] = matchResult;
-   //          const [fileName, lineNumber, columnNumber] = filePathLine.split(/:(\d+):(\d+)/);
-   //          return `File: ${fileName}, Line: ${lineNumber}, Column: ${columnNumber}`;
-   //       }
-   //       return 'File and line information not available';
-   //    }
 
 }
 

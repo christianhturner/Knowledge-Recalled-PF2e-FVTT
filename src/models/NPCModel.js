@@ -181,7 +181,7 @@ export class NPCModel {
          await this.actor.setFlag('fvtt-knowledge-recalled-pf2e', 'npcFlags', this.flags);
          log.info(`Set flags on ${this.actor.name}:`, this.flags, this.actor);
       } catch (error) {
-         log.error(`Failed to update actor: {'${this.actor.id}: ${this.actor.name}'}`, error);
+         log.catchError(`Failed to update actor: {'${this.actor.id}: ${this.actor.name}'}`, error);
       }
    }
 
