@@ -1,6 +1,7 @@
 import { SettingsShim } from "./view/settings/settingsApplication";
 
 import { CONSTANTS } from "./constants/constants";
+import { SETTINGS } from "./constants/settings";
 
 
 export function registerSettings() {

@@ -1,4 +1,4 @@
-const SETTINGS = {
+export const SETTINGS = {
    DEBUG: "debug",
 
    GET_DEFAULT() {
