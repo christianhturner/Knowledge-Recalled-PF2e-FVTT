@@ -1,4 +1,3 @@
-import { CONSTANTS } from "../constants/settings.js";
 
 let instance;
 /**
@@ -20,7 +19,7 @@ class Debugger {
          log: 0,
          debug: 0,
          error: 0,
-      }
+      };
    }
 
    /**
@@ -32,8 +31,10 @@ class Debugger {
     */
    info(...params) {
       const logInfo = `[INFO] ${this.getTime()} | ${this.moduleInfo}`;
-      const logObjects = params.filter(param => typeof param === 'object' || Array.isArray(param));
-      const logEntry = [logInfo, ...logObjects];
+      const logObjects = params.filter((param) => typeof param === 'object' || Array.isArray(param));
+      const logEntry = [
+         logInfo, ...logObjects
+      ];
       this.sessionLog.push(logEntry);
       this.count.info++;
       console.info(`[INFO] ${this.getTime()} | ${this.moduleInfo}`, ...params, this.count, this.sessionLog);
@@ -48,8 +49,10 @@ class Debugger {
     */
    warn(...params) {
       const logInfo = `[WARN] ${this.getTime()} | ${this.moduleInfo}`;
-      const logObjects = params.filter(param => typeof param === 'object' || Array.isArray(param));
-      const logEntry = [logInfo, ...logObjects];
+      const logObjects = params.filter((param) => typeof param === 'object' || Array.isArray(param));
+      const logEntry = [
+         logInfo, ...logObjects
+      ];
       this.sessionLog.push(logEntry);
       this.count.warn++;
       console.warn(`[WARN] ${this.getTime()} | ${this.moduleInfo}`, ...params, this.count, this.sessionLog);
@@ -64,8 +67,10 @@ class Debugger {
     */
    log(...params) {
       const logInfo = `[LOG] ${this.getTime()} | ${this.moduleInfo}`;
-      const logObjects = params.filter(param => typeof param === 'object' || Array.isArray(param));
-      const logEntry = [logInfo, ...logObjects];
+      const logObjects = params.filter((param) => typeof param === 'object' || Array.isArray(param));
+      const logEntry = [
+         logInfo, ...logObjects
+      ];
       this.sessionLog.push(logEntry);
       this.count.log++;
       console.log(`[LOG] ${this.getTime()} | ${this.moduleInfo}`, ...params, this.count, this.sessionLog);
@@ -91,8 +96,10 @@ class Debugger {
     */
    catchError(errorMessage, cause, ...params) {
       const logInfo = `[ERROR] ${this.getTime()} | ${this.moduleInfo}`;
-      const logObjects = params.filter(param => typeof param === 'object' || Array.isArray(param));
-      const logEntry = [logInfo, ...logObjects, new Error(errorMessage, { cause })];
+      const logObjects = params.filter((param) => typeof param === 'object' || Array.isArray(param));
+      const logEntry = [
+         logInfo, ...logObjects, new Error(errorMessage, { cause })
+      ];
       this.sessionLog.push(logEntry);
       this.count.error++;
       console.error(`[ERROR] ${this.getTime()} | ${this.moduleInfo}`, ...params, new Error(errorMessage, { cause }), this.count, this.sessionLog);
@@ -107,8 +114,10 @@ class Debugger {
     */
    error(...params) {
       const logInfo = `[ERROR] ${this.getTime()} | ${this.moduleInfo}`;
-      const logObjects = params.filter(param => typeof param === 'object' || Array.isArray(param));
-      const logEntry = [logInfo, ...logObjects, new Error()];
+      const logObjects = params.filter((param) => typeof param === 'object' || Array.isArray(param));
+      const logEntry = [
+         logInfo, ...logObjects, new Error()
+      ];
       this.sessionLog.push(logEntry);
       this.count.error++;
       console.debug(`[ERROR] ${this.getTime()} | ${this.moduleInfo}`, ...params, new Error(), this.count, this.sessionLog);
@@ -123,20 +132,22 @@ class Debugger {
     */
    debug(...params) {
       const logInfo = `[DEBUG] ${this.getTime()} | ${this.moduleInfo}`;
-      const logObjects = params.filter(param => typeof param === 'object' || Array.isArray(param));
-      const logEntry = [logInfo, ...logObjects];
+      const logObjects = params.filter((param) => typeof param === 'object' || Array.isArray(param));
+      const logEntry = [
+         logInfo, ...logObjects
+      ];
       this.sessionLog.push(logEntry);
       this.count.debug++;
       console.debug(`[DEBUG] ${this.getTime()} | ${this.moduleInfo}`, ...params, this.count, this.sessionLog);
    }
 
    /**
-   * @private
-   *
-   * @function
-   *
-   * @return {string} - Returns time as a string in `HH:MM:SS.mmm` based on local time
-   */
+    * @private
+    *
+    * @function
+    *
+    * @returns {string} - Returns time as a string in `HH:MM:SS.mmm` based on local time
+    */
    getTime() {
       const now = new Date();
       const time = now.toTimeString().slice(0, 8);

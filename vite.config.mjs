@@ -5,6 +5,11 @@ import {
    postcssConfig,
    terserConfig
 } from '@typhonjs-fvtt/runtime/rollup';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // ATTENTION!
 // Please modify the below variables: s_PACKAGE_ID and s_SVELTE_HASH_ID appropriately.

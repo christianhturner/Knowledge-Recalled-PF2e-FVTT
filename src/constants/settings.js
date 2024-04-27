@@ -2,7 +2,7 @@ export const SETTINGS = {
    DEBUG: "debug",
 
    GET_DEFAULT() {
-      return foundry.utils.deepClone(SETTINGS.DEFAULTS())
+      return foundry.utils.deepClone(SETTINGS.DEFAULTS());
    },
 
    DEFAULTS: () => ({
@@ -14,10 +14,10 @@ export const SETTINGS = {
          default: "INFO",
          type: String,
          choices: {
-            "INFO": "INFO",
-            "ERROR": "ERROR",
-            "DEBUG": "DEBUG"
+            INFO: "INFO",
+            ERROR: "ERROR",
+            DEBUG: "DEBUG"
          },
       }
    }),
-}
+};
