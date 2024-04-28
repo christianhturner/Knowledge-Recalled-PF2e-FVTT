@@ -1,10 +1,35 @@
+import { getSetting } from "../control/utilities";
 
 let instance;
+
+// /**
+//  * @enum {string}
+//  */
+// const logLevelStrings = {
+//    INFO: "INFO",
+//    ERROR: "ERORR",
+//    DEBUG: "DEBUG"
+// };
+
 /**
- * @typedef logLevel
+ * @param {string} level
+ *
+ * @returns {logLevelStrings}
  */
+// function validateLogLevel(level) {
+//    if (Object.values(logLevelStrings).includes(level)) {
+//       return level;
+//    }
+//    throw new Error(`Invalid log level: ${level}`);
+// }
 
 class Debugger {
+   /**
+    * @class
+    *
+    * @param {import("../constants/settings").SettingsValue} logLevel - Accepts choices provided in Debug Setting "INFO"
+    * | "ERROR" | "DEBUG"
+    */
    constructor(logLevel) {
       if (instance) {
          throw new Error("Only one debugger class is allowed");
@@ -159,5 +184,6 @@ class Debugger {
 
 }
 
-
+// const logLevelSettingParam = getSetting("debug");
+// console.log(logLevelSettingParam);
 export const log = Object.freeze(new Debugger());
