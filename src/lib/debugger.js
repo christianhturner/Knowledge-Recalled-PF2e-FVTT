@@ -5,7 +5,7 @@ let instance;
  */
 const logLevelStrings = {
    INFO: "INFO",
-   ERROR: "ERORR",
+   ERROR: "ERROR",
    DEBUG: "DEBUG"
 };
 
@@ -23,6 +23,8 @@ function validateLogLevel(level) {
 
 class Debugger {
    /**
+    * @param logLevel
+    *
     * @class
     */
    constructor() {
@@ -30,7 +32,7 @@ class Debugger {
          throw new Error("Only one debugger class is allowed");
       }
       instance = this;
-      this.logLevel = "";
+      this.logLevel;
       this.moduleInfo = "Knowledge Recalled:";
       this.sessionLog = [];
       this.count = {
@@ -45,6 +47,7 @@ class Debugger {
    setLogLevel(logLevel) {
       const validatedLogLevel = validateLogLevel(logLevel);
       this.logLevel = validatedLogLevel;
+      console.log(this.logLevel);
    }
 
    /**
@@ -55,7 +58,7 @@ class Debugger {
     * @returns {void}
     */
    info(...params) {
-      if (this.logLevel === "INFO" || this.logLevel === "DEBUG" || this.logLevel === "") {
+      if (this.logLevel === "INFO" || this.logLevel === "DEBUG" || this.logLevel === undefined) {
          const logInfo = `[INFO] ${this.getTime()} | ${this.moduleInfo}`;
          const logObjects = params.filter((param) => typeof param === 'object' || Array.isArray(param));
          const logEntry = [
@@ -94,7 +97,7 @@ class Debugger {
     * @returns {void}
     */
    log(...params) {
-      if (this.logLevel === "INFO" || this.logLevel === "DEBUG" || this.logLevel === "") {
+      if (this.logLevel === "INFO" || this.logLevel === "DEBUG" || this.logLevel === undefined) {
          const logInfo = `[LOG] ${this.getTime()} | ${this.moduleInfo}`;
          const logObjects = params.filter((param) => typeof param === 'object' || Array.isArray(param));
          const logEntry = [
@@ -161,7 +164,7 @@ class Debugger {
     * @returns {void}
     */
    debug(...params) {
-      if (this.logLevel === "" || this.logLevel === "DEBUG") {
+      if (this.logLevel === undefined || this.logLevel === "DEBUG") {
          const logInfo = `[DEBUG] ${this.getTime()} | ${this.moduleInfo}`;
          const logObjects = params.filter((param) => typeof param === 'object' || Array.isArray(param));
          const logEntry = [
@@ -192,4 +195,4 @@ class Debugger {
 }
 // const logLevelSettingParam = getSetting("debug");
 // console.log(logLevelSettingParam);
-export const log = Object.freeze(new Debugger());
+export const log = new Debugger();

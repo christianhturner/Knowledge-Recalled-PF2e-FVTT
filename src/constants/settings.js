@@ -17,11 +17,12 @@ export const SETTINGS = {
          hint: "KNOWLEDGE-RECALLED.SETTINGS.DEBUG.hint",
          scope: "client",
          config: "true",
-         default: "INFO",
+         default: "ERROR",
+         requiresReload: true,
          type: String,
          choices: {
-            INFO: "INFO",
             ERROR: "ERROR",
+            INFO: "INFO",
             DEBUG: "DEBUG"
          },
       }

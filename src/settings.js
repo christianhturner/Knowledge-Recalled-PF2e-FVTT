@@ -1,9 +1,16 @@
 import { SettingsShim } from "./view/settings/settingsApplication";
 
+import { getSetting } from "./control/utilities";
 import { CONSTANTS } from "./constants/constants";
 import { SETTINGS } from "./constants/settings";
+import { log } from "./lib/debugger";
 
-
+// TODO: https://discord.com/channels/737953117999726592/1089153493186662440
+// Let's migrate over to the TJS Settings
+// - We need SettingShim button
+// - settings App.js
+// - Svelte AppShell
+// - Largely implemented here: https://github.com/typhonjs-fvtt/mce-everywhere/blob/main/src/view/ConfigSettingApp.js
 /**
  *
  */
@@ -16,14 +23,18 @@ export function registerSettings() {
       icon: "fas fa-cog",
       type: SettingsShim,
       restricted: false
-   });
+   }
 
-   // FIXME: Error occuring here
+   );
+
    for (const [
       name, data
    ] of Object.entries(SETTINGS.GET_DEFAULT())) {
       game.settings.register(CONSTANTS.moduleId, name, data);
    }
+
+   const userLogLevel = getSetting("debug");
+   log.setLogLevel(userLogLevel);
 }
 
 /* FIXME:
