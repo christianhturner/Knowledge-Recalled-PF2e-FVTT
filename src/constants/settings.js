@@ -1,3 +1,9 @@
+/**
+ * @typedef {string} SettingsValue
+ *
+ * @property {string} DEBUG
+ */
+
 export const SETTINGS = {
    DEBUG: "debug",
 

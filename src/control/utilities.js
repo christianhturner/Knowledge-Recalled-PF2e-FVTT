@@ -26,23 +26,25 @@ export function getSetting(key) {
  * @returns {*}
  */
 export function setSetting(key, value) {
-   if (value === undefinied) {
-      let error = new Error("SetSetting | value must not be undefinied!");
+   if (value === undefined) {
+      const error = new Error("SetSetting | value must not be undefinied!");
       log.catchError("Error at line 31 `src/control/utilities`", error);
-      throw error
+      throw error;
    }
    return game.settings.set(CONSTANTS.moduleId, key, value);
 }
 
 /**
  * @exports
+ *
+ * @param single
  * 
  * @function
  *
  * @param {string} id - Application ID you wish to find and render
  */
 export function getActiveApps(id, single = false) {
-   const apps = Object.values(ui.windows).filter(app => app.id.startsWith(id) && app._state > Application.RENDER_STATES.CLOSED);
+   const apps = Object.values(ui.windows).filter((app) => app.id.startsWith(id) && app._state > Application.RENDER_STATES.CLOSED);
    if (single) {
       return apps?.[0] ?? false;
    }

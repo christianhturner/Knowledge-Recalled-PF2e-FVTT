@@ -4,6 +4,9 @@ import { CONSTANTS } from "./constants/constants";
 import { SETTINGS } from "./constants/settings";
 
 
+/**
+ *
+ */
 export function registerSettings() {
 
    game.settings.registerMenu(CONSTANTS.moduleId, "configure-settings", {
@@ -16,8 +19,10 @@ export function registerSettings() {
    });
 
    // FIXME: Error occuring here
-   for (let [name, data] of Object.entries(SETTINGS.GET_DEFAULT())) {
-      game.settings.register(CONSTANTS.moduleId, name, data)
+   for (const [
+      name, data
+   ] of Object.entries(SETTINGS.GET_DEFAULT())) {
+      game.settings.register(CONSTANTS.moduleId, name, data);
    }
 }
 

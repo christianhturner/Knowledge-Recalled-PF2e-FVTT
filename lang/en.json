@@ -12,7 +12,9 @@
     },
     "APPLICATIONS": {
       "SETTINGS": {
-        "title": "Knowledge Recalled Settings"
+        "title": "Knowledge Recalled Settings",
+        "local": "Local",
+        "submit": "Submit Settings"
       }
     }
   }
