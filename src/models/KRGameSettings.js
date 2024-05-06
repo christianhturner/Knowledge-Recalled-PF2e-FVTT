@@ -1,9 +1,7 @@
-import { BrowserSupports } from "#runtime/util/browser";
-import { TJSThemeEditor } from "#standard/component";
 import { TJSGameSettings } from "#runtime/svelte/store/fvtt/settings";
-import { TJSThemeStore } from "#standard/store";
 import { CONSTANTS } from "../constants/constants";
-import { TJSSettings, sessionConstants } from "../constants/settings";
+import { TJSSettings } from "../constants/settings";
+import { ConfigSettingsButton } from "../view/tjsSettings/ConfigSettingButton";
 
 // Reference: https://github.com/typhonjs-fvtt/mce-everywhere/blob/main/src/model/mceGameSettings.js
 
@@ -17,14 +15,14 @@ class KRGameSettings extends TJSGameSettings {
    init() {
       const namespace = this.namespace;
 
-      this.#themeStore = new TJSThemeStore({
-         namespace,
-         key: TJSSettings.themeData,
-         gameSettings: this,
-         /* TODO: Add CSS style manager and themeStoreConfig */
-         // styleManager: '....'
-         // config: ''
-      });
+      // this.#themeStore = new TJSThemeStore({
+      //    namespace,
+      //    key: TJSSettings.themeData,
+      //    gameSettings: this,
+      //    /* TODO: Add CSS style manager and themeStoreConfig */
+      //    // styleManager: '....'
+      //    // config: ''
+      // });
 
       /**
        * constants for setting scope type.
@@ -40,6 +38,36 @@ class KRGameSettings extends TJSGameSettings {
 
       // See line 50 if desire to add macro button exist
 
+      game.settings.registerMenu(namespace, TJSSettings.button, {
+         // TODO: REPLACE with localized strings
+         name: 'Knowledge Recalled Settings',
+         label: 'Configure Settings',
+         icon: 'fas fa-dice-d20',
+         type: ConfigSettingsButton,
+         restricted: true
+      });
+
+      allSettings.push({
+         namespace,
+         key: TJSSettings.debug,
+         options: {
+            name: "Debug",
+            hint: "Set logging level to ERROR | LOG | DEBUG",
+            scope: scope.client,
+            default: "ERROR",
+            requiresReload: true,
+            type: String,
+            choices: {
+               ERROR: "ERROR",
+               INFO: "INFO",
+               DEBUG: "DEBUG",
+            },
+         }
+      });
+      // Selectively register settings w/ core Foundry based on whether the user is GM.
+      this.registerAll(allSettings, !game.user.isGM);
 
    }
 }
+
+export const krGameSettings = new KRGameSettings();

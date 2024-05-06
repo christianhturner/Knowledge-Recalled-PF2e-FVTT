@@ -2,7 +2,7 @@ import { SvelteApplication } from "#runtime/svelte/application";
 import { CONSTANTS } from "../../constants/constants";
 import ConfigSettingAppShell from "./ConfigSettingAppShell.svelte";
 import { sessionConstants } from "../../constants/settings";
-import { log } from "../../lib/debugger";
+// import { log } from "../../lib/debugger";
 
 export class ConfigSettingsApp extends SvelteApplication {
    /** @inheritdoc */
@@ -12,7 +12,8 @@ export class ConfigSettingsApp extends SvelteApplication {
       try {
          this.state.set(JSON.parse(sessionStorage.getItem(sessionConstants.appState)));
       } catch (err) {
-         log.catchError("Error occured at `/view/tjsSettings/configSettingsApp.js` @15", err);
+         // Attempt not throwing error?
+         // log.catchError("Error occured at `/view/tjsSettings/configSettingsApp.js` @15", err);
       }
    }
    /**
@@ -30,7 +31,7 @@ export class ConfigSettingsApp extends SvelteApplication {
          minWidth: 550,
 
          svelte: {
-            class: ConfigSettingsAppShell,
+            class: ConfigSettingAppShell,
             target: document.body
          }
       });

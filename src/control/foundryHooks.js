@@ -4,7 +4,8 @@ import { API } from "../API/api";
 import { CONSTANTS } from "../constants/constants";
 import { setupTests } from "../quench";
 import { log } from "../lib/debugger";
-import { registerSettings } from "../settings";
+// import { registerSettings } from "../settings";
+import { krGameSettings } from "../models/KRGameSettings";
 
 /** @type {import('../API/api').API} */
 let Api;
@@ -18,9 +19,10 @@ const devMode = true;
  */
 export async function registerHooks() {
    Hooks.once("init", async () => {
-      registerSettings();
+      // registerSettings();
    });
    Hooks.on("ready", () => {
+      krGameSettings.init();
       const moduleData = game.modules.get(CONSTANTS.moduleId);
       const api = new API();
       // @ts-ignore
